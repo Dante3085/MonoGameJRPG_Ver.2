@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using VosSoft.Xna.GameConsole;
 
 namespace MonoGameJRPG_Ver._2
 {
@@ -12,10 +16,15 @@ namespace MonoGameJRPG_Ver._2
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static GameConsole gameConsole;
+
+        public static float fps = -1;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -27,6 +36,8 @@ namespace MonoGameJRPG_Ver._2
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameConsole = new GameConsole(this, "german", Content);
+            gameConsole.IsFullscreen = true;
 
             base.Initialize();
         }
@@ -41,6 +52,7 @@ namespace MonoGameJRPG_Ver._2
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Contents.LoadCharacters(Content);
         }
 
         /// <summary>
@@ -63,6 +75,15 @@ namespace MonoGameJRPG_Ver._2
                 Exit();
 
             // TODO: Add your update logic here
+            InputManager.UpdateCurrentStates();
+
+            fps = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Console.WriteLine("fps: " + fps);
+
+            if (InputManager.OnKeyDown(Keys.Tab))
+                gameConsole.Open(Keys.Tab);
+
+            InputManager.UpdatePreviousStates();
 
             base.Update(gameTime);
         }

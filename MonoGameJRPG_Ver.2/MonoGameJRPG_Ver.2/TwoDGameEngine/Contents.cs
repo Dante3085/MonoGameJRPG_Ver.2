@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine
@@ -35,7 +30,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         #endregion
 
         #endregion
-
         #region SpriteFonts
 
         public static SpriteFont fontNoHover;
@@ -52,6 +46,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
 
         }
 
-
+        /// <summary>
+        /// Uses given ContentManager to load all Character related Textures.
+        /// </summary>
+        /// <param name="c"></param>
+        public static void LoadCharacters(ContentManager c)
+        {
+            warrior = c.Load<Texture2D>("Characters/warrior");
+        }
     }
 }
