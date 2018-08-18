@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Utils;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
     public class Sprite : GameObject, ICollidable
     {
-        public static bool drawBoundingBox = true;
+        public static bool drawBoundingBox = false;
 
         #region MemberVariables
 
@@ -45,7 +45,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Constant that will be applied to velocity for movement.
         /// </summary>
-        protected int _speed = 100;
+        protected int _speed = 250;
 
         /// <summary>
         /// KeyboardInput for controlling this Sprite with a Keyboard.
@@ -95,9 +95,27 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         public PlayerIndex PlayerIndex => _playerIndex;
 
         /// <summary>
-        /// 
+        /// Remembers if this Sprite is player controlled.
         /// </summary>
         public bool IsPlayerControlled => _isPlayerControlled;
+
+        /// <summary>
+        /// This Sprite's KeyboardInput.
+        /// </summary>
+        public KeyboardInput KeyboardInput
+        {
+            get => _keyboardInput;
+            set => _keyboardInput = value;
+        }
+
+        /// <summary>
+        /// This Sprite's GamePadInput.
+        /// </summary>
+        public GamePadInput GamePadInput
+        {
+            get => _gamePadInput;
+            set => _gamePadInput = value;
+        }
 
         #endregion
 

@@ -15,6 +15,9 @@ namespace MonoGameJRPG_Ver._2
     /// </summary>
     public class Game1 : Game
     {
+        public const int screenWidth = 960;
+        public const int screenHeight = 640;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -36,12 +39,12 @@ namespace MonoGameJRPG_Ver._2
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
         }
 
         /// <summary>
@@ -72,27 +75,8 @@ namespace MonoGameJRPG_Ver._2
             Contents.LoadAll(Content, GraphicsDevice);
 
             fpsText = new Text(Contents.arial12, Contents.arial15, "" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
-            bowlingBall = new AnimatedSprite("BowlingBall", Contents.bowlingBall, new Vector2(0, 0), PlayerIndex.One, 20, new KeyboardInput()
-            {
-                Left = Keys.A,
-                Up = Keys.W,
-                Right = Keys.D,
-                Down = Keys.S
-            });
-            bowlingBall.AddAnimation(EAnimation.Idle, 1, 32, 32, 0, 0, Vector2.Zero);
-            bowlingBall.AddAnimation(EAnimation.IdleLeft, 1, 32, 32, 0, 0, Vector2.Zero);
-            bowlingBall.AddAnimation(EAnimation.IdleUp, 1, 32, 32, 0, 0, Vector2.Zero);
-            bowlingBall.AddAnimation(EAnimation.IdleRight, 1, 32, 32, 0, 0, Vector2.Zero);
-            bowlingBall.AddAnimation(EAnimation.IdleDown, 1, 32, 32, 0, 0, Vector2.Zero);
-
-            bowlingBall.AddAnimation(EAnimation.Right, 9, 32, 32, 0, 0, Vector2.Zero);
-            bowlingBall.AddAnimation(EAnimation.Left, 9, 32, 32, 32, 0, Vector2.Zero);
-
-            newGameBtn = new AnimatedSprite("NewGameBtn", Contents.btnNewGame, new Vector2(100, 100), 5);
-            newGameBtn.AddAnimation(EAnimation.Idle, 8, 32, 32, 0, 0, Vector2.Zero);
-
-            newGameBtn2 = new AnimatedSprite("NewGameBtn", Contents.btnNewGame, new Vector2(140, 100), 20);
-            newGameBtn2.AddAnimation(EAnimation.Idle, 8, 32, 32, 0, 0, Vector2.Zero);
+            bowlingBall = SpriteFactory.BowlingBall();
+            newGameBtn = SpriteFactory.NewGameButton();
         }
 
         /// <summary>
@@ -126,7 +110,6 @@ namespace MonoGameJRPG_Ver._2
             fpsText.Update(gameTime);
             bowlingBall.Update(gameTime);
             newGameBtn.Update(gameTime);
-            newGameBtn2.Update(gameTime);
 
             InputManager.UpdatePreviousStates();
 
@@ -147,7 +130,6 @@ namespace MonoGameJRPG_Ver._2
             fpsText.Render(spriteBatch);
             bowlingBall.Draw(spriteBatch);
             newGameBtn.Draw(spriteBatch);
-            newGameBtn2.Draw(spriteBatch);
 
             spriteBatch.End();
 

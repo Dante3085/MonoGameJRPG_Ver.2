@@ -41,6 +41,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Characters\AAction.cs" />
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\EAction.cs" />
+    <Compile Include="Characters\EActionMethod.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,13 +58,25 @@
     <Compile Include="TwoDGameEngine\GameConsole\KeyMap.cs" />
     <Compile Include="TwoDGameEngine\GameConsole\LogEntry.cs" />
     <Compile Include="TwoDGameEngine\GameConsole\LogEventArgs.cs" />
-    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuElement.cs" />
-    <Compile Include="TwoDGameEngine\Graphics\Menu\Text.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\Layouts\HBox.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\Layouts\Layout.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\Layouts\VBox.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuButton.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuButton.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuElement.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\Text.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\AnimatedSprite.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\EAnimation.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\ICollidable.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\Sprite.cs" />
-    <Compile Include="TwoDGameEngine\Graphics\Utils\Util.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Sprites\SpriteFactory.cs" />
+    <Compile Include="TwoDGameEngine\States\EmptyState.cs" />
+    <Compile Include="TwoDGameEngine\States\EState.cs" />
+    <Compile Include="TwoDGameEngine\States\State.cs" />
+    <Compile Include="TwoDGameEngine\States\StateMachine.cs" />
+    <Compile Include="TwoDGameEngine\States\StateStack.cs" />
+    <Compile Include="TwoDGameEngine\Utils\Time.cs" />
+    <Compile Include="TwoDGameEngine\Utils\Util.cs" />
     <Compile Include="TwoDGameEngine\Input\GamePadInput.cs" />
     <Compile Include="TwoDGameEngine\Input\IInputable.cs" />
     <Compile Include="TwoDGameEngine\Input\InputManager.cs" />
