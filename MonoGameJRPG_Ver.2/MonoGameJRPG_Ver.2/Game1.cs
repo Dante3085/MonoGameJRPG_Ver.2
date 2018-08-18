@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using VosSoft.Xna.GameConsole;
 
 namespace MonoGameJRPG_Ver._2
@@ -19,12 +21,26 @@ namespace MonoGameJRPG_Ver._2
         public static GameConsole gameConsole;
 
         public static float fps = -1;
+        private Text fpsText;
+
+        private Text numGameObjecText;
+
+        #region Test
+
+        private AnimatedSprite bowlingBall;
+        private AnimatedSprite newGameBtn;
+
+        #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 300;
+            graphics.PreferredBackBufferHeight = 200;
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            graphics.IsFullScreen = true;
         }
 
         /// <summary>
@@ -52,7 +68,33 @@ namespace MonoGameJRPG_Ver._2
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            Contents.LoadCharacters(Content);
+            Contents.LoadAll(Content, GraphicsDevice);
+
+            fpsText = new Text(Contents.arial12, Contents.arial15, "" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
+            bowlingBall = new AnimatedSprite("BowlingBall", new Vector2(0, 0), PlayerIndex.One, Contents.bowlingBall, new KeyboardInput()
+            {
+                Left = Keys.A,
+                Up = Keys.W,
+                Right = Keys.D,
+                Down = Keys.S
+            });
+            bowlingBall.AddAnimation(9, 32, 0, "Left", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(9, 0, 0, "Up", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(9, 0, 0, "Right", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(9, 0, 0, "Down", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(1, 0, 0, "IdleLeft", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(1, 0, 0, "IdleUp", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(1, 0, 0, "IdleRight", 32, 32, Vector2.Zero);
+            bowlingBall.AddAnimation(1, 0, 0, "IdleDown", 32, 32, Vector2.Zero);
+
+            newGameBtn = new AnimatedSprite("NewGameBtn", new Vector2(100, 100), PlayerIndex.One, Contents.btnNewGame, new KeyboardInput()
+            {
+                Left = Keys.A,
+                Up = Keys.W,
+                Right = Keys.D,
+                Down = Keys.S
+            });
+            newGameBtn.AddAnimation(8, 0, 0, "IdleDown", 32, 32, Vector2.Zero);
         }
 
         /// <summary>
@@ -77,11 +119,15 @@ namespace MonoGameJRPG_Ver._2
             // TODO: Add your update logic here
             InputManager.UpdateCurrentStates();
 
-            fps = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Console.WriteLine("fps: " + fps);
+            fps = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
+            fpsText.SetText("Fps: " + fps);
 
             if (InputManager.OnKeyDown(Keys.Tab))
                 gameConsole.Open(Keys.Tab);
+
+            fpsText.Update(gameTime);
+            bowlingBall.Update(gameTime);
+            newGameBtn.Update(gameTime);
 
             InputManager.UpdatePreviousStates();
 
@@ -97,6 +143,13 @@ namespace MonoGameJRPG_Ver._2
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            fpsText.Render(spriteBatch);
+            bowlingBall.Draw(spriteBatch);
+            newGameBtn.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -23,7 +23,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         private static MouseState _currentMouseState;
 
         /// <summary>
-        /// Call this method before you'r Key operation.
+        /// Call this method before you'r Key operation(s).
         /// </summary>
         public static void UpdateCurrentStates()
         {
@@ -35,7 +35,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         }
 
         /// <summary>
-        /// Call this method after you'r key operation.
+        /// Call this method after you'r key operation(s).
         /// </summary>
         public static void UpdatePreviousStates()
         {
