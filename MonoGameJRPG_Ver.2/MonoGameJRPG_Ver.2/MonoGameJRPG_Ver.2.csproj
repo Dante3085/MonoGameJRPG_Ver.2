@@ -57,6 +57,7 @@
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuElement.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\Text.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\AnimatedSprite.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Sprites\EAnimation.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\ICollidable.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\Sprite.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Utils\Util.cs" />

@@ -20,14 +20,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         // Variables for handling the Animation.
 
-        private Dictionary<string, Rectangle[]> _frames = new Dictionary<string, Rectangle[]>();
-        private Dictionary<string, Vector2> _offsets = new Dictionary<string, Vector2>();
+        private Dictionary<EAnimation, Rectangle[]> _animations = new Dictionary<EAnimation, Rectangle[]>();
+        private Dictionary<EAnimation, Vector2> _offsets = new Dictionary<EAnimation, Vector2>();
 
         private double _timeElapsed;
         private double _timeToUpdate;
 
         private int _frameIndex;
-        private string _currentFrame;
+        private EAnimation _currentAnimation;
 
         private enum Direction { none, left, up, right, down };
         private Direction _currentDirection = Direction.none;
@@ -39,49 +39,69 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #endregion
 
         #region Properties
-        public int FPS { get => (int)_timeToUpdate; set => _timeToUpdate = 1f / value; }
+        public int Fps { get => (int)_timeToUpdate; set => _timeToUpdate = 1f / value; }
         public bool PlayingAnimation { get => _playingAnimation; set => _playingAnimation = value; }
         #endregion
 
-        public AnimatedSprite(string name, Vector2 position, PlayerIndex playerIndex, Texture2D texture = null, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null) : base(name, texture, position, keyboardInput, gamePadInput, playerIndex)
+        /// <summary>
+        /// Constructs an AnimatedSprite meant for a player to controll it => It can respond to input and has a PlayerIndex.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="position"></param>
+        /// <param name="playerIndex"></param>
+        /// <param name="fps"></param>
+        /// <param name="texture"></param>
+        /// <param name="keyboardInput"></param>
+        /// <param name="gamePadInput"></param>
+        public AnimatedSprite(string name, Texture2D texture, Vector2 position, PlayerIndex playerIndex, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null) : base(name, texture, position, keyboardInput, gamePadInput, playerIndex)
         {
-            FPS = 4;
+            _isPlayerControlled = true;
 
-            PlayAnimation("IdleDown");
-
-            //// Set initial size of BoundingBox. In AnimatedSprite initial size of BoundingBox depends on size of first active frame.
-            //// This BoundingBox Update also has to happen when frames change, since frames can have different sizes.
-            //Rectangle temp = _frames[_currentFrame][_frameIndex];
-            //_boundingBox.Width = temp.Width;
-            //_boundingBox.Height = temp.Height;
+            Fps = fps;
+            PlayAnimation(EAnimation.Idle);
         }
 
         /// <summary>
-        /// NumFrames := Number of Frames/Images in Animation.
-        /// yPos := Upper Left corner of row with Animation frames.
-        /// xStartFrame := First frame of Animation in row.
-        /// name := Identifier of Animation.
-        /// width := Width of single frame
-        /// height := Height of single frame.
+        /// Constructs a Sprite not meant for a player to controll it => Controlled by AI or not movable at all.
         /// </summary>
-        /// <param name="numFrames"></param>
-        /// <param name="yPos"></param>
-        /// <param name="xStartFrame"></param>
         /// <param name="name"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="offset"></param>
-        public void AddAnimation(int numFrames, int yPos, int xStartFrame, string name, int width, int height, Vector2 offset)
+        /// <param name="position"></param>
+        /// <param name="texture"></param>
+        /// <param name="fps"></param>
+        public AnimatedSprite(string name, Texture2D texture, Vector2 position, int fps = 20) : base(name, texture, position)
         {
-            // Creates an array of rectangles which will be used when playing an animation
-            Rectangle[] rectangles = new Rectangle[numFrames];
+            _isPlayerControlled = false;
+            Fps = fps;
+            PlayAnimation(EAnimation.Idle);
+        }
+
+        /// <summary>
+        /// animation := Enum identifier for Animation. <para></para>
+        /// numFrames := number of frames in Animation. <para></para>
+        /// frameWidth := width of single frame in Animation. <para></para>
+        /// frameHeight := height of single frame in Animation. <para></para>
+        /// yRow := y-coordinate of row that contains frames for Animation. <para></para>
+        /// indexFirstFrame := index (0 ... n) of first frame for Animation in said row. <para></para>
+        /// offset := x-, y-coordinate offset for frames that have a different size.
+        /// </summary>
+        /// <param animation="numFrames"></param>
+        /// <param animation="yRow"></param>
+        /// <param animation="indexFirstFrame"></param>
+        /// <param animation="name"></param>
+        /// <param animation="frameWidth"></param>
+        /// <param animation="frameHeight"></param>
+        /// <param animation="offset"></param>
+        public void AddAnimation(EAnimation name, int numFrames, int frameWidth, int frameHeight, int yRow, int indexFirstFrame, Vector2 offset)
+        {
+            // Creates an array of rectangles (i.e. a new Animation).
+            Rectangle[] animation = new Rectangle[numFrames];
 
             // Fills up the array of rectangles
             for (int i = 0; i < numFrames; i++)
-                rectangles[i] = new Rectangle((i + xStartFrame) * width, yPos, width, height);
+                animation[i] = new Rectangle((i + indexFirstFrame) * frameWidth, yRow, frameWidth, frameHeight);
 
-            // Store frames and offset in two different dictionaries. But both with same key (name.)
-            _frames.Add(name, rectangles);
+            // Store frames and offset in two different dictionaries. But both with same key (animation.)
+            _animations.Add(name, animation);
             _offsets.Add(name, offset);
         }
 
@@ -94,53 +114,53 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         protected override void GoLeft()
         {
             base.GoLeft();
-            PlayAnimation("Left");
+            PlayAnimation(EAnimation.Left);
             _currentDirection = Direction.left;
         }
 
         protected override void GoUp()
         {
             base.GoUp();
-            PlayAnimation("Up");
+            PlayAnimation(EAnimation.Up);
             _currentDirection = Direction.up;
         }
 
         protected override void GoRight()
         {
             base.GoRight();
-            PlayAnimation("Right");
+            PlayAnimation(EAnimation.Right);
             _currentDirection = Direction.right;
         }
 
         protected override void GoDown()
         {
             base.GoDown();
-            PlayAnimation("Down");
+            PlayAnimation(EAnimation.Down);
             _currentDirection = Direction.down;
         }
 
         protected void Idle()
         {
-            if (_currentFrame.Contains("Left"))
-                PlayAnimation("IdleLeft");
+            if (_currentAnimation == EAnimation.Left)
+                PlayAnimation(EAnimation.IdleLeft);
 
-            if (_currentFrame.Contains("Right"))
-                PlayAnimation("IdleRight");
+            if (_currentAnimation == EAnimation.Up)
+                PlayAnimation(EAnimation.IdleUp);
 
-            if (_currentFrame.Contains("Up"))
-                PlayAnimation("IdleUp");
+            if (_currentAnimation == EAnimation.Right)
+                PlayAnimation(EAnimation.IdleRight);
 
-            if (_currentFrame.Contains("Down"))
-                PlayAnimation("IdleDown");
+            if (_currentAnimation == EAnimation.Down)
+                PlayAnimation(EAnimation.IdleDown);
         }
 
         protected void Attack()
         {
             _isAttacking = true;
             // LEFT ATTACK
-            if (_currentFrame.Contains("Left"))
+            if (_currentAnimation == EAnimation.Left)
             {
-                PlayAnimation("AttackLeft");
+                PlayAnimation(EAnimation.MeleeLeft);
                 _currentDirection = Direction.left;
 
                 _boundingBox.Y -= 5;
@@ -148,9 +168,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             }
 
             // UP ATTACK
-            if (_currentFrame.Contains("Up"))
+            if (_currentAnimation == EAnimation.Up)
             {
-                PlayAnimation("AttackUp");
+                PlayAnimation(EAnimation.MeleeUp);
                 _currentDirection = Direction.up;
 
                 _boundingBox.Y -= 20;
@@ -158,9 +178,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             }
 
             // RIGHT ATTACK
-            if (_currentFrame.Contains("Right"))
+            if (_currentAnimation == EAnimation.Right)
             {
-                PlayAnimation("AttackRight");
+                PlayAnimation(EAnimation.MeleeRight);
                 _currentDirection = Direction.right;
 
                 _boundingBox.Y -= 5;
@@ -168,9 +188,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             }
 
             // DOWN ATTACK
-            if (_currentFrame.Contains("Down"))
+            if (_currentAnimation == EAnimation.Down)
             {
-                PlayAnimation("AttackDown");
+                PlayAnimation(EAnimation.MeleeDown);
                 _currentDirection = Direction.down;
 
                 _boundingBox.X -= 5;
@@ -248,7 +268,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Handles frame Update.
         /// </summary>
-        /// <param name="GameTime">GameTime</param>
+        /// <param animation="GameTime">GameTime</param>
         public override void Update(GameTime gameTime)
         {
             // HandleInput, Update Position, Update BoundingBox Position.
@@ -271,34 +291,34 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             // We need to change our image if the timeElapsed is greater than our timeToUpdate(calculated by our framerate)
             if (_timeElapsed > _timeToUpdate)
             {
-                // Resets the timer in a way, so that we keep our desired FPS
+                // Resets the timer in a way, so that we keep our desired Fps
                 _timeElapsed -= _timeToUpdate;
 
                 // Increment frameIndex
-                if (_frameIndex < _frames[_currentFrame].Length - 1)
+                if (_frameIndex < _animations[_currentAnimation].Length - 1)
                     _frameIndex++;
 
                 // Restarts the animation
                 else
                 {
-                    AnimationDone(_currentFrame);
+                    AnimationDone(_currentAnimation);
                     _frameIndex = 0;
                 }
             }
 
             // Update BoundingBox size to fit current frame size.
-            _boundingBox.Width = _frames[_currentFrame][_frameIndex].Width;
-            _boundingBox.Height = _frames[_currentFrame][_frameIndex].Height;
+            _boundingBox.Width = _animations[_currentAnimation][_frameIndex].Width;
+            _boundingBox.Height = _animations[_currentAnimation][_frameIndex].Height;
         }
 
         /// <summary>
         /// Draws the sprite on the screen
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch</param>
+        /// <param animation="spriteBatch">SpriteBatch</param>
         // TODO: Collide-Logic shouldn't be in here!
         public void Draw(SpriteBatch spriteBatch, List<AnimatedSprite> animSprites = null)
         {
-            spriteBatch.Draw(_texture, _position + _offsets[_currentFrame], _frames[_currentFrame][_frameIndex], Color.White);
+            spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_frameIndex], Color.White);
 
             // Set _collisionDetected to true if collision happened.
             // This construct just detects if any collision happened. Not how many etc.
@@ -319,64 +339,18 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _collisionDetected = false;
         }
 
-        ///// <summary>
-        ///// Draws this AnimateSprite's BoundingBox. // TODO: Should be Sprite's task, since BoundingBox stems from it.
-        ///// </summary>
-        ///// <param name="spriteBatch"></param>
-        ///// <param name="graphicsDevice"></param>
-        //protected override void DrawBoundingBox(SpriteBatch spriteBatch, Color borderColor)
-        //{
-        //    // TODO: An DrawBoundingBox aus Sprite anpassen. new Operationen weg usw.
-        //    if (!_drawBoundingBox)
-        //        return;
-
-        //    // Update Left Line values
-        //    _boundingBoxLeftLine.X = _boundingBox.X;
-        //    _boundingBoxLeftLine.Y = _boundingBox.Y;
-        //    _boundingBoxLeftLine.Height = _frames[_currentFrame][_frameIndex].Height;
-
-        //    // Update Top Line values
-        //    _boundingBoxTopLine.X = _boundingBox.X;
-        //    _boundingBoxTopLine.Y = _boundingBox.Y;
-        //    _boundingBoxTopLine.Width = _frames[_currentFrame][_frameIndex].Width;
-
-        //    // Update Right Line values 
-        //    _boundingBoxRightLine.X = _boundingBox.X + _frames[_currentFrame][_frameIndex].Width - 2;
-        //    _boundingBoxRightLine.Y = _boundingBox.Y;
-        //    _boundingBoxRightLine.Height = _frames[_currentFrame][_frameIndex].Height;
-
-        //    // Update Bottom Line values 
-        //    _boundingBoxBottomLine.X = _boundingBox.X;
-        //    _boundingBoxBottomLine.Y = _boundingBox.Y + _frames[_currentFrame][_frameIndex].Height - 2;
-        //    _boundingBoxBottomLine.Width = _frames[_currentFrame][_frameIndex].Width;
-
-
-        //    // Draw left line
-        //    spriteBatch.Draw(_boundingBoxTexture, _boundingBoxLeftLine, borderColor);
-
-        //    // Draw top line
-        //    spriteBatch.Draw(_boundingBoxTexture, _boundingBoxTopLine, borderColor);
-
-        //    // Draw right line 
-        //    spriteBatch.Draw(_boundingBoxTexture, _boundingBoxRightLine, borderColor);
-
-        //    // Draw bottom line
-        //    spriteBatch.Draw(_boundingBoxTexture, _boundingBoxBottomLine, borderColor);
-
-        //}
-
         /// <summary>
-        /// Plays the animation specified by it's name.
+        /// Plays the animation specified by it's animation.
         /// </summary>
-        /// <param name="name">Animation to play</param>
-        private void PlayAnimation(string name)
+        /// <param animation="animation">Animation to play</param>
+        private void PlayAnimation(EAnimation animation)
         {
             // Makes sure we won't start a new annimation unless it differs from our current animation.
-            if (_currentFrame != name && _currentDirection.Equals(Direction.none))
+            if (_currentAnimation != animation && _currentDirection.Equals(Direction.none))
             {
                 _playingAnimation = true;
 
-                _currentFrame = name;
+                _currentAnimation = animation;
                 _frameIndex = 0;
             }
         }
@@ -384,10 +358,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Called everytime a frame finishes.
         /// </summary>
-        /// <param name="animation"></param>
-        private void AnimationDone(string animation)
+        /// <param animation="animation"></param>
+        private void AnimationDone(EAnimation animation)
         {
-            if (animation.Contains("Attack"))
+            if (animation == EAnimation.MeleeLeft || animation == EAnimation.MeleeUp ||
+                animation == EAnimation.MeleeRight || animation == EAnimation.MeleeDown)
                 _isAttacking = false;
 
             _playingAnimation = false;
