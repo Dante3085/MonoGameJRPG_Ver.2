@@ -58,6 +58,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
         public override int Width => _textRec.Width;
         public override int Height => _textRec.Height;
 
+        public override Rectangle Rectangle => _textRec;
+
         #endregion
 
         public Text(SpriteFont fontNoHover, SpriteFont fontHover, string text = "", int x = 0, int y = 0, Action functionality = null)
@@ -91,7 +93,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
             _textRec.Width = (int)_textSize.X;
             _textRec.Height = (int) _textSize.Y;
 
-            OnMouseHoverReactions();
+            MouseHoverReaction();
 
             if (OnLeftMouseClick())
                 ExecuteFunctionality();
@@ -110,29 +112,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
         /// <summary>
         /// Handles Reactions that MenuButton will have on MouseHover.
         /// </summary>
-        private void OnMouseHoverReactions()
+        public override void MouseHoverReaction()
         {
             _activeSpriteFont = IsMouseHover() ? _spriteFontHover : _spriteFontNoHover;
-        }
-
-        /// <summary>
-        /// Gets whether the Mouse is hovering this MenuButton.
-        /// True if Mouse is hovering this MenuButton. Otherwise false.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsMouseHover()
-        {
-            return InputManager.IsMouseHoverRectangle(_textRec);
-        }
-
-        /// <summary>
-        /// Gets whether the Mouse is clicking on this Text.
-        /// True if Mouse is clicking on this Text. Otherwise false.
-        /// </summary>
-        /// <returns></returns>
-        public bool OnLeftMouseClick()
-        {
-            return IsMouseHover() && InputManager.OnLeftMouseClick();
         }
 
         public override void Render(SpriteBatch spriteBatch)

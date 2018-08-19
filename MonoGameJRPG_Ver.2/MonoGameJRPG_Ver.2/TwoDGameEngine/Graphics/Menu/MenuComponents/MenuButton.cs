@@ -37,6 +37,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         public override int Width => _buttonRec.Width;
         public override int Height => _buttonRec.Height;
 
+        public override Rectangle Rectangle => _buttonRec;
+
         #endregion
 
         public MenuButton(Texture2D buttonTextureNoHover, Texture2D buttonTextureHover, int x = 0, int y = 0, Action function = null)
@@ -63,7 +65,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         /// <summary>
         /// Changes MenuButton's functionality to the given one.
         /// </summary>
-        /// <param name="buttonFunctionality"></param>
+        /// <param name="functionality"></param>
         public override void ChangeFunctionality(Action functionality)
         {
             _buttonFunctionality = functionality;
@@ -71,41 +73,18 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
         public override void Update(GameTime gameTime)
         {
-            OnMouseHoverReactions();
+            MouseHoverReaction();
 
             if (OnLeftMouseClick())
                 ExecuteFunctionality();
         }
 
         /// <summary>
-        /// Handles Reactions that MenuButton will have on MouseHover.
+        /// Changes activeButtonTexture on MouseHover.
         /// </summary>
-        private void OnMouseHoverReactions()
+        public override void MouseHoverReaction()
         {
-            if (IsMouseHover())
-                _activeButtonTexture = _buttonTextureHover;
-            else
-                _activeButtonTexture = _buttonTextureNoHover;
-        }
-
-        /// <summary>
-        /// Gets whether the Mouse is hovering this MenuButton.
-        /// True if Mouse is hovering this MenuButton. Otherwise false.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsMouseHover()
-        {
-            return InputManager.IsMouseHoverRectangle(_buttonRec);
-        }
-
-        /// <summary>
-        /// Gets whether the Mouse is clicking on this MenuButton.
-        /// True if Mouse is clicking on this MenuButton. Otherwise false.
-        /// </summary>
-        /// <returns></returns>
-        public bool OnLeftMouseClick()
-        {
-            return IsMouseHover() && InputManager.OnLeftMouseClick();
+            _activeButtonTexture = IsMouseHover() ? _buttonTextureHover : _buttonTextureNoHover;
         }
     }
 }

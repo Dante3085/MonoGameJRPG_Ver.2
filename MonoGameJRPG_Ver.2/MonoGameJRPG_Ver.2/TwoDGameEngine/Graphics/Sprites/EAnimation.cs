@@ -42,6 +42,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         RangedDown,
 
         #endregion
+        #region Other
 
+        MouseHover
+
+        #endregion
     }
 }

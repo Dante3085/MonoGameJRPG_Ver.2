@@ -23,7 +23,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         private static MouseState _currentMouseState;
 
         /// <summary>
-        /// Call this method before you'r Key operation(s).
+        /// Call this method before you'r Input operation(s).
         /// </summary>
         public static void UpdateCurrentStates()
         {
@@ -35,7 +35,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         }
 
         /// <summary>
-        /// Call this method after you'r key operation(s).
+        /// Call this method after you'r Input operation(s).
         /// </summary>
         public static void UpdatePreviousStates()
         {
@@ -47,6 +47,25 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         }
 
         #region Mouse
+
+        /// <summary>
+        /// Returns MousePosition of CurrentState
+        /// </summary>
+        /// <returns></returns>
+        public static Point CurrentMousePosition()
+        {
+            return _currentMouseState.Position;
+        }
+
+        /// <summary>
+        /// Returns MousePosition of PreviousState.
+        /// </summary>
+        /// <returns></returns>
+        public static Point PreviousMousePosition()
+        {
+            return _previousMouseState.Position;
+        }
+
         /// <summary>
         /// Gets whether LeftMouseButton has been clicked (no holding).
         /// </summary>
@@ -76,8 +95,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         {
             return rectangle.Contains(_currentMouseState.Position);
         }
-        #endregion
 
+        #endregion
         #region Keyboard
         /// <summary>
         /// Gets whether given key is currently being pressed. 
@@ -121,7 +140,6 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
             return _previousKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
         }
         #endregion
-
         #region GamePad
         /// <summary>
         /// Gets whether given button is currently being pressed. 

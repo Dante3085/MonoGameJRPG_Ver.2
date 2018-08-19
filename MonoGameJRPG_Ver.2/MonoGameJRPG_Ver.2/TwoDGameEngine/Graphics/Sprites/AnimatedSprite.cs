@@ -18,18 +18,44 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
     {
         #region MemberVariables
 
-        // Variables for handling the Animation.
-
+        /// <summary>
+        /// Stores Rectangle Arrays that each represent an Animation (1 Rectangle = 1 frame in an Animation).
+        /// </summary>
         private Dictionary<EAnimation, Rectangle[]> _animations = new Dictionary<EAnimation, Rectangle[]>();
+
+        /// <summary>
+        /// Stores Vector2s used for offsetting certain Animations.
+        /// </summary>
         private Dictionary<EAnimation, Vector2> _offsets = new Dictionary<EAnimation, Vector2>();
 
+        /// <summary>
+        /// Accumulates time with each Update() call until _timeToUpdate is reached.
+        /// </summary>
         private double _timeElapsed;
+
+        /// <summary>
+        /// Time threshold for switching to the next frame in the current Animation.
+        /// </summary>
         private double _timeToUpdate;
 
-        private int _frameIndex;
+        /// <summary>
+        /// Index of currentFrame in currentAnimation (i.e. in current Rectangle[])
+        /// </summary>
+        private int _currentFrameIndex;
+
+        /// <summary>
+        /// Current Animation
+        /// </summary>
         private EAnimation _currentAnimation;
 
+        /// <summary>
+        /// Enum to store in which direction the AnimatedSprite is facing.
+        /// </summary>
         private enum Direction { none, left, up, right, down };
+
+        /// <summary>
+        /// Current direction in which the Sprite is faces.
+        /// </summary>
         private Direction _currentDirection = Direction.none;
 
         private bool _isAttacking = false;
@@ -41,6 +67,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #region Properties
         public int Fps { get => (int)_timeToUpdate; set => _timeToUpdate = 1f / value; }
         public bool PlayingAnimation { get => _playingAnimation; set => _playingAnimation = value; }
+        public int Width => _animations[_currentAnimation][_currentFrameIndex].Width;
+        public int Height => _animations[_currentAnimation][_currentFrameIndex].Height;
         #endregion
 
         /// <summary>
@@ -285,7 +313,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                     HandleKeyboardInput();
             }
 
-            // Adds time that has elapsed since our last draw
+            // Adds time that has elapsed since our last Update
             _timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
 
             // We need to change our image if the timeElapsed is greater than our timeToUpdate(calculated by our framerate)
@@ -295,20 +323,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 _timeElapsed -= _timeToUpdate;
 
                 // Increment frameIndex
-                if (_frameIndex < _animations[_currentAnimation].Length - 1)
-                    _frameIndex++;
+                if (_currentFrameIndex < _animations[_currentAnimation].Length - 1)
+                    _currentFrameIndex++;
 
                 // Restarts the animation
                 else
                 {
                     AnimationDone(_currentAnimation);
-                    _frameIndex = 0;
+                    _currentFrameIndex = 0;
                 }
             }
 
             // Update BoundingBox size to fit current frame size.
-            _boundingBox.Width = _animations[_currentAnimation][_frameIndex].Width;
-            _boundingBox.Height = _animations[_currentAnimation][_frameIndex].Height;
+            _boundingBox.Width = _animations[_currentAnimation][_currentFrameIndex].Width;
+            _boundingBox.Height = _animations[_currentAnimation][_currentFrameIndex].Height;
         }
 
         /// <summary>
@@ -318,7 +346,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         // TODO: Collide-Logic shouldn't be in here!
         public void Draw(SpriteBatch spriteBatch, List<AnimatedSprite> animSprites = null)
         {
-            spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_frameIndex], Color.White);
+            spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
 
             // Set _collisionDetected to true if collision happened.
             // This construct just detects if any collision happened. Not how many etc.
@@ -343,7 +371,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Plays the animation specified by it's animation.
         /// </summary>
         /// <param animation="animation">Animation to play</param>
-        private void PlayAnimation(EAnimation animation)
+        public void PlayAnimation(EAnimation animation)
         {
             // Makes sure we won't start a new annimation unless it differs from our current animation.
             if (_currentAnimation != animation && _currentDirection.Equals(Direction.none))
@@ -351,7 +379,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 _playingAnimation = true;
 
                 _currentAnimation = animation;
-                _frameIndex = 0;
+                _currentFrameIndex = 0;
             }
         }
 

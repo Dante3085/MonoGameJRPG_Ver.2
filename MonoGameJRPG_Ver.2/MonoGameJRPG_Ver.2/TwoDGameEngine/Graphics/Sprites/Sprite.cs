@@ -13,7 +13,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
     public class Sprite : GameObject, ICollidable
     {
-        public static bool drawBoundingBox = false;
+        public static bool drawBoundingBox = true;
 
         #region MemberVariables
 

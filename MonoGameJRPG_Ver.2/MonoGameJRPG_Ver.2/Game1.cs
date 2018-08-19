@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using VosSoft.Xna.GameConsole;
 
@@ -26,21 +27,25 @@ namespace MonoGameJRPG_Ver._2
         public static float fps = -1;
         private Text fpsText;
 
-        private Text numGameObjecText;
-
         #region Test
 
         private AnimatedSprite bowlingBall;
         private AnimatedSprite newGameBtn;
         private AnimatedSprite newGameBtn2;
+        // private AnimatedSprite glowingButton;
+
+        private AnimatedMenuButton animButton;
 
         #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = screenWidth;
-            graphics.PreferredBackBufferHeight = screenHeight;
+            // graphics.PreferredBackBufferWidth = screenWidth;
+            // graphics.PreferredBackBufferHeight = screenHeight;
+
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -77,6 +82,8 @@ namespace MonoGameJRPG_Ver._2
             fpsText = new Text(Contents.arial12, Contents.arial15, "" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
             bowlingBall = SpriteFactory.BowlingBall();
             newGameBtn = SpriteFactory.NewGameButton();
+            // glowingButton = SpriteFactory.GlowingButton();
+            animButton = MenuFactory.AnimButton();
         }
 
         /// <summary>
@@ -110,6 +117,8 @@ namespace MonoGameJRPG_Ver._2
             fpsText.Update(gameTime);
             bowlingBall.Update(gameTime);
             newGameBtn.Update(gameTime);
+            // glowingButton.Update(gameTime);
+            animButton.Update(gameTime);
 
             InputManager.UpdatePreviousStates();
 
@@ -130,6 +139,8 @@ namespace MonoGameJRPG_Ver._2
             fpsText.Render(spriteBatch);
             bowlingBall.Draw(spriteBatch);
             newGameBtn.Draw(spriteBatch);
+            // glowingButton.Draw(spriteBatch);
+            animButton.Render(spriteBatch);
 
             spriteBatch.End();
 

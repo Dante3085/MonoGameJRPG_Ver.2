@@ -23,6 +23,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D btnNoHover;
         public static Texture2D btnHover;
         public static Texture2D btnNewGame;
+        public static Texture2D glowingButton;
 
         #endregion
         #region Characters
@@ -58,6 +59,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             // btnNoHover = c.Load<Texture2D>("");
             // btnHover = c.Load<Texture2D>("");
             btnNewGame = c.Load<Texture2D>("MenuComponents/NewGameButton");
+            glowingButton = c.Load<Texture2D>("MenuComponents/GlowingButton");
 
             warrior = c.Load<Texture2D>("Characters/warrior");
             bowlingBall = c.Load<Texture2D>("Characters/BowlingBall");

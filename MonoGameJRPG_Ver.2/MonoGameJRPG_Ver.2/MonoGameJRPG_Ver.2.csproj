@@ -62,8 +62,10 @@
     <Compile Include="TwoDGameEngine\Graphics\Menu\Layouts\Layout.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\Layouts\VBox.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuButton.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuElement.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuButton.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuElement.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuFactory.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\Text.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\AnimatedSprite.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\EAnimation.cs" />

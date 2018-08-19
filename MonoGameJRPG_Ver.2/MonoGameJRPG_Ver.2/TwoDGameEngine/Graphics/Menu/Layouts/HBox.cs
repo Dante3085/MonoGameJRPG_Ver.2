@@ -11,15 +11,18 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
     public class HBox : Layout
     {
         #region MemberVariables
+
         private int _x;
         private int _y;
         private int _horizontalOffset;
         private List<MenuElement> _elements = new List<MenuElement>();
         private Action _functionality;
-        #endregion
+        private Rectangle _rec;
 
+        #endregion
         #region Properties
-        public override int Width => WidthWidestElement();
+
+        public override int Width => CalcWidth();
         public override int Height => HeightTallestElement();
         public override int X
         {
@@ -36,6 +39,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             get => _horizontalOffset;
             set => _horizontalOffset = value;
         }
+
+        public override Rectangle Rectangle { get; }
+
         #endregion
 
         public HBox(int x = 0, int y = 0, int horizontalOffset = 0, Action functionality = null, params MenuElement[] elements)
@@ -51,11 +57,15 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
                 OrderElements();
             }
             else
-            {
                 _elements = new List<MenuElement>();
-            }
+
+            _rec = new Rectangle(x, y, Width, Height);
         }
 
+        /// <summary>
+        /// Returns height of the tallest element in the HBox.
+        /// </summary>
+        /// <returns></returns>
         private int HeightTallestElement()
         {
             if (_elements.Count == 0)
@@ -69,16 +79,25 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             return height;
         }
 
-        private int WidthWidestElement()
+        /// <summary>
+        /// Returns width of the HBox. (See: OneNote "HBox Width Berechnung")
+        /// </summary>
+        /// <returns></returns>
+        private int CalcWidth()
         {
+            // HBox with no elements has a width of 0.
             if (_elements.Count == 0)
-                return -1;
+                return 0;
 
-            int width = _elements[0].Width;
+            int width = 0;
 
+            // Sum of all elements' width values.
             foreach (MenuElement m in _elements)
-                if (m.Width > width)
-                    width = m.Width;
+                width += m.Width;
+
+            // Plus (number of elements - 1) times horizontal offset.
+            width += (_elements.Count - 1) * _horizontalOffset;
+
             return width;
         }
 
@@ -117,6 +136,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             foreach (MenuElement m in _elements)
                 m.Update(gameTime);
             OrderElements();
+
+            // Update rec.
+            _rec.X = _x;
+            _rec.Y = _y;
+            _rec.Width = Width;
+            _rec.Height = Height;
         }
 
         public override void ExecuteFunctionality()
@@ -133,6 +158,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
         {
             foreach (MenuElement m in _elements)
                 m.Render(spriteBatch);
+        }
+
+        public override void MouseHoverReaction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

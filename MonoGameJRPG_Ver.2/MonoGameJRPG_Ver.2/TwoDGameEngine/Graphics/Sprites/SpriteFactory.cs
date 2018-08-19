@@ -12,6 +12,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
     public static class SpriteFactory
     {
+        #region MenuElements
+
         public static AnimatedSprite NewGameButton()
         {
             Texture2D btnTexture = Contents.btnNewGame;
@@ -22,7 +24,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             newGameBtn.AddAnimation(EAnimation.Idle, 12, 48, 13, 0, 0, Vector2.Zero);
             return newGameBtn;
         }
+        public static AnimatedSprite GlowingButton()
+        {
+            Texture2D glowingButtonTex = Contents.glowingButton;
+            if (glowingButtonTex == null)
+                throw new Exception("Contents.glowingButton Texture not loaded!");
 
+            AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, new Vector2(400, 300), 10);
+            glowingButton.AddAnimation(EAnimation.Idle, 1, 120, 50, 0, 0, Vector2.Zero);
+            glowingButton.AddAnimation(EAnimation.MouseHover, 14, 120, 50, 0, 0, Vector2.Zero);
+            return glowingButton;
+        }
         public static AnimatedSprite BowlingBall()
         {
             Texture2D bowlingBallTexture = Contents.bowlingBall;
@@ -49,5 +61,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             return bowlingBall;
         }
+
+        #endregion
     }
 }

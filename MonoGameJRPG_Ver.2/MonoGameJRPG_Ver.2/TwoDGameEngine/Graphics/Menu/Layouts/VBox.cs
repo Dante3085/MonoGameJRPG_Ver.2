@@ -11,16 +11,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
     public class VBox : Layout
     {
         #region MemberVariables
+
         private int _x;
         private int _y;
         private int _verticalOffset;
         private List<MenuElement> _elements = new List<MenuElement>();
         private Action _functionality;
+        private Rectangle _rec;
+
         #endregion
 
         #region Properties
+
         public override int Width => WidthWidestElement();
-        public override int Height => HeightTallestElement();
+        public override int Height => CalcHeight();
         public override int X
         {
             get => _x;
@@ -36,6 +40,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             get => _verticalOffset;
             set => _verticalOffset = value;
         }
+
+        public override Rectangle Rectangle => _rec;
+
         #endregion
 
         public VBox(int x = 0, int y = 0, int verticalOffset = 0, Action functionality = null, params Text[] elements)
@@ -52,29 +59,35 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             }
             else
                 _elements = new List<MenuElement>();
+
+            _rec = new Rectangle(x, y, Width, Height);
         }
 
         /// <summary>
-        /// Returns height as int of talles element.
-        /// Returns -1 if there are no elements.
+        /// Returns height of the VBox.
         /// </summary>
         /// <returns></returns>
-        private int HeightTallestElement()
+        private int CalcHeight()
         {
+            // VBox with no elements has a height of 0.
             if (_elements.Count == 0)
-                return -1;
+                return 0;
 
-            int height = _elements[0].Height;
+            int height = 0;
 
+
+            // Sum of all elements' height values.
             foreach (MenuElement m in _elements)
-                if (m.Height > height)
-                    height = m.Height;
+                height += m.Height;
+
+            // Plus (number of elements - 1) times vertical offset.
+            height += (_elements.Count - 1) * _verticalOffset;
+
             return height;
         }
 
         /// <summary>
-        /// Returns width as int of widest element.
-        /// Returns -1 if there are no elements.
+        /// Returns width of the widest element in VBox.
         /// </summary>
         /// <returns></returns>
         private int WidthWidestElement()
@@ -125,6 +138,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             foreach (MenuElement m in _elements)
                 m.Update(gameTime);
             OrderElements();
+
+            // Update rec.
+            _rec.X = _x;
+            _rec.Y = _y;
+            _rec.Width = Width;
+            _rec.Height = Height;
         }
 
         public override void ExecuteFunctionality()
@@ -141,6 +160,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
         {
             foreach (MenuElement m in _elements)
                 m.Render(spriteBatch);
+        }
+
+        public override void MouseHoverReaction()
+        {
+            // TODO
         }
     }
 }

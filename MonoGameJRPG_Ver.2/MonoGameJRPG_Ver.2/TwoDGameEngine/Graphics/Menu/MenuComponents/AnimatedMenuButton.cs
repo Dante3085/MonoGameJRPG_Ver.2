@@ -4,50 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
-    public class AnimatedMenuButton : MenuElement
+    public class AnimatedMenuButton : AnimatedMenuElement
     {
         #region MemberVariables
 
-        private AnimatedSprite animSprite;
+        private Action _buttonFunctionality;
 
         #endregion
+
         #region Properties
 
-        public override int Width { get; }
-        public override int Height { get; }
-        public override int X { get; set; }
-        public override int Y { get; set; }
+        public override Rectangle Rectangle => _animSprite.BoundingBox;
 
         #endregion
 
-        public AnimatedMenuButton()
+        public AnimatedMenuButton(AnimatedSprite animSprite, Action functionality = null) : base(animSprite)
         {
-
+            _buttonFunctionality = functionality;
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            base.Update(gameTime);
+            MouseHoverReaction();
+
+            if (OnLeftMouseClick())
+                ExecuteFunctionality();
+
+            Game1.gameConsole.Log(_animSprite.BoundingBox.ToString());
+            Game1.gameConsole.Log(InputManager.CurrentMousePosition().ToString());
         }
 
         public override void ExecuteFunctionality()
         {
-            throw new NotImplementedException();
+            _buttonFunctionality();
         }
 
         public override void ChangeFunctionality(Action functionality)
         {
-            throw new NotImplementedException();
+            _buttonFunctionality = functionality;
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void MouseHoverReaction()
         {
-            throw new NotImplementedException();
+            _animSprite.PlayAnimation(IsMouseHover() ? EAnimation.MouseHover : EAnimation.Idle);
         }
     }
 }
