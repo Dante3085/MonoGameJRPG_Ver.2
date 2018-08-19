@@ -36,9 +36,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
             if (OnLeftMouseClick())
                 ExecuteFunctionality();
-
-            Game1.gameConsole.Log(_animSprite.BoundingBox.ToString());
-            Game1.gameConsole.Log(InputManager.CurrentMousePosition().ToString());
         }
 
         public override void ExecuteFunctionality()

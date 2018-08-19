@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     public class MenuButton : MenuElement
     {
+        public static bool drawRec = true;
+
         #region MemberVariables
         private Texture2D _buttonTextureNoHover;
         private Texture2D _buttonTextureHover;
         private Texture2D _activeButtonTexture;
 
         private Rectangle _buttonRec;
+        private Rectangle[] _buttonRecLines = {new Rectangle(), new Rectangle(), new Rectangle(), new Rectangle(),};
 
         private Action _buttonFunctionality;
         #endregion
@@ -55,6 +59,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         public override void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_activeButtonTexture, _buttonRec, Color.White);
+
+            if (drawRec)
+                Util.DrawRectangle(spriteBatch, _buttonRec, _buttonRecLines, Contents.rectangleTex, Color.Blue);
         }
 
         public override void ExecuteFunctionality()

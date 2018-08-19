@@ -20,8 +20,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         #endregion
         #region MenuComponents
 
-        public static Texture2D btnNoHover;
-        public static Texture2D btnHover;
+        public static Texture2D redButtonNoHover;
+        public static Texture2D redButtonHover;
         public static Texture2D btnNewGame;
         public static Texture2D glowingButton;
 
@@ -56,8 +56,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             // samurai = c.Load<Texture2D>("");
             // blueBackground = c.Load<Texture2D>("");
 
-            // btnNoHover = c.Load<Texture2D>("");
-            // btnHover = c.Load<Texture2D>("");
+            redButtonNoHover = c.Load<Texture2D>("MenuComponents/RedButtonNoHover");
+            redButtonHover = c.Load<Texture2D>("MenuComponents/RedButtonHover");
             btnNewGame = c.Load<Texture2D>("MenuComponents/NewGameButton");
             glowingButton = c.Load<Texture2D>("MenuComponents/GlowingButton");
 

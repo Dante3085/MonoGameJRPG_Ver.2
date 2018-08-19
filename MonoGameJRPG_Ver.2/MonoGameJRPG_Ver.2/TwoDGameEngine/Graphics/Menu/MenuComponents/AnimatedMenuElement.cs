@@ -31,6 +31,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             set => _animSprite._position.Y = value;
         }
 
+        public AnimatedSprite AnimatedSprite => _animSprite;
+
         #endregion
 
         protected AnimatedMenuElement(AnimatedSprite animSprite)

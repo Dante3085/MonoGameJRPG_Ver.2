@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using VosSoft.Xna.GameConsole;
@@ -16,33 +19,26 @@ namespace MonoGameJRPG_Ver._2
     /// </summary>
     public class Game1 : Game
     {
-        public const int screenWidth = 960;
-        public const int screenHeight = 640;
-
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public static GameConsole gameConsole;
 
-        public static float fps = -1;
+        public static float fps;
         private Text fpsText;
 
         #region Test
 
-        private AnimatedSprite bowlingBall;
-        private AnimatedSprite newGameBtn;
-        private AnimatedSprite newGameBtn2;
-        // private AnimatedSprite glowingButton;
+        //private AnimatedMenuButton animBtn;
+        //private AnimatedMenuButton animBtn2;
 
-        private AnimatedMenuButton animButton;
+        private VBox vbox;
 
         #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            // graphics.PreferredBackBufferWidth = screenWidth;
-            // graphics.PreferredBackBufferHeight = screenHeight;
 
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -76,14 +72,33 @@ namespace MonoGameJRPG_Ver._2
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             Contents.LoadAll(Content, GraphicsDevice);
+            #region InstantiateGraphicalContent
 
+            // Fps
             fpsText = new Text(Contents.arial12, Contents.arial15, "" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
-            bowlingBall = SpriteFactory.BowlingBall();
-            newGameBtn = SpriteFactory.NewGameButton();
-            // glowingButton = SpriteFactory.GlowingButton();
-            animButton = MenuFactory.AnimButton();
+
+            // (Content of this region is only meant for debugging purposes.)
+            #region Test
+
+            //animBtn = MenuFactory.AnimButton(new Vector2(100, 100));
+            //animBtn2 = MenuFactory.AnimButton(new Vector2(200, 100));
+
+            vbox = new VBox(0, 0, 10, null, new MenuElement[]
+            {
+                fpsText,
+                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.AnimButton(Vector2.Zero),
+            });
+
+            #endregion
+
+            #endregion
+
         }
 
         /// <summary>
@@ -102,24 +117,33 @@ namespace MonoGameJRPG_Ver._2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
             InputManager.UpdateCurrentStates();
+            #region UpdateLogic
 
+            // Fps
             fps = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
             fpsText.SetText("Fps: " + fps);
+            fpsText.Update(gameTime);
 
+            // Console
             if (InputManager.OnKeyDown(Keys.Tab))
                 gameConsole.Open(Keys.Tab);
 
-            fpsText.Update(gameTime);
-            bowlingBall.Update(gameTime);
-            newGameBtn.Update(gameTime);
-            // glowingButton.Update(gameTime);
-            animButton.Update(gameTime);
+            // (Content of this region is only meant for debugging purposes.)
+            #region Test
 
+            // Exit Game (Debugging)
+            if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
+                Exit();
+
+            //animBtn.Update(gameTime);
+            //animBtn2.Update(gameTime);
+
+            vbox.Update(gameTime);
+
+            #endregion
+
+            #endregion
             InputManager.UpdatePreviousStates();
 
             base.Update(gameTime);
@@ -136,11 +160,17 @@ namespace MonoGameJRPG_Ver._2
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
+            // (Content of this region is only meant for debugging purposes.)
+            #region Test
+
+            //animBtn.Render(spriteBatch);
+            //animBtn2.Render(spriteBatch);
+
+            vbox.Render(spriteBatch);
+
+            #endregion
+
             fpsText.Render(spriteBatch);
-            bowlingBall.Draw(spriteBatch);
-            newGameBtn.Draw(spriteBatch);
-            // glowingButton.Draw(spriteBatch);
-            animButton.Render(spriteBatch);
 
             spriteBatch.End();
 

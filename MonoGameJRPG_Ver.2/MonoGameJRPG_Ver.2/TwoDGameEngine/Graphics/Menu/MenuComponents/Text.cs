@@ -15,7 +15,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
     {
         #region StaticVariables
 
-        public static bool drawTexRec = true;
+        public static bool drawTexRec = false;
 
         #endregion
 
@@ -57,7 +57,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
 
         public override int Width => _textRec.Width;
         public override int Height => _textRec.Height;
-
         public override Rectangle Rectangle => _textRec;
 
         #endregion

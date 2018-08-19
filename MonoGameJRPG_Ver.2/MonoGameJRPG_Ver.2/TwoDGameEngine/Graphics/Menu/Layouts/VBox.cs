@@ -45,7 +45,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
 
         #endregion
 
-        public VBox(int x = 0, int y = 0, int verticalOffset = 0, Action functionality = null, params Text[] elements)
+        public VBox(int x = 0, int y = 0, int verticalOffset = 0, Action functionality = null, params MenuElement[] elements)
         {
             _x = x;
             _y = y;

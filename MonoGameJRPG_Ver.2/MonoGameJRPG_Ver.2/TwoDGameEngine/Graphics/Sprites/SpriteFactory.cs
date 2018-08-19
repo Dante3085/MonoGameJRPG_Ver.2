@@ -24,13 +24,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             newGameBtn.AddAnimation(EAnimation.Idle, 12, 48, 13, 0, 0, Vector2.Zero);
             return newGameBtn;
         }
-        public static AnimatedSprite GlowingButton()
+        public static AnimatedSprite GlowingButton(Vector2 position)
         {
             Texture2D glowingButtonTex = Contents.glowingButton;
             if (glowingButtonTex == null)
                 throw new Exception("Contents.glowingButton Texture not loaded!");
 
-            AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, new Vector2(400, 300), 10);
+            AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, position, 10);
             glowingButton.AddAnimation(EAnimation.Idle, 1, 120, 50, 0, 0, Vector2.Zero);
             glowingButton.AddAnimation(EAnimation.MouseHover, 14, 120, 50, 0, 0, Vector2.Zero);
             return glowingButton;
