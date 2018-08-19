@@ -29,10 +29,7 @@ namespace MonoGameJRPG_Ver._2
 
         #region Test
 
-        //private AnimatedMenuButton animBtn;
-        //private AnimatedMenuButton animBtn2;
-
-        private VBox vbox;
+        private VBox glowingButtonBox;
 
         #endregion
 
@@ -81,18 +78,19 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            //animBtn = MenuFactory.AnimButton(new Vector2(100, 100));
-            //animBtn2 = MenuFactory.AnimButton(new Vector2(200, 100));
+            //animBtn = MenuFactory.GlowingButton(new Vector2(100, 100));
+            //animBtn2 = MenuFactory.GlowingButton(new Vector2(200, 100));
 
-            vbox = new VBox(0, 0, 10, null, new MenuElement[]
+            glowingButtonBox = new VBox(0, 0, 0, null, new MenuElement[]
             {
                 fpsText,
-                MenuFactory.AnimButton(Vector2.Zero),
-                MenuFactory.AnimButton(Vector2.Zero),
-                MenuFactory.AnimButton(Vector2.Zero),
-                MenuFactory.AnimButton(Vector2.Zero),
-                MenuFactory.AnimButton(Vector2.Zero),
-                MenuFactory.AnimButton(Vector2.Zero),
+                MenuFactory.DiscoButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.GlowingButton(Vector2.Zero),
             });
 
             #endregion
@@ -139,7 +137,7 @@ namespace MonoGameJRPG_Ver._2
             //animBtn.Update(gameTime);
             //animBtn2.Update(gameTime);
 
-            vbox.Update(gameTime);
+            glowingButtonBox.Update(gameTime);
 
             #endregion
 
@@ -166,7 +164,7 @@ namespace MonoGameJRPG_Ver._2
             //animBtn.Render(spriteBatch);
             //animBtn2.Render(spriteBatch);
 
-            vbox.Render(spriteBatch);
+            glowingButtonBox.Render(spriteBatch);
 
             #endregion
 

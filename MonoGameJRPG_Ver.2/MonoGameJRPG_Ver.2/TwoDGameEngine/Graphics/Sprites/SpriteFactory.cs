@@ -33,7 +33,21 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, position, 10);
             glowingButton.AddAnimation(EAnimation.Idle, 1, 120, 50, 0, 0, Vector2.Zero);
             glowingButton.AddAnimation(EAnimation.MouseHover, 14, 120, 50, 0, 0, Vector2.Zero);
+
             return glowingButton;
+        }
+
+        public static AnimatedSprite DiscoButton(Vector2 position)
+        {
+            Texture2D discoButtonTex = Contents.discoButton;
+            if (discoButtonTex == null)
+                throw new Exception("Contents.DiscoButton Texture not loaded!");
+
+            AnimatedSprite discoButton = new AnimatedSprite("DiscoButton", discoButtonTex, position, 46);
+            discoButton.AddAnimation(EAnimation.Idle, 1, 18, 18, 0, 0, Vector2.Zero);
+            discoButton.AddAnimation(EAnimation.MouseHover, 36, 18, 18, 0, 0, Vector2.Zero);
+
+            return discoButton;
         }
         public static AnimatedSprite BowlingBall()
         {
