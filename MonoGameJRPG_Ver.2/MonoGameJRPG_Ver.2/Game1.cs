@@ -10,6 +10,7 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
 
 namespace MonoGameJRPG_Ver._2
@@ -30,6 +31,9 @@ namespace MonoGameJRPG_Ver._2
         #region Test
 
         private VBox glowingButtonBox;
+        private Time time = new Time();
+        private Text timeText;
+        private AnimatedSprite swordsman;
 
         #endregion
 
@@ -78,12 +82,11 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            //animBtn = MenuFactory.GlowingButton(new Vector2(100, 100));
-            //animBtn2 = MenuFactory.GlowingButton(new Vector2(200, 100));
-
-            glowingButtonBox = new VBox(0, 0, 0, null, new MenuElement[]
+            timeText = new Text(Contents.arial12, Contents.arial15, time.ToString(), functionality: () => gameConsole.Log(time.ToString()));
+            glowingButtonBox = new VBox(0, 0, 10, null, new MenuElement[]
             {
                 fpsText,
+                timeText,
                 MenuFactory.DiscoButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
@@ -92,6 +95,8 @@ namespace MonoGameJRPG_Ver._2
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
             });
+
+            swordsman = SpriteFactory.Swordsman(new Vector2(300, 100));
 
             #endregion
 
@@ -127,6 +132,12 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.OnKeyDown(Keys.Tab))
                 gameConsole.Open(Keys.Tab);
 
+            glowingButtonBox.Update(gameTime);
+            swordsman.Update(gameTime);
+
+            time.Update(gameTime);
+            timeText.SetText(time.ToString());
+
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
@@ -161,10 +172,8 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            //animBtn.Render(spriteBatch);
-            //animBtn2.Render(spriteBatch);
-
             glowingButtonBox.Render(spriteBatch);
+            swordsman.Draw(spriteBatch);
 
             #endregion
 

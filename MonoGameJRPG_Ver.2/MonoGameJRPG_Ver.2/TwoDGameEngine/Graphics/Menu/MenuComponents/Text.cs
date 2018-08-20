@@ -15,7 +15,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
     {
         #region StaticVariables
 
-        public static bool drawTexRec = false;
+        public static bool drawTexRec = true;
 
         #endregion
 
