@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -95,6 +97,7 @@ namespace MonoGameJRPG_Ver._2
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
             });
+            List<Double> d = new List<double>();
 
             swordsman = SpriteFactory.Swordsman(new Vector2(300, 100));
 
