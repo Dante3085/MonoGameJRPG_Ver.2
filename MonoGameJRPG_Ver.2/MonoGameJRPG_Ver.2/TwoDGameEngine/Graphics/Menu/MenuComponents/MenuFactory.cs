@@ -8,18 +8,29 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
+    /// <summary>
+    /// Factory class used to get pre-defined instances of Menu-related objects.
+    /// </summary>
     public static class MenuFactory
     {
+        #region MenuButtons
+
         public static AnimatedMenuButton GlowingButton(Vector2 position)
         {
             AnimatedSprite glowingButton = SpriteFactory.GlowingButton(position);
             return new AnimatedMenuButton(glowingButton, () => Game1.gameConsole.Log("Hallo, von Button"));
         }
-
         public static AnimatedMenuButton DiscoButton(Vector2 position)
         {
             AnimatedSprite discoButton = SpriteFactory.DiscoButton(position);
             return new AnimatedMenuButton(discoButton, () => Game1.gameConsole.Log("Disco Button!"));
         }
+        public static MenuButton RedButton(Vector2 position)
+        {
+            return new MenuButton(Contents.redButtonNoHover, Contents.redButtonHover, 
+                function: () => Game1.gameConsole.Log("Red Button pressed"));
+        }
+
+        #endregion
     }
 }

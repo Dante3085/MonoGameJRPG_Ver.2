@@ -12,7 +12,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     public class MenuButton : MenuElement
     {
-        public static bool drawRec = true;
+        public static bool drawRec = false;
 
         #region MemberVariables
         private Texture2D _buttonTextureNoHover;

@@ -10,6 +10,10 @@ using MonoGameJRPG.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
+
+    /// <summary>
+    /// Factory class used to get pre-defined instances of Sprite objects.
+    /// </summary>
     public static class SpriteFactory
     {
         #region Characters

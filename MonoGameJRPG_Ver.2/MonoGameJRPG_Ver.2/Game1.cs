@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,6 +34,7 @@ namespace MonoGameJRPG_Ver._2
         #region Test
 
         private VBox glowingButtonBox;
+        private HBox hBox;
         private Time time = new Time();
         private Text timeText;
         private AnimatedSprite[] swordsmen;
@@ -46,12 +48,12 @@ namespace MonoGameJRPG_Ver._2
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;
+            //graphics.PreferredBackBufferWidth = 1920;
+            //graphics.PreferredBackBufferHeight = 1080;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
         }
 
         /// <summary>
@@ -90,15 +92,62 @@ namespace MonoGameJRPG_Ver._2
             timeText = new Text(Contents.arial12, Contents.arial15, time.ToString(), functionality: () => gameConsole.Log(time.ToString()));
             glowingButtonBox = new VBox(0, 0, 10, null, new MenuElement[]
             {
+                new Text(Contents.arial12, Contents.arial15, "VertikaleBox 1"), 
                 fpsText,
                 timeText,
                 MenuFactory.DiscoButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.RedButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
+                MenuFactory.RedButton(Vector2.Zero)
+            });
+
+            hBox = new HBox(0, 0, 20, null, new MenuElement[]
+            {
+                new Text(Contents.arial12, Contents.arial15, "HorizontaleBox"), 
+                glowingButtonBox,
+                new VBox(verticalOffset: 10, elements: new MenuElement[]
+                {
+                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 2"), 
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.DiscoButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                }),
+                new VBox(verticalOffset: 20, elements: new MenuElement[]
+                {
+                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 3"), 
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                    MenuFactory.RedButton(Vector2.Zero),
+                }), 
+                new VBox(verticalOffset: 50, elements: new MenuElement[]
+                {
+                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 4"), 
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                    MenuFactory.GlowingButton(Vector2.Zero),
+                }), 
             });
 
             swordsmen = new AnimatedSprite[]
@@ -158,10 +207,10 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
+            hBox.Update(gameTime);
+
             for (int i = 0; i < swordsmen.Length; i++)
                 swordsmen[i].Update(gameTime);
-
-            glowingButtonBox.Update(gameTime);
 
             #endregion
 
@@ -185,7 +234,8 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            glowingButtonBox.Render(spriteBatch);
+            hBox.Render(spriteBatch);
+
             for (int i = 0; i < swordsmen.Length; i++)
                 swordsmen[i].Draw(spriteBatch);
 

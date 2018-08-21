@@ -47,7 +47,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static SpriteFont arial15;
 
         #endregion
-
+        #region Methods
         /// <summary>
         /// Uses given ContentManager and GraphicsDevice to load all Content declared inside Contents class.
         /// </summary>
@@ -82,6 +82,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static void LoadCharacters(ContentManager c)
         {
             warrior = c.Load<Texture2D>("Characters/warrior");
+            bowlingBall = c.Load<Texture2D>("Characters/BowlingBall");
+            swordsman = c.Load<Texture2D>("Characters/Swordsman");
         }
+        #endregion
     }
 }

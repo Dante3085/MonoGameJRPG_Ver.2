@@ -100,7 +100,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
 
         public override void ExecuteFunctionality()
         {
-            _functionality();
+            if (_functionality != null)
+                _functionality();
         }
 
         public override void ChangeFunctionality(Action functionality)
