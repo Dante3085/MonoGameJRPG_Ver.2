@@ -10,16 +10,25 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
+    /// <summary>
+    /// MenuButton that uses an AnimatedSprite to animate itself.
+    /// </summary>
     public class AnimatedMenuButton : AnimatedMenuElement
     {
         #region MemberVariables
 
+        /// <summary>
+        /// The functionality of the button.
+        /// </summary>
         private Action _buttonFunctionality;
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override Rectangle Rectangle => _animSprite.BoundingBox;
 
         #endregion

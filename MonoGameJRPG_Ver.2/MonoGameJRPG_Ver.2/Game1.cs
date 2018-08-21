@@ -35,7 +35,7 @@ namespace MonoGameJRPG_Ver._2
         private VBox glowingButtonBox;
         private Time time = new Time();
         private Text timeText;
-        private AnimatedSprite swordsman;
+        private AnimatedSprite[] swordsmen;
 
         #endregion
 
@@ -46,9 +46,12 @@ namespace MonoGameJRPG_Ver._2
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
         }
 
         /// <summary>
@@ -97,9 +100,19 @@ namespace MonoGameJRPG_Ver._2
                 MenuFactory.GlowingButton(Vector2.Zero),
                 MenuFactory.GlowingButton(Vector2.Zero),
             });
-            List<Double> d = new List<double>();
 
-            swordsman = SpriteFactory.Swordsman(new Vector2(300, 100));
+            swordsmen = new AnimatedSprite[]
+            {
+                SpriteFactory.Swordsman(new Vector2(100, 100)),
+                SpriteFactory.Swordsman(new Vector2(200, 100)),
+                SpriteFactory.Swordsman(new Vector2(300, 100)),
+                SpriteFactory.Swordsman(new Vector2(400, 100)),
+                SpriteFactory.Swordsman(new Vector2(500, 100)),
+                SpriteFactory.Swordsman(new Vector2(600, 100)),
+                SpriteFactory.Swordsman(new Vector2(700, 100)),
+                SpriteFactory.Swordsman(new Vector2(800, 100)),
+                SpriteFactory.Swordsman(new Vector2(900, 100)),
+            };
 
             #endregion
 
@@ -135,9 +148,6 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.OnKeyDown(Keys.Tab))
                 gameConsole.Open(Keys.Tab);
 
-            glowingButtonBox.Update(gameTime);
-            swordsman.Update(gameTime);
-
             time.Update(gameTime);
             timeText.SetText(time.ToString());
 
@@ -148,8 +158,8 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            //animBtn.Update(gameTime);
-            //animBtn2.Update(gameTime);
+            for (int i = 0; i < swordsmen.Length; i++)
+                swordsmen[i].Update(gameTime);
 
             glowingButtonBox.Update(gameTime);
 
@@ -176,7 +186,8 @@ namespace MonoGameJRPG_Ver._2
             #region Test
 
             glowingButtonBox.Render(spriteBatch);
-            swordsman.Draw(spriteBatch);
+            for (int i = 0; i < swordsmen.Length; i++)
+                swordsmen[i].Draw(spriteBatch);
 
             #endregion
 

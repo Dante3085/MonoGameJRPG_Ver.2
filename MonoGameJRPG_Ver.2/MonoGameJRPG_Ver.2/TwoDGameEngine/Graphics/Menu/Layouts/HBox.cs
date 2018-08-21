@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
 {
+    /// <summary>
+    /// Layout that orders MenuElements horizontally.
+    /// </summary>
     public class HBox : Layout
     {
         #region MemberVariables
