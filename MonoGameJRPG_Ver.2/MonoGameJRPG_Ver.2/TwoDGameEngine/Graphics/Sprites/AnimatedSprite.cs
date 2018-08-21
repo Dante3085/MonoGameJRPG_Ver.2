@@ -24,9 +24,15 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         private Dictionary<EAnimation, Rectangle[]> _animations = new Dictionary<EAnimation, Rectangle[]>();
 
         /// <summary>
-        /// Stores Vector2s used for offsetting certain Animations.
+        /// Stores Vector2s used for offsetting certain Animations may differ in size.
         /// </summary>
         private Dictionary<EAnimation, Vector2> _offsets = new Dictionary<EAnimation, Vector2>();
+
+        /// <summary>
+        /// Stores Fps values for each Animation. Due to varying number of frames between Animations, some may need
+        /// to be played slower or faster.
+        /// </summary>
+        private Dictionary<EAnimation, int> _fpsValues = new Dictionary<EAnimation, int>();
 
         /// <summary>
         /// Accumulates time with each Update() call until _timeToUpdate is reached.
@@ -46,7 +52,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Current Animation
         /// </summary>
-        private EAnimation _currentAnimation;
+        private EAnimation _currentAnimation = EAnimation.Idle;
 
         /// <summary>
         /// Enum to store in which direction the AnimatedSprite is facing.
@@ -84,9 +90,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         public AnimatedSprite(string name, Texture2D texture, Vector2 position, PlayerIndex playerIndex, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null) : base(name, texture, position, keyboardInput, gamePadInput, playerIndex)
         {
             _isPlayerControlled = true;
-
             Fps = fps;
-            PlayAnimation(EAnimation.Idle);
         }
 
         /// <summary>
@@ -100,7 +104,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         {
             _isPlayerControlled = false;
             Fps = fps;
-            PlayAnimation(EAnimation.Idle);
         }
 
         /// <summary>
@@ -119,7 +122,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param animation="frameWidth"></param>
         /// <param animation="frameHeight"></param>
         /// <param animation="offset"></param>
-        public void AddAnimation(EAnimation name, int numFrames, int frameWidth, int frameHeight, int yRow, int indexFirstFrame, Vector2 offset)
+        public void AddAnimation(EAnimation name, int numFrames, int frameWidth, int frameHeight, int yRow, int indexFirstFrame, Vector2 offset, int fps)
         {
             // Creates an array of rectangles (i.e. a new Animation).
             Rectangle[] animation = new Rectangle[numFrames];
@@ -131,6 +134,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             // Store frames and offset in two different dictionaries. But both with same key (animation.)
             _animations.Add(name, animation);
             _offsets.Add(name, offset);
+            _fpsValues.Add(name, fps);
+            Console.WriteLine(_fpsValues.Count);
         }
 
         /// <summary>
@@ -380,6 +385,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
                 _currentAnimation = animation;
                 _currentFrameIndex = 0;
+                Fps = _fpsValues[animation];
             }
         }
 
