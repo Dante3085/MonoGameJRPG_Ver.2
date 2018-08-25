@@ -159,10 +159,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             _functionality = functionality;
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (MenuElement m in _elements)
-                m.Render(spriteBatch);
+                m.Draw(spriteBatch);
         }
 
         public override void MouseHoverReaction()

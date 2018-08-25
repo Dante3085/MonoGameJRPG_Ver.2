@@ -7,24 +7,57 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGameJRPG_Ver._2.Characters
 {
+    /// <summary>
+    /// An AAction describes everything that can have an effect on a Character/Characters. <para></para>
+    /// For example Items, Magics, PhysicalSkills, RevengeAttacks
+    /// </summary>
     public class AAction
     {
         #region MemberVariables
+
+        /// <summary>
+        /// Holds ActionMethods that describe behaviour of the AAction.
+        /// </summary>
         private Dictionary<EActionMethod, Action<Character>> _actionMethods = new Dictionary<EActionMethod, Action<Character>>();
 
+        /// <summary>
+        /// Since one AAction can have more than one ActionMethod (Behaviour), it needs to store an Array of the Enum Dictionary Keys.
+        /// </summary>
+        private EActionMethod[] _registeredActionMethods;
+
+        /// <summary>
+        /// Stores how much the AAction affects the target's hp.
+        /// </summary>
         private int _hpModifier;
+
+        /// <summary>
+        /// Stores how much the AAction affects the target's mp.
+        /// </summary>
         private int _mpModifier;
+
+        /// <summary>
+        /// Stores how much the AAction affects the target's revengeValue.
+        /// </summary>
         private int _revengeModifier;
 
         /// <summary>
         /// Time in seconds this AAction needs during combat before executing.
         /// </summary>
         private int _time;
+
+        /// <summary>
+        /// Time remaining till AAction can be executed.
+        /// </summary>
         private int _timeRemaining;
+
+        /// <summary>
+        /// Text description for AAction.
+        /// </summary>
         private string _description;
-        private EActionMethod[] _registeredActionMethods;
+
         #endregion
 
+        #region Methods
         private AAction(int hpModifier = 0, int mpModifier = 0, int revengeModifier = 0, int time = 1, string description = "DefaultDescription", EActionMethod[] registeredActionMethods = null)
         {
             _hpModifier = hpModifier;
@@ -40,9 +73,43 @@ namespace MonoGameJRPG_Ver._2.Characters
             SetUpActionMethods();
         }
 
+        /// <summary>
+        /// TODO: NOT FINAL
+        /// </summary>
+        /// <param name="target"></param>
         public void ExecuteAction(Character target)
         {
             _actionMethods[_registeredActionMethods[0]](target);
+        }
+
+        /// <summary>
+        /// Gets whether or not this AAction is ready to be executed.
+        /// True, if timeRemaining = 0. Otherwise false.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsReady()
+        {
+            return _timeRemaining == 0;
+        }
+
+        /// <summary>
+        /// Returns time in seconds until this AAction can be executed.
+        /// </summary>
+        /// <returns></returns>
+        public int TimeRemaining()
+        {
+            return _timeRemaining;
+        }
+
+        /// <summary>
+        /// Updates the AAction's timeRemaining.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void Update(GameTime gameTime)
+        {
+            _timeRemaining -= (int)gameTime.ElapsedGameTime.TotalSeconds;
+            if (_timeRemaining < 0)
+                _timeRemaining = 0;
         }
 
         #region PredefinedItems
@@ -64,7 +131,6 @@ namespace MonoGameJRPG_Ver._2.Characters
             return new AAction(mpModifier: 100, description: "Item: ManaPotion", registeredActionMethods: new EActionMethod[] { EActionMethod.RefillMana });
         }
         #endregion
-
         #region PredefinedMagics
         public static AAction Fire()
         {
@@ -76,14 +142,12 @@ namespace MonoGameJRPG_Ver._2.Characters
             return new AAction(hpModifier: 500, mpModifier: 3, revengeModifier: 2, description: "Magic: Water", registeredActionMethods: new EActionMethod[] { EActionMethod.DealDamage });
         }
         #endregion
-
         #region PredefinedPhysicalSkills
         public static AAction Cleave()
         {
             return new AAction(hpModifier: 200, revengeModifier: 10, description: "PhysicallSkill: Cleave", registeredActionMethods: new EActionMethod[] { EActionMethod.DealDamage });
         }
         #endregion
-
         #region PredefinedRevengeSkills
         public static AAction Counter()
         {
@@ -95,7 +159,6 @@ namespace MonoGameJRPG_Ver._2.Characters
             return new AAction(hpModifier: 20, description: "RevengeSkill: Break", registeredActionMethods: new EActionMethod[] { EActionMethod.DealDamage });
         }
         #endregion
-
         #region ActionMethods
         private void SetUpActionMethods()
         {
@@ -172,22 +235,6 @@ namespace MonoGameJRPG_Ver._2.Characters
             }
         }
         #endregion
-
-        public bool IsReady()
-        {
-            return _timeRemaining == 0;
-        }
-
-        public int TimeRemaining()
-        {
-            return _timeRemaining;
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            _timeRemaining -= (int)gameTime.ElapsedGameTime.TotalSeconds;
-            if (_timeRemaining < 0)
-                _timeRemaining = 0;
-        }
     }
+    #endregion
 }

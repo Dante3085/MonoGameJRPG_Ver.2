@@ -25,6 +25,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D btnNewGame;
         public static Texture2D glowingButton;
         public static Texture2D discoButton;
+        public static Texture2D heart;
 
         #endregion
         #region Characters
@@ -45,6 +46,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
 
         public static SpriteFont arial12;
         public static SpriteFont arial15;
+        public static SpriteFont arial18;
+        public static SpriteFont arial20;
 
         #endregion
         #region Methods
@@ -63,6 +66,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             btnNewGame = c.Load<Texture2D>("MenuComponents/NewGameButton");
             glowingButton = c.Load<Texture2D>("MenuComponents/GlowingButton");
             discoButton = c.Load<Texture2D>("MenuComponents/DiscoButton");
+            heart = c.Load<Texture2D>("MenuComponents/Heart");
 
             warrior = c.Load<Texture2D>("Characters/warrior");
             bowlingBall = c.Load<Texture2D>("Characters/BowlingBall");
@@ -73,6 +77,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
 
             arial12 = c.Load<SpriteFont>("SpriteFonts/Arial12");
             arial15 = c.Load<SpriteFont>("SpriteFonts/Arial15");
+            arial18 = c.Load<SpriteFont>("SpriteFonts/Arial18");
+            arial20 = c.Load<SpriteFont>("SpriteFonts/Arial20");
         }
 
         /// <summary>

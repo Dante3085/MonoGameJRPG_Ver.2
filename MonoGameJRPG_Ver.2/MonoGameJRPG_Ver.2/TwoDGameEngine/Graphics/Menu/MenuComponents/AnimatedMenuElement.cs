@@ -41,7 +41,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         }
 
         #region Methods
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             _animSprite.Draw(spriteBatch);
         }

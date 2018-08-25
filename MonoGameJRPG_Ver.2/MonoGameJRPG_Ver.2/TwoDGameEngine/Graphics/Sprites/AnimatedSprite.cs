@@ -135,7 +135,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _animations.Add(name, animation);
             _offsets.Add(name, offset);
             _fpsValues.Add(name, fps);
-            Console.WriteLine(_fpsValues.Count);
         }
 
         /// <summary>
@@ -385,6 +384,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
                 _currentAnimation = animation;
                 _currentFrameIndex = 0;
+                Console.WriteLine("Animation: " + animation);
                 Fps = _fpsValues[animation];
             }
         }

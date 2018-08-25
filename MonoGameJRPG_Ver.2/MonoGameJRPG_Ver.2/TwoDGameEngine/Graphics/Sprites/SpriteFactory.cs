@@ -120,6 +120,15 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             return discoButton;
         }
 
+        public static AnimatedSprite Heart(Vector2 position)
+        {
+            AnimatedSprite heart = new AnimatedSprite("Heart", Contents.heart, position, 1);
+            heart.AddAnimation(EAnimation.Idle, 1, 16, 16, 0, 0, Vector2.Zero, 1);
+            heart.AddAnimation(EAnimation.Hurt, 1, 16, 16, 0, 1, Vector2.Zero, 1);
+            heart.AddAnimation(EAnimation.MouseHover, 1, 16, 16, 0, 0, Vector2.Zero, 1);
+            return heart;
+        }
+
         #endregion
     }
 }

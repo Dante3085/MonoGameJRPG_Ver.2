@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.Characters;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
@@ -23,37 +24,46 @@ namespace MonoGameJRPG_Ver._2
     /// </summary>
     public class Game1 : Game
     {
+        #region MemberVariables
+
+        public static GameConsole gameConsole;
+        public static float fps;
+        public static int screenWidth;
+        public static int screenHeight;
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        public static GameConsole gameConsole;
-
-        public static float fps;
         private Text fpsText;
+        private Text timeText;
+        private Time time;
+        private VBox timeFpsBox;
 
         #region Test
 
-        private VBox glowingButtonBox;
-        private HBox hBox;
-        private Time time = new Time();
-        private Text timeText;
-        private AnimatedSprite[] swordsmen;
+        private Menu mainMenu;
 
+        #endregion
         #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            //graphics.PreferredBackBufferWidth = 1920;
-            //graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             graphics.IsFullScreen = true;
+        }
+
+        public void ExitGame()
+        {
+            Exit();
         }
 
         /// <summary>
@@ -67,6 +77,9 @@ namespace MonoGameJRPG_Ver._2
             // TODO: Add your initialization logic here
             gameConsole = new GameConsole(this, "german", Content);
             gameConsole.IsFullscreen = true;
+
+            time = new Time();
+            timeText = new Text(Contents.arial15, Contents.arial20, time.ToString());
 
             base.Initialize();
         }
@@ -89,79 +102,8 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            timeText = new Text(Contents.arial12, Contents.arial15, time.ToString(), functionality: () => gameConsole.Log(time.ToString()));
-            glowingButtonBox = new VBox(0, 0, 10, null, new MenuElement[]
-            {
-                new Text(Contents.arial12, Contents.arial15, "VertikaleBox 1"), 
-                fpsText,
-                timeText,
-                MenuFactory.DiscoButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.RedButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.GlowingButton(Vector2.Zero),
-                MenuFactory.RedButton(Vector2.Zero)
-            });
-
-            hBox = new HBox(0, 0, 20, null, new MenuElement[]
-            {
-                new Text(Contents.arial12, Contents.arial15, "HorizontaleBox"), 
-                glowingButtonBox,
-                new VBox(verticalOffset: 10, elements: new MenuElement[]
-                {
-                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 2"), 
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.DiscoButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                }),
-                new VBox(verticalOffset: 20, elements: new MenuElement[]
-                {
-                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 3"), 
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                    MenuFactory.RedButton(Vector2.Zero),
-                }), 
-                new VBox(verticalOffset: 50, elements: new MenuElement[]
-                {
-                    new Text(Contents.arial12, Contents.arial15, "VertikaleBox 4"), 
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                    MenuFactory.GlowingButton(Vector2.Zero),
-                }), 
-            });
-
-            swordsmen = new AnimatedSprite[]
-            {
-                SpriteFactory.Swordsman(new Vector2(100, 100)),
-                SpriteFactory.Swordsman(new Vector2(200, 100)),
-                SpriteFactory.Swordsman(new Vector2(300, 100)),
-                SpriteFactory.Swordsman(new Vector2(400, 100)),
-                SpriteFactory.Swordsman(new Vector2(500, 100)),
-                SpriteFactory.Swordsman(new Vector2(600, 100)),
-                SpriteFactory.Swordsman(new Vector2(700, 100)),
-                SpriteFactory.Swordsman(new Vector2(800, 100)),
-                SpriteFactory.Swordsman(new Vector2(900, 100)),
-            };
+            mainMenu = MenuFactory.MainMenu(new Vector2(10, 10), this);
+            // mainMenu.Elements().Add(timeFpsBox = new VBox(10, screenHeight, elements: new MenuElement[] {timeText, fpsText}));
 
             #endregion
 
@@ -193,12 +135,13 @@ namespace MonoGameJRPG_Ver._2
             fpsText.SetText("Fps: " + fps);
             fpsText.Update(gameTime);
 
+            // Time
+            timeText.SetText(time.ToString());
+            time.Update(gameTime);
+
             // Console
             if (InputManager.OnKeyDown(Keys.Tab))
                 gameConsole.Open(Keys.Tab);
-
-            time.Update(gameTime);
-            timeText.SetText(time.ToString());
 
             // (Content of this region is only meant for debugging purposes.)
             #region Test
@@ -207,10 +150,7 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            hBox.Update(gameTime);
-
-            for (int i = 0; i < swordsmen.Length; i++)
-                swordsmen[i].Update(gameTime);
+            mainMenu.Update(gameTime);
 
             #endregion
 
@@ -228,21 +168,17 @@ namespace MonoGameJRPG_Ver._2
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
+            #region Drawing
 
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            hBox.Render(spriteBatch);
-
-            for (int i = 0; i < swordsmen.Length; i++)
-                swordsmen[i].Draw(spriteBatch);
+            mainMenu.Draw(spriteBatch);
 
             #endregion
 
-            fpsText.Render(spriteBatch);
-
+            #endregion
             spriteBatch.End();
 
             base.Draw(gameTime);

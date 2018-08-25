@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 namespace MonoGameJRPG.TwoDGameEngine.Input
 {
     /// <summary>
-    /// Provides utility Methods relevant to Input.
+    /// Provides utility Methods for Input.
     /// </summary>
     public static class InputManager
     {
+        #region MemberVariables
+
         private static KeyboardState _currentKeyboardState;
         private static KeyboardState _previousKeyboardState;
 
@@ -21,6 +23,9 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
 
         private static MouseState _previousMouseState;
         private static MouseState _currentMouseState;
+
+        #endregion
+        #region UpdateStatesMethods
 
         /// <summary>
         /// Call this method before you'r Input operation(s).
@@ -46,7 +51,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
             _previousMouseState = _currentMouseState;
         }
 
-        #region Mouse
+        #endregion
+        #region MouseMethods
 
         /// <summary>
         /// Returns MousePosition of CurrentState
@@ -97,7 +103,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         }
 
         #endregion
-        #region Keyboard
+        #region KeyboardMethods
+
         /// <summary>
         /// Gets whether given key is currently being pressed. 
         /// </summary>
@@ -139,8 +146,19 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         {
             return _previousKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
         }
+
         #endregion
-        #region GamePad
+        #region GamePadMethods
+
+        /// <summary>
+        /// Gets whether or not a GamePad is currently connected.
+        /// </summary>
+        /// <returns></returns>
+        public static bool GamePadConnected()
+        {
+            return _currentGamePadState.IsConnected;
+        }
+
         /// <summary>
         /// Gets whether given button is currently being pressed. 
         /// </summary>
@@ -182,6 +200,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         {
             return _previousGamePadState.IsButtonDown(button) && _currentGamePadState.IsButtonUp(button);
         }
+
         #endregion
     }
 }

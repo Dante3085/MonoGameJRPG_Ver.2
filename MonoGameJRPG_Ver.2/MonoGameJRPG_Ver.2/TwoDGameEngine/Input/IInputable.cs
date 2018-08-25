@@ -12,7 +12,7 @@ namespace MonoGameJRPG.TwoDGameEngine
     /// </summary>
     public interface IInputable
     {
-        void HandleKeyboardInput(KeyboardState keyboardState);
-        void HandleGamePadInput(GamePadState gamePadState);
+        void HandleKeyboardInput();
+        void HandleGamePadInput();
     }
 }

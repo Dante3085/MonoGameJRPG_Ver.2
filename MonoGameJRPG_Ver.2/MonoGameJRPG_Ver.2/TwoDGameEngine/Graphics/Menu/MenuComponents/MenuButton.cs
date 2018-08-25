@@ -56,7 +56,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _buttonRec = new Rectangle(x, y, _activeButtonTexture.Width, _activeButtonTexture.Height);
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_activeButtonTexture, _buttonRec, Color.White);
 

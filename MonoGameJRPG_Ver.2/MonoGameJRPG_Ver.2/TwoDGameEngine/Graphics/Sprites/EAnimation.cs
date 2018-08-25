@@ -44,7 +44,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #endregion
         #region Other
 
-        MouseHover
+        MouseHover,
+        Hurt
 
         #endregion
     }

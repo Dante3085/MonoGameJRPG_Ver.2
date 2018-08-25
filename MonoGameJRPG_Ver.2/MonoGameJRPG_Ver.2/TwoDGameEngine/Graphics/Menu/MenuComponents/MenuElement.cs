@@ -26,6 +26,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 
         #endregion
         #region AbstractMethods
+
         /// <summary>
         /// Updates the MenuElement.
         /// </summary>
@@ -46,7 +47,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         /// Draws the MenuElement on screen with use of SpriteBatch.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public abstract void Render(SpriteBatch spriteBatch);
+        public abstract void Draw(SpriteBatch spriteBatch);
 
         /// <summary>
         /// Override this method to describe behaviour of this MenuElement on MouseHover.

@@ -4,50 +4,104 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
 namespace MonoGameJRPG_Ver._2.Characters
 {
     /// <summary>
-    /// The Character class represents playable and non-playable Figures/Characters in the game.
-    /// A Character has certain Attributes that describe it's role in Combat or other aspects of the game.
-    /// A Character is able to perform 6 different types of actions in Combat.
-    /// - Use a skill
-    /// - Just attack
-    /// - Defend
-    /// - Use Magic
-    /// - Use Item
-    /// - End Turn
+    /// The Character class represents playable and non-playable Figures/Characters in the game.<para></para>
+    /// RevengeSystem: If a Character gets continuously bashed by enemy attacks without having the chance to act against that or
+    ///                just being completely overwhelmed, he can force himself out of the situation by executing a RevengeSkill.
     /// </summary>
-    public class Character : GameObject, IInputable
+    public class Character : GameObject, IInputable/*, IInteractable*/
     {
         #region MemberVariables
+
+        /// <summary>
+        /// AnimatedSprite / visual representation of the Character.
+        /// </summary>
         private AnimatedSprite _animatedSprite;
 
+        /// <summary>
+        /// Name of the Character.
+        /// </summary>
         private string _name;
 
         #region Stats
+
+        /// <summary>
+        /// CurrentHp. Bigger or equal to 0 and smaller or equal to MaxHp. Describes the current amount of Hitpoints the Character has.
+        /// </summary>
         private int _currentHp;
+
+        /// <summary>
+        /// MaxHp. Bigger or equal to 0. Describes the maximum amount of Hitpoints the Character can have.
+        /// </summary>
         private int _maxHp;
 
+        /// <summary>
+        /// Describes if the Character is alive or not. <para></para>
+        /// Alive, if currentHP > 0. Dead, if currentHP = 0.
+        /// </summary>
+        private bool _isAlive = true;
+
+        /// <summary>
+        /// CurrentMp. Bigger or equal to 0 and smaller or equal to MaxMP. Describes the current amount of Magicpoints the Character has.
+        /// </summary>
         private int _currentMp;
+
+        /// <summary>
+        /// MaxMp. Bigger or equal to 0. Describes maximum amount of Magicpoints the Character can have.
+        /// </summary>
         private int _maxMp;
 
+        /// <summary>
+        /// Describes the Character's physical capability when it comes to using physical attacks.
+        /// </summary>
         private int _strength;
+
+        /// <summary>
+        /// Describes the Character's physical capability when it comes to defending against physical attacks.
+        /// </summary>
         private int _defence;
-        private int _wit;
+
+        /// <summary>
+        /// Describes the Character's physical capability when it comes to avoiding physical attacks.
+        /// </summary>
         private int _agility;
+
+        /// <summary>
+        /// Describes the Character's mental capability when it comes to using and defending against magic attacks.
+        /// </summary>
+        private int _wit;
+
+        /// <summary>
+        /// Describes how fast the Character will be able to act in Combat.
+        /// </summary>
         private int _speed;
+
+        /// <summary>
+        /// Describes the threshold at which, if revengeValue reaches it, the Character is able to or will execute a RevengeSkill.
+        /// </summary>
+        private int _revengeThreshold;
+
+        /// <summary>
+        /// Describes the current value at which revenge is at.
+        /// </summary>
         private int _revengeValue;
 
+        /// <summary>
+        /// Describes the current level of the Character.
+        /// </summary>
         private int _lvl;
-        #endregion
 
-        private bool _isAlive = true;
+        #endregion
 
         private bool _isAttacking = false;
 
@@ -57,15 +111,11 @@ namespace MonoGameJRPG_Ver._2.Characters
         private KeyboardInput _keyboardInput;
         private GamePadInput _gamePadInput;
 
-        private KeyboardState _previousKeyboardState = Keyboard.GetState();
-        private GamePadState _previousGamePadState = GamePad.GetState(PlayerIndex.One);
-
         private bool _isPlayerControlled;
         #endregion
 
         private Dictionary<EAction, AAction> _actions = new Dictionary<EAction, AAction>();
         #endregion
-
         #region Properties
         public AnimatedSprite AnimatedSprite
         {
@@ -79,7 +129,7 @@ namespace MonoGameJRPG_Ver._2.Characters
         public int Wit { get => _wit; set => _wit = value; }
         public int Agility { get => _agility; set => _agility = value; }
         public int Speed { get => _speed; set => _speed = value; }
-        public int RevengeValue { get => _revengeValue; set => _revengeValue = value; }
+        public int RevengeValue { get => _revengeThreshold; set => _revengeThreshold = value; }
         public bool IsAlive { get => _isAlive; set => _isAlive = value; }
         public string Name { get => _name; set => _name = value; }
         public int CurrentHp { get => _currentHp; set => _currentHp = value; }
@@ -89,7 +139,7 @@ namespace MonoGameJRPG_Ver._2.Characters
         public bool IsAttacking { get => _isAttacking; set => _isAttacking = value; }
         public bool IsPlayerControlled { get => _isPlayerControlled; }
         #endregion
-
+        #region Methods
         public Character(String name = "NoName", int maxHp = 0, int maxMp = 0, int strength = 0, int defence = 0, int wit = 0,
             int agility = 0, int speed = 0, bool isPlayerControlled = false, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null, AnimatedSprite animatedSprite = null)
         {
@@ -124,6 +174,17 @@ namespace MonoGameJRPG_Ver._2.Characters
             SetUp_RevengeSkills();
             SetUp_Magics();
         }
+
+        //public void Interact(IInteractable other)
+        //{
+        //    HandleInteraction();
+        //    other.HandleInteraction();
+        //}
+
+        //public void HandleInteraction()
+        //{
+
+        //}
 
         /// <summary>
         /// Handles certain Default Parameters of Constructor.
@@ -164,6 +225,11 @@ namespace MonoGameJRPG_Ver._2.Characters
             }
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _animatedSprite.Draw(spriteBatch);
+        }
+
         /// <summary>
         /// Use every tick. Handles necessary updates for a Character.
         /// </summary>
@@ -174,11 +240,10 @@ namespace MonoGameJRPG_Ver._2.Characters
             _animatedSprite.Update(gameTime);
 
             // TODO: PlayerIndex muss an AnimSprite gegeben werden.
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            if (gamePadState.IsConnected)
-                HandleGamePadInput(gamePadState);
+            if (InputManager.GamePadConnected())
+                HandleGamePadInput();
             else
-                HandleKeyboardInput(Keyboard.GetState());
+                HandleKeyboardInput();
 
             if (characters != null)
                 CheckCollisions(characters);
@@ -236,29 +301,42 @@ namespace MonoGameJRPG_Ver._2.Characters
             _actions[_currentAction].ExecuteAction(target);
         }
 
+        /// <summary>
+        /// Returns a String with all relevant Information about the Character.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return _name + "[" + _currentHp + "|" + _maxHp + "]";
+            return _name + "[CurrentHp: " + _currentHp + "|MaxHp" + _maxHp + 
+                   ", IsAlive" + _isAlive + ", CurrentMp: " + _currentMp + 
+                   "|MaxMp:" + _maxMp + ", Strength: " + _strength + 
+                   "Defence: " + _defence + ", Agility: " + _agility + 
+                   ", Wit: " + _wit + ", Spe\ned: " + _speed + 
+                   ", RevengeThreshold: " + _revengeThreshold + ", RevengeValue: " + 
+                   _revengeValue + ", Lvl: " + _lvl + "]";
         }
 
         #region HandleInput
-        public void HandleKeyboardInput(KeyboardState keyboardState)
-        {
-            if (keyboardState.IsKeyDown(_keyboardInput.Attack) && _previousKeyboardState.IsKeyUp(_keyboardInput.Attack))
-                _isAttacking = true;
 
-            _previousKeyboardState = keyboardState;
+        /// <summary>
+        /// Handles Input given to the Character by Keyboard.
+        /// </summary>
+        public void HandleKeyboardInput()
+        {
+            if (InputManager.OnKeyDown(_keyboardInput.Attack))
+                _isAttacking = true;
         }
 
-        public void HandleGamePadInput(GamePadState gamePadState)
+        /// <summary>
+        /// Handles Input given to the Character given by GamePad.
+        /// </summary>
+        public void HandleGamePadInput()
         {
-            if (gamePadState.IsButtonDown(_gamePadInput.Attack) && _previousGamePadState.IsButtonUp(_gamePadInput.Attack))
+            if (InputManager.OnButtonDown(_gamePadInput.Attack))
                 _isAttacking = true;
-
-            _previousGamePadState = gamePadState;
         }
+
         #endregion
-
         #region SetUpMethods
         private void SetUp_Items()
         {
@@ -281,6 +359,7 @@ namespace MonoGameJRPG_Ver._2.Characters
             _actions[EAction.Counter] = AAction.Counter();
             _actions[EAction.Break] = AAction.Break();
         }
+        #endregion
         #endregion
     }
 }

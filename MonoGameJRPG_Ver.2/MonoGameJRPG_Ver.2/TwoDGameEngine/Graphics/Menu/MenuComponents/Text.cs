@@ -11,14 +11,16 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
 {
+    /// <summary>
+    /// Interactive and locatable Text, primarily used in Menus.
+    /// </summary>
     public class Text : MenuElement
     {
         #region StaticVariables
 
-        public static bool drawTexRec = true;
+        public static bool drawTexRec = false;
 
         #endregion
-
         #region MemberVariables
 
         private string _text;
@@ -60,6 +62,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
         public override Rectangle Rectangle => _textRec;
 
         #endregion
+        #region Methods
 
         public Text(SpriteFont fontNoHover, SpriteFont fontHover, string text = "", int x = 0, int y = 0, Action functionality = null)
         {
@@ -117,12 +120,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
             _activeSpriteFont = IsMouseHover() ? _spriteFontHover : _spriteFontNoHover;
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(_activeSpriteFont, _text, new Vector2(_x, _y), Color.Black);
 
             if (drawTexRec)
                 Util.DrawRectangle(spriteBatch, _textRec, _textRecLines, Contents.rectangleTex, Color.Red);
         }
+
+        #endregion
     }
 }
