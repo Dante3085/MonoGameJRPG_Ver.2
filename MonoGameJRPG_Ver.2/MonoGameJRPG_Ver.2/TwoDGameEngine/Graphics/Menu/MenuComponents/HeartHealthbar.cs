@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG_Ver._2.Characters;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
 {
     public class HeartHealthbar : MenuElement
     {

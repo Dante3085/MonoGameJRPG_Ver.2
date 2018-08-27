@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG.TwoDGameEngine.Input;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
@@ -18,7 +18,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
     {
         #region StaticVariables
 
-        public static bool drawTexRec = false;
+        public static bool drawTexRec = true;
 
         #endregion
         #region MemberVariables
@@ -64,7 +64,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
         #endregion
         #region Methods
 
-        public Text(SpriteFont fontNoHover, SpriteFont fontHover, string text = "", int x = 0, int y = 0, Action functionality = null)
+        /// <summary>
+        /// Constructs a Text with given fonts, text, position and functionality.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fontNoHover"></param>
+        /// <param name="fontHover"></param>
+        /// <param name="text"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="functionality"></param>
+        public Text(string name, SpriteFont fontNoHover, SpriteFont fontHover, string text = "", int x = 0, int y = 0, Action functionality = null) : base(name)
         {
             _text = text;
             _x = x;
@@ -73,6 +83,38 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
             _spriteFontNoHover = fontNoHover;
             _spriteFontHover = fontHover;
             _activeSpriteFont = _spriteFontNoHover;
+
+            _textSize = _activeSpriteFont.MeasureString(_text);
+            _textRec = new Rectangle(x, y, (int)_textSize.X, (int)_textSize.Y);
+        }
+
+        /// <summary>
+        /// Constructs a text with given text, position and functionality.
+        /// Fonts will be automatically set depending on screen size.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="functionality"></param>
+        public Text(string name, string text = "", int x = 0, int y = 0, Action functionality = null) : base(name)
+        {
+            if (Game1.screenWidth > 1920)
+            {
+                _spriteFontNoHover = Contents.arial30;
+                _spriteFontHover = Contents.arial35;
+                _activeSpriteFont = _spriteFontNoHover;
+            }
+            else
+            {
+                _spriteFontNoHover = Contents.arial18;
+                _spriteFontHover = Contents.arial20;
+                _activeSpriteFont = _spriteFontNoHover;
+            }
+
+            _text = text;
+            _x = x;
+            _y = y;
+            _functionality = functionality;
 
             _textSize = _activeSpriteFont.MeasureString(_text);
             _textRec = new Rectangle(x, y, (int)_textSize.X, (int)_textSize.Y);

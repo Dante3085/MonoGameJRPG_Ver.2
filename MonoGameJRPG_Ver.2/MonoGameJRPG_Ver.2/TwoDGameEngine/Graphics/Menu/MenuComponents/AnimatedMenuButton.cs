@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
 {
     /// <summary>
     /// MenuButton that uses an AnimatedSprite to animate itself.

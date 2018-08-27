@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
 {
     public abstract class AnimatedMenuElement : MenuElement
     {

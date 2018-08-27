@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
 {
     /// <summary>
     /// Factory class used to get pre-defined instances of Menu-related objects.
@@ -40,20 +40,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
         public static Menu MainMenu(Vector2 position, Game1 gameInstance)
         {
-            Menu mainMenu = new Menu(new List<MenuElement>()
+            Menu mainMenu = new Menu("MainMenu", new List<MenuElement>()
             {
                 new VBox(10, 10, 5, elements: new MenuElement[]
                 {
-                    new Text(Contents.arial15, Contents.arial20, "New Game", functionality: () => Game1.gameConsole.Log("NewGame")),
-                    new Text(Contents.arial15, Contents.arial20, "Load Game", functionality: () => Game1.gameConsole.Log("LoadGame")),
-                    new Text(Contents.arial15, Contents.arial20, "Console", functionality: () =>
+                    new Text("New Game", functionality: () => Game1.gameConsole.Log("NewGame")),
+                    new Text("Load Game", functionality: () => Game1.gameConsole.Log("LoadGame")),
+                    new Text("Console", functionality: () =>
                     {
                         if (!Game1.gameConsole.IsOpen)
                             Game1.gameConsole.Open(null);
                         else
                             Game1.gameConsole.Close();
                     }),
-                    new Text(Contents.arial15, Contents.arial20, "Exit Game", functionality: () => gameInstance.ExitGame()),
+                    new Text("Exit Game", functionality: () => gameInstance.ExitGame()),
                 }),
 
 

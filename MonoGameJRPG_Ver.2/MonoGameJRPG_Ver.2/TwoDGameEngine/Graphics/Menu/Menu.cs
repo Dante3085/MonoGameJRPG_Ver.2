@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     /// <summary>
     /// A Menu contains several MenuElements. A Menu itself is a MenuElement, so Menus can be nested.
@@ -42,12 +42,21 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         #endregion
         #region Methods
 
-        public Menu(List<MenuElement> menuElements, int x = 0, int y = 0)
+        public Menu(string name, List<MenuElement> menuElements, int x = 0, int y = 0) : base(name)
         {
             _menuElements = menuElements;
             _x = x;
             _y = y;
             _rec = new Rectangle(x, y, Width, Height);
+        }
+
+        public MenuElement ElementByName(string name)
+        {
+            foreach (MenuElement m in _menuElements)
+                if (m.Name.Equals(name))
+                    return m;
+            Console.WriteLine("@ElementByName(" + name + "): Element with given name does not exist! Returning null.");
+            return null;
         }
 
         public List<MenuElement> Elements()

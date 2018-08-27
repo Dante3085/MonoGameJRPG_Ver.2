@@ -48,6 +48,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static SpriteFont arial15;
         public static SpriteFont arial18;
         public static SpriteFont arial20;
+        public static SpriteFont arial30;
+        public static SpriteFont arial35;
 
         #endregion
         #region Methods
@@ -79,6 +81,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             arial15 = c.Load<SpriteFont>("SpriteFonts/Arial15");
             arial18 = c.Load<SpriteFont>("SpriteFonts/Arial18");
             arial20 = c.Load<SpriteFont>("SpriteFonts/Arial20");
+            arial30 = c.Load<SpriteFont>("SpriteFonts/Arial30");
+            arial35 = c.Load<SpriteFont>("SpriteFonts/Arial35");
         }
 
         /// <summary>

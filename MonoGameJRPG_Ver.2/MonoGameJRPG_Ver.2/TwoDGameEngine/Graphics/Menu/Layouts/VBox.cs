@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts
 {
     /// <summary>
     /// Layout that orders MenuElements vertically.
@@ -15,8 +15,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
     {
         #region MemberVariables
 
-        private int _x;
-        private int _y;
         private int _verticalOffset;
         private List<MenuElement> _elements = new List<MenuElement>();
         private Action _functionality;
@@ -48,10 +46,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
 
         #endregion
 
-        public VBox(int x = 0, int y = 0, int verticalOffset = 0, Action functionality = null, params MenuElement[] elements)
+        public VBox(string name, int x, int y, int verticalOffset = 0, Action functionality = null, params MenuElement[] elements) : base(name, x, y)
         {
-            _x = x;
-            _y = y;
             _verticalOffset = verticalOffset;
             _functionality = functionality;
 

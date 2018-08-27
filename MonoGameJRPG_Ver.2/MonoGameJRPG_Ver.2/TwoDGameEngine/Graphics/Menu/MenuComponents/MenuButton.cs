@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
 {
     public class MenuButton : MenuElement
     {

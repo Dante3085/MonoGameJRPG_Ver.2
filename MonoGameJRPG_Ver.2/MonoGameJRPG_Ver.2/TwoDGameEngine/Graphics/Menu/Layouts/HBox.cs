@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts
 {
     /// <summary>
     /// Layout that orders MenuElements horizontally.

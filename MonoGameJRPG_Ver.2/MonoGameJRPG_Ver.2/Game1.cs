@@ -10,9 +10,9 @@ using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.Characters;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
@@ -78,9 +78,6 @@ namespace MonoGameJRPG_Ver._2
             gameConsole = new GameConsole(this, "german", Content);
             gameConsole.IsFullscreen = true;
 
-            time = new Time();
-            timeText = new Text(Contents.arial15, Contents.arial20, time.ToString());
-
             base.Initialize();
         }
 
@@ -97,13 +94,18 @@ namespace MonoGameJRPG_Ver._2
             #region InstantiateGraphicalContent
 
             // Fps
-            fpsText = new Text(Contents.arial12, Contents.arial15, "" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
+            fpsText = new Text("" + fps, 0, 0, () => { gameConsole.Log("Clicked me"); });
+
+            time = new Time();
+            timeText = new Text(time.ToString());
 
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
             mainMenu = MenuFactory.MainMenu(new Vector2(10, 10), this);
-            // mainMenu.Elements().Add(timeFpsBox = new VBox(10, screenHeight, elements: new MenuElement[] {timeText, fpsText}));
+            timeFpsBox = new VBox(10, screenHeight, elements: new MenuElement[] {timeText, fpsText});
+            ((VBox)mainMenu.Elements()[0]).Elements().Add(timeFpsBox);
+            
 
             #endregion
 
