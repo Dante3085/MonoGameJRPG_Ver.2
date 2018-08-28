@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine
 {
     /// <summary>
-    /// Holds Textures and SpriteFonts for loading and usage.
+    /// Utility class for storing and loading Textures and SpriteFonts.
     /// </summary>
     public static class Contents
     {
