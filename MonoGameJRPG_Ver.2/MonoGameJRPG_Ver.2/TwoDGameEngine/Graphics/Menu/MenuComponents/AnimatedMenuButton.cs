@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     /// <summary>
     /// MenuButton that uses an AnimatedSprite to animate itself.
@@ -17,49 +17,40 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
     {
         #region MemberVariables
 
-        /// <summary>
-        /// The functionality of the button.
-        /// </summary>
-        private Action _buttonFunctionality;
-
         #endregion
 
         #region Properties
 
-        /// <summary>
-        /// 
-        /// </summary>
         public override Rectangle Rectangle => _animSprite.BoundingBox;
 
         #endregion
 
-        public AnimatedMenuButton(AnimatedSprite animSprite, Action functionality = null) : base(animSprite)
+        public AnimatedMenuButton(string name, AnimatedSprite animSprite, int x = 0, int y = 0, Action functionality = null) 
+            : base(name, animSprite, x, y, functionality)
         {
-            _buttonFunctionality = functionality;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            MouseHoverReaction();
 
             if (OnLeftMouseClick())
                 ExecuteFunctionality();
         }
 
-        public override void ExecuteFunctionality()
-        {
-            _buttonFunctionality();
-        }
-
-        public override void ChangeFunctionality(Action functionality)
-        {
-            _buttonFunctionality = functionality;
-        }
-
         public override void MouseHoverReaction()
         {
             _animSprite.PlayAnimation(IsMouseHover() ? EAnimation.MouseHover : EAnimation.Idle);
+            if (IsMouseHover())
+                _animSprite.PlayAnimation(EAnimation.MouseHover);
+            else if ((!IsMouseHover()) && (!_cursorOnIt))
+                _animSprite.PlayAnimation(EAnimation.Idle);
+        }
+
+        public override void CursorReaction()
+        {
+            if (_cursorOnIt)
+                _animSprite.PlayAnimation(EAnimation.MouseHover);
         }
     }
 }

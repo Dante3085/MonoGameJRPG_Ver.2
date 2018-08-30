@@ -1,133 +1,102 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 {
-    /// <summary>
-    /// A Menu contains several MenuElements. A Menu itself is a MenuElement, so Menus can be nested.
-    /// // TODO: I am not shure about the additional utility this class will or can provide.
-    /// </summary>
-    public class Menu : MenuElement
+    public class Menu
     {
-        #region MemberVariables
+        private Layout _layout;
+        private int _cursoredElement;
 
-        private List<MenuElement> _menuElements;
-        private int _x;
-        private int _y;
-        private Rectangle _rec;
-
-        #endregion
-        #region Properties
-
-        public override int Width => CalcWidth();
-        public override int Height => CalcHeight();
-        public override int X
+        public Menu(Layout layout)
         {
-            get => _x;
-            set => _x = value;
-        }
-        public override int Y
-        {
-            get => _y;
-            set => _y = value;
+            _layout = layout;
+            _cursoredElement = 0;
         }
 
-        public override Rectangle Rectangle => _rec;
-
-        #endregion
-        #region Methods
-
-        public Menu(string name, List<MenuElement> menuElements, int x = 0, int y = 0) : base(name)
+        public void Update(GameTime gameTime)
         {
-            _menuElements = menuElements;
-            _x = x;
-            _y = y;
-            _rec = new Rectangle(x, y, Width, Height);
+            _layout.Update(gameTime);
+
+            _layout.Elements[_cursoredElement].CursorOnIt = true;
+            if (InputManager.GamePadConnected())
+                HandleGamePadInput();
+            else
+                HandleKeyboardInput();
         }
 
-        public MenuElement ElementByName(string name)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (MenuElement m in _menuElements)
-                if (m.Name.Equals(name))
-                    return m;
-            Console.WriteLine("@ElementByName(" + name + "): Element with given name does not exist! Returning null.");
-            return null;
+            _layout.Draw(spriteBatch);
         }
 
-        public List<MenuElement> Elements()
+        private void HandleKeyboardInput()
         {
-            return _menuElements;
-        }
+            List<MenuElement> elements = _layout.Elements;
 
-        public int CalcWidth()
-        {
-            int width = 0;
-            foreach (MenuElement m in _menuElements)
-                width += m.Width;
-            return width;
-        }
-
-        public int CalcHeight()
-        {
-            int height = 0;
-            foreach (MenuElement m in _menuElements)
-                height += m.Height;
-            return height;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            foreach (MenuElement m in _menuElements)
-                m.Update(gameTime);
-        }
-
-        public override void ExecuteFunctionality()
-        {
-            try
+            // Go backwards through element list.
+            if (InputManager.OnKeyDown(Keys.Up))
             {
-                throw new NotImplementedException();
+                elements[_cursoredElement].CursorOnIt = false;
+
+                // Cursor is at first element => Set Cursor to last element.
+                if (elements[_cursoredElement].Equals(elements[0]))
+                    _cursoredElement = elements.Count - 1;
+                else
+                    _cursoredElement--;
             }
-            catch (NotImplementedException e)
+
+            // Go forward through element list.
+            else if (InputManager.OnKeyDown(Keys.Down))
             {
-                Console.WriteLine(e.ToString());
+                elements[_cursoredElement].CursorOnIt = false;
+
+                // Cursor is at last element. Set cursor to first element.
+                if (elements[_cursoredElement].Equals(elements[elements.Count - 1]))
+                    _cursoredElement = 0;
+                else
+                    _cursoredElement++;
             }
+
+            // Execute Functionality of cursored element.
+            else if (InputManager.OnKeyDown(Keys.Enter))
+                elements[_cursoredElement].ExecuteFunctionality();
         }
 
-        public override void ChangeFunctionality(Action functionality)
+        private void HandleGamePadInput()
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (NotImplementedException e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
+            List<MenuElement> elements = _layout.Elements;
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (MenuElement m in _menuElements)
-                m.Draw(spriteBatch);
-        }
-
-        public override void MouseHoverReaction()
-        {
-            try
+            if (InputManager.OnButtonDown(Buttons.DPadUp))
             {
-                throw new NotImplementedException();
-            }
-            catch (NotImplementedException e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
+                elements[_cursoredElement].CursorOnIt = false;
 
-        #endregion
+                // Cursor is at first element => Set Cursor to last element.
+                if (elements[_cursoredElement].Equals(elements[0]))
+                    _cursoredElement = elements.Count - 1;
+                else
+                    _cursoredElement--;
+            }
+
+            else if (InputManager.OnButtonDown(Buttons.DPadDown))
+            {
+                elements[_cursoredElement].CursorOnIt = false;
+
+                // Cursor is at last element. Set cursor to first element.
+                if (elements[_cursoredElement].Equals(elements[elements.Count - 1]))
+                    _cursoredElement = 0;
+                else
+                    _cursoredElement++;
+            }
+
+            else if (InputManager.OnButtonDown(Buttons.A))
+                elements[_cursoredElement].ExecuteFunctionality();
+        }
     }
 }

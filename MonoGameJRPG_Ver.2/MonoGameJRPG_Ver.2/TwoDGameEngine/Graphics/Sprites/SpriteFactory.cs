@@ -66,9 +66,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             swordsman.AddAnimation(EAnimation.IdleDown, 4, 48, 43, 433, 0, new Vector2(0, 0), 5);
 
             // Movement Animations for each direction.
-            swordsman.AddAnimation(EAnimation.Left, 8, 50, 50, 100, 0, new Vector2(0, 0), 15);
+            swordsman.AddAnimation(EAnimation.Left, 8, 50, 50, 100, 0, new Vector2(0, 0), 12);
             swordsman.AddAnimation(EAnimation.Up, 12, 50, 50, 50, 0, new Vector2(0, 0), 15);
-            swordsman.AddAnimation(EAnimation.Right, 8, 50, 50, 100, 8, new Vector2(0, 0), 15);
+            swordsman.AddAnimation(EAnimation.Right, 8, 50, 50, 100, 8, new Vector2(0, 0), 12);
             swordsman.AddAnimation(EAnimation.Down, 12, 50, 50, 0, 0, new Vector2(0, 0), 15);
 
             swordsman.PlayAnimation(EAnimation.Idle);
@@ -119,7 +119,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             return discoButton;
         }
-
         public static AnimatedSprite Heart(Vector2 position)
         {
             AnimatedSprite heart = new AnimatedSprite("Heart", Contents.heart, position, 1);

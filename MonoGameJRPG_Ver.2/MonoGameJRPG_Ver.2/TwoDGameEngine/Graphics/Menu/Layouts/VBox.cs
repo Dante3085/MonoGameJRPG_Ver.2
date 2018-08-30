@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layouts
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
 {
     /// <summary>
     /// Layout that orders MenuElements vertically.
@@ -16,8 +17,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layout
         #region MemberVariables
 
         private int _verticalOffset;
-        private List<MenuElement> _elements = new List<MenuElement>();
-        private Action _functionality;
         private Rectangle _rec;
 
         #endregion
@@ -26,16 +25,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layout
 
         public override int Width => WidthWidestElement();
         public override int Height => CalcHeight();
-        public override int X
-        {
-            get => _x;
-            set => _x = value;
-        }
-        public override int Y
-        {
-            get => _y;
-            set => _y = value;
-        }
+
         public override int Offset
         {
             get => _verticalOffset;
@@ -46,20 +36,23 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layout
 
         #endregion
 
-        public VBox(string name, int x, int y, int verticalOffset = 0, Action functionality = null, params MenuElement[] elements) : base(name, x, y)
+        public VBox(string name, int x = 0, int y = 0, int verticalOffset = 0, Action functionality = null, params MenuElement[] elements) 
+            : base(name, x, y, functionality, elements)
         {
             _verticalOffset = verticalOffset;
-            _functionality = functionality;
-
-            if (elements != null)
-            {
-                _elements.AddRange(elements);
-                OrderElements();
-            }
-            else
-                _elements = new List<MenuElement>();
-
+            OrderElements();
             _rec = new Rectangle(x, y, Width, Height);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            // Update rec.
+            _rec.X = _x;
+            _rec.Y = _y;
+            _rec.Width = Width;
+            _rec.Height = Height;
         }
 
         /// <summary>
@@ -127,34 +120,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layout
             }
         }
 
-        public override List<MenuElement> Elements()
-        {
-            return _elements;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            foreach (MenuElement m in _elements)
-                m.Update(gameTime);
-            OrderElements();
-
-            // Update rec.
-            _rec.X = _x;
-            _rec.Y = _y;
-            _rec.Width = Width;
-            _rec.Height = Height;
-        }
-
-        public override void ExecuteFunctionality()
-        {
-            _functionality();
-        }
-
-        public override void ChangeFunctionality(Action functionality)
-        {
-            _functionality = functionality;
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (MenuElement m in _elements)
@@ -163,7 +128,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.Layout
 
         public override void MouseHoverReaction()
         {
-            // TODO
+            throw new NotImplementedException();
+        }
+
+        public override void CursorReaction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

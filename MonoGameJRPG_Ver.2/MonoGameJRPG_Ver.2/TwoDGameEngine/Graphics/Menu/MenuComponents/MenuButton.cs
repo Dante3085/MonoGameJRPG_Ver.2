@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     public class MenuButton : MenuElement
     {
@@ -22,21 +22,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
         private Rectangle _buttonRec;
         private Rectangle[] _buttonRecLines = {new Rectangle(), new Rectangle(), new Rectangle(), new Rectangle(),};
 
-        private Action _buttonFunctionality;
         #endregion
 
         #region Properties
-        public override int X
-        {
-            get => _buttonRec.X;
-            set => _buttonRec.X = value;
-        }
-
-        public override int Y
-        {
-            get => _buttonRec.Y;
-            set => _buttonRec.Y = value;
-        }
 
         public override int Width => _buttonRec.Width;
         public override int Height => _buttonRec.Height;
@@ -45,11 +33,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
 
         #endregion
 
-        public MenuButton(Texture2D buttonTextureNoHover, Texture2D buttonTextureHover, int x = 0, int y = 0, Action function = null)
+        public MenuButton(string name, Texture2D buttonTextureNoHover, Texture2D buttonTextureHover, int x = 0, int y = 0, Action functionality = null) : base(name, x, y, functionality)
         {
             _buttonTextureNoHover = buttonTextureNoHover;
             _buttonTextureHover = buttonTextureHover;
-            _buttonFunctionality = function;
 
             _activeButtonTexture = buttonTextureNoHover;
 
@@ -64,26 +51,18 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
                 Util.DrawRectangle(spriteBatch, _buttonRec, _buttonRecLines, Contents.rectangleTex, Color.Blue);
         }
 
-        public override void ExecuteFunctionality()
-        {
-            _buttonFunctionality();
-        }
-
-        /// <summary>
-        /// Changes MenuButton's functionality to the given one.
-        /// </summary>
-        /// <param name="functionality"></param>
-        public override void ChangeFunctionality(Action functionality)
-        {
-            _buttonFunctionality = functionality;
-        }
-
         public override void Update(GameTime gameTime)
         {
-            MouseHoverReaction();
+            base.Update(gameTime);
 
             if (OnLeftMouseClick())
                 ExecuteFunctionality();
+
+            // TODO: Weiß nicht, ob alle Zuweisungen hier nötig sind. Einige aber schon. Sonst kann der Button im Layout nicht korrekt angebracht werden.
+            _buttonRec.X = _x;
+            _buttonRec.Y = _y;
+            _buttonRec.Width = _activeButtonTexture.Width;
+            _buttonRec.Height = _activeButtonTexture.Height;
         }
 
         /// <summary>
@@ -92,6 +71,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
         public override void MouseHoverReaction()
         {
             _activeButtonTexture = IsMouseHover() ? _buttonTextureHover : _buttonTextureNoHover;
+        }
+
+        public override void CursorReaction()
+        {
+            if (_cursorOnIt)
+                _activeButtonTexture = _buttonTextureHover;
         }
     }
 }

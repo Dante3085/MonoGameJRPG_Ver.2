@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuComponents
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     public abstract class AnimatedMenuElement : MenuElement
     {
@@ -20,22 +20,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
 
         public override int Width => _animSprite.Width;
         public override int Height => _animSprite.Height;
-        public override int X
-        {
-            get => (int) _animSprite._position.X;
-            set => _animSprite._position.X = value;
-        }
-        public override int Y
-        {
-            get => (int) _animSprite._position.Y;
-            set => _animSprite._position.Y = value;
-        }
 
         public AnimatedSprite AnimatedSprite => _animSprite;
 
         #endregion
 
-        protected AnimatedMenuElement(AnimatedSprite animSprite)
+        protected AnimatedMenuElement(string name, AnimatedSprite animSprite, int x = 0, int y = 0, Action functionality = null) 
+            : base(name, x, y, functionality)
         {
             _animSprite = animSprite;
         }
@@ -48,7 +39,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents.MenuCo
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             _animSprite.Update(gameTime);
+
+            _animSprite._position.X = _x;
+            _animSprite._position.Y = _y;
         }
         #endregion
     }

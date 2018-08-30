@@ -51,6 +51,7 @@
     <Compile Include="TwoDGameEngine\GameLogic\IInteractable.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\StateFactory.cs" />
     <Compile Include="TwoDGameEngine\GameObject.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Camera\Camera.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Contents.cs" />
     <Compile Include="TwoDGameEngine\GameConsole\Command.cs" />
     <Compile Include="TwoDGameEngine\GameConsole\CommandEventArgs.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="TwoDGameEngine\Graphics\Menu\Menu.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuButton.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuElement.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\ElementNotFoundException.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\HeartHealthbar.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuButton.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuElement.cs" />

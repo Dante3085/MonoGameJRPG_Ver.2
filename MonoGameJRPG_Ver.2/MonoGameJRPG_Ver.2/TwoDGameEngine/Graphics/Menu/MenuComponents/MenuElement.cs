@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,66 +17,62 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
     {
         #region MemberVariables
 
-        private int _x;
-        private int _y;
-        private string _name;
-        private List<MenuElement> _elements;
+        protected string _name;
+        protected int _x;
+        protected int _y;
+        protected Action _functionality;
+        protected bool _cursorOnIt = false;
 
         #endregion
         #region Properties
 
         public string Name => _name;
-        public List<MenuElement> Elements => _elements;
 
-        #endregion
-        #region AbstractProperties
+        public int X
+        {
+            get => _x;
+            set => _x = value;
+        }
+
+        public int Y
+        {
+            get => _y;
+            set => _y = value;
+        }
+
+        public bool CursorOnIt
+        {
+            get => _cursorOnIt;
+            set => _cursorOnIt = value;
+        }
 
         public abstract int Width { get; }
         public abstract int Height { get; }
 
-        public abstract int X { get; set; }
-        public abstract int Y { get; set; }
-
         public abstract Rectangle Rectangle { get; }
 
         #endregion
-        #region Constructors
+        #region Methods
 
-        public MenuElement(string name)
+        protected MenuElement(string name, int x = 0, int y = 0, Action functionality = null)
         {
             _name = name;
+            _x = x;
+            _y = y;
+            _functionality = functionality;
+
+            if (_functionality == null)
+                _functionality = () => { Game1.gameConsole.Log(Name + " has no functionality set!"); };
         }
-
-        #endregion
-        #region ImplementedMethods
-
-        public MenuElement ElementByName(string name)
-        {
-            foreach (MenuElement m in _elements)
-                if (m.Name.Equals(name))
-                    return m;
-            Console.WriteLine("@ElementByName(" + name + "): Element specified by name does not exist! Returning null.");
-            return null;
-        }
-
-        #endregion
-        #region AbstractMethods
 
         /// <summary>
         /// Updates the MenuElement.
         /// </summary>
-        public abstract void Update(GameTime gameTime);
-
-        /// <summary>
-        /// Executes MenuElement's functionality.
-        /// </summary>
-        public abstract void ExecuteFunctionality();
-
-        /// <summary>
-        /// Changes MenuElements functionality to given functionality.
-        /// </summary>
-        /// <param name="functionality"></param>
-        public abstract void ChangeFunctionality(Action functionality);
+        public virtual void Update(GameTime gameTime)
+        {
+            MouseHoverReaction();
+            CursorReaction();
+        }
 
         /// <summary>
         /// Draws the MenuElement on screen with use of SpriteBatch.
@@ -87,6 +84,34 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         /// Override this method to describe behaviour of this MenuElement on MouseHover.
         /// </summary>
         public abstract void MouseHoverReaction();
+
+        /// <summary>
+        /// Override this method to describe behaviour of this MenuElement when a Cursor is on it.
+        /// </summary>
+        public abstract void CursorReaction();
+
+        /// <summary>
+        /// Executes MenuElement's functionality.
+        /// </summary>
+        public virtual void ExecuteFunctionality()
+        {
+            if (_functionality != null)
+            {
+                _functionality();
+                // oder _functionality.Invoke();
+            }
+            else
+                Game1.gameConsole.Log(_name + "'s doesn't have any functionality!");
+        }
+
+        /// <summary>
+        /// Changes MenuElements functionality to given functionality.
+        /// </summary>
+        /// <param name="functionality"></param>
+        public void ChangeFunctionality(Action functionality)
+        {
+            _functionality = functionality;
+        }
 
         /// <summary>
         /// Gets whether or not Mouse is hovering over this MenuElement-
