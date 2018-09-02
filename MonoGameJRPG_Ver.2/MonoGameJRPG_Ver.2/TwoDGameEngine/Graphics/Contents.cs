@@ -26,6 +26,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D glowingButton;
         public static Texture2D discoButton;
         public static Texture2D heart;
+        public static Texture2D xboxButtons_A;
 
         #endregion
         #region Characters
@@ -69,6 +70,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             glowingButton = c.Load<Texture2D>("MenuComponents/GlowingButton");
             discoButton = c.Load<Texture2D>("MenuComponents/DiscoButton");
             heart = c.Load<Texture2D>("MenuComponents/Heart");
+            xboxButtons_A = c.Load<Texture2D>("MenuComponents/XboxButtons_A");
 
             warrior = c.Load<Texture2D>("Characters/warrior");
             bowlingBall = c.Load<Texture2D>("Characters/BowlingBall");

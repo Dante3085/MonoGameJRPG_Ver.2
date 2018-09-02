@@ -13,7 +13,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
     public class Sprite : GameObject, ICollidable
     {
-        public static bool drawBoundingBox = false;
+        public static bool drawBoundingBox = true;
 
         #region MemberVariables
 
@@ -26,6 +26,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Remembers if this Sprite is playerControlled or not.
         /// </summary>
         protected bool _isPlayerControlled;
+
+        /// <summary>
+        /// Remembers if this Sprite can be interacted with.
+        /// </summary>
+        protected bool _isInteractable;
+
+        /// <summary>
+        /// Remembers if this Sprite's interactionPrompt should be drawn.
+        /// </summary>
+        protected bool _drawInteractionPrompt;
 
         /// <summary>
         /// Stores this Sprite's texture.
@@ -99,6 +109,27 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// </summary>
         public bool IsPlayerControlled => _isPlayerControlled;
 
+        protected bool _collisionDetected = false;
+
+        /// <summary>
+        /// Remembers if this Sprite can be interacted with.
+        /// </summary>
+        public bool IsInteractable
+        {
+            get => _isInteractable;
+            set => _isInteractable = value;
+        }
+
+        /// <summary>
+        /// Gets or sets whether InteractionPrompt of this Sprite should be drawn.
+        /// Has same name as private method => prefix: Prop_
+        /// </summary>
+        public bool Prop_DrawInteractionPrompt
+        {
+            get => _drawInteractionPrompt;
+            set => _drawInteractionPrompt = value;
+        }
+
         /// <summary>
         /// This Sprite's KeyboardInput.
         /// </summary>
@@ -120,6 +151,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #endregion
 
         /// <summary>
+        /// Enum for specifying which side the interactionPrompt should be drawn at.
+        /// </summary>
+        protected enum Side
+        {
+            Left,
+            Top,
+            Right,
+            Bottom
+        }
+
+        /// <summary>
         /// Constructs a Sprite meant for a player to controll it => It can respond to input and has a PlayerIndex.
         /// </summary>
         /// <param name="name"></param>
@@ -128,8 +170,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="keyboardInput"></param>
         /// <param name="gamePadInput"></param>
         /// <param name="playerIndex"></param>
+        /// <param name="isInteractable"></param>
         public Sprite(string name, Texture2D texture, Vector2 position, KeyboardInput keyboardInput = null,
-            GamePadInput gamePadInput = null, PlayerIndex playerIndex = PlayerIndex.One)
+            GamePadInput gamePadInput = null, PlayerIndex playerIndex = PlayerIndex.One, bool isInteractable = false)
         {
             _isPlayerControlled = true;
 
@@ -139,8 +182,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _keyboardInput = keyboardInput;
             _gamePadInput = gamePadInput;
             _playerIndex = playerIndex;
+            _isInteractable = isInteractable;
 
             _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
+            // HandleConstructorDefaults();
         }
 
         /// <summary>
@@ -149,27 +195,98 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="name"></param>
         /// <param name="texture"></param>
         /// <param name="position"></param>
-        public Sprite(string name, Texture2D texture, Vector2 position)
+        /// <param name="isInteractable"></param>
+        public Sprite(string name, Texture2D texture, Vector2 position, bool isInteractable = false)
         {
             _isPlayerControlled = false;
 
             _name = name;
             _texture = texture;
             _position = position;
+            _isInteractable = isInteractable;
 
             _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
+            // HandleConstructorDefaults();
         }
+
+        ///// <summary>
+        ///// Performs various assignments for default values passed in the constructors.
+        ///// </summary>
+        //private void HandleConstructorDefaults()
+        //{
+        //    // No Input specification passed => Default KeyboardInput
+        //    if (_keyboardInput == null && _gamePadInput == null)
+        //    {
+        //        _keyboardInput = new KeyboardInput()
+        //        {
+        //            Left = Keys.A,
+        //            Up = Keys.W,
+        //            Right = Keys.D,
+        //            Down = Keys.S
+        //        };
+        //    }
+        //}
 
         /// <summary>
         /// Draw this Sprite with passed SpriteBatch.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, List<Sprite> sprites = null)
         {
             spriteBatch.Draw(_texture, _position, Color.White);
 
+            if (_drawInteractionPrompt)
+                DrawInteractionPrompt(spriteBatch, Side.Top);
+
+            if (sprites != null)
+                foreach (Sprite a in sprites)
+                    if (this.CollidesWith(a))
+                        _collisionDetected = true;
+
             if (drawBoundingBox)
-                Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue);
+            {
+                if (_collisionDetected)
+                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Red);
+                else
+                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue);
+            }
+
+            // Reset flag for collision detection.
+            _collisionDetected = false;
+        }
+
+        /// <summary>
+        /// Draws this Sprite's InteractioPrompt on the specified side.
+        /// </summary>
+        protected void DrawInteractionPrompt(SpriteBatch spriteBatch, Side side)
+        {
+            Vector2 position = _position;
+            switch (side)
+            {
+                case Side.Left:
+                {
+                    //spriteBatch.Draw(Contents.xboxButtons_A, );
+                    break;
+                }
+
+                case Side.Top:
+                {
+                    position.Y -= Contents.xboxButtons_A.Height;
+                    spriteBatch.Draw(Contents.xboxButtons_A, position, Color.White);
+                    break;
+                }
+
+                case Side.Right:
+                {
+                    break;
+                }
+
+                case Side.Bottom:
+                {
+                    break;
+                }
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -277,7 +394,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         {
             // This can't collide with itself => Return false.
             if (this.Equals(partner))
+            {
+                Game1.gameConsole.Log(this.Name + " is equal to " + partner.Name);
                 return false;
+            }
 
             // Return whether or not this collides with partner.
             return this._boundingBox.Intersects(partner.BoundingBox);

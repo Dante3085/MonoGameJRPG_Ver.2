@@ -66,7 +66,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         private bool _isAttacking = false;
         private bool _playingAnimation = false;
-        private bool _collisionDetected = false;
 
         #endregion
 
@@ -87,7 +86,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="texture"></param>
         /// <param name="keyboardInput"></param>
         /// <param name="gamePadInput"></param>
-        public AnimatedSprite(string name, Texture2D texture, Vector2 position, PlayerIndex playerIndex, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null) : base(name, texture, position, keyboardInput, gamePadInput, playerIndex)
+        public AnimatedSprite(string name, Texture2D texture, Vector2 position, PlayerIndex playerIndex, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null, bool isInteractable = false) 
+            : base(name, texture, position, keyboardInput, gamePadInput, playerIndex, isInteractable)
         {
             _isPlayerControlled = true;
             Fps = fps;
@@ -100,7 +100,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="position"></param>
         /// <param name="texture"></param>
         /// <param name="fps"></param>
-        public AnimatedSprite(string name, Texture2D texture, Vector2 position, int fps = 20) : base(name, texture, position)
+        public AnimatedSprite(string name, Texture2D texture, Vector2 position, int fps = 20, bool isInteractable = false) 
+            : base(name, texture, position, isInteractable)
         {
             _isPlayerControlled = false;
             Fps = fps;
@@ -351,6 +352,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         public void Draw(SpriteBatch spriteBatch, List<AnimatedSprite> animSprites = null)
         {
             spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
+
+            if (_drawInteractionPrompt)
+                DrawInteractionPrompt(spriteBatch, Side.Top);
 
             // Set _collisionDetected to true if collision happened.
             // This construct just detects if any collision happened. Not how many etc.

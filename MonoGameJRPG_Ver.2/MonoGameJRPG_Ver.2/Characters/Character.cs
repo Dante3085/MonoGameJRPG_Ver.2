@@ -196,14 +196,7 @@ namespace MonoGameJRPG_Ver._2.Characters
             // NO KEYBOARDINPUT PASSED
             if (_keyboardInput == null)
             {
-                _keyboardInput = new KeyboardInput()
-                {
-                    Left = Keys.A,
-                    Up = Keys.W,
-                    Right = Keys.D,
-                    Down = Keys.S,
-                    Interact = Keys.Space
-                };
+                _keyboardInput = KeyboardInput.None();
             }
 
             // NO GAMEPADINPUT PASSED
@@ -279,8 +272,12 @@ namespace MonoGameJRPG_Ver._2.Characters
         private void CheckCollisions(List<Character> characters)
         {
             foreach (Character c in characters)
+            {
                 if (this.AnimatedSprite.CollidesWith(c.AnimatedSprite))
                     HandleCollision(c);
+                else
+                    c.AnimatedSprite.Prop_DrawInteractionPrompt = false;
+            }
         }
 
         /// <summary>
@@ -294,6 +291,9 @@ namespace MonoGameJRPG_Ver._2.Characters
                 _isAttacking = false;
                 UseCurrentAction(target);
             }
+
+            if (target.AnimatedSprite.IsInteractable)
+                target.AnimatedSprite.Prop_DrawInteractionPrompt = true;
         }
 
         private void UseCurrentAction(Character target)

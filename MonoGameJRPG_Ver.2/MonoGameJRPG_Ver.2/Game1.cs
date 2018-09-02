@@ -42,6 +42,9 @@ namespace MonoGameJRPG_Ver._2
         #region Test
 
         private Menu mainMenu;
+        private List<Character> characters = new List<Character>();
+        private Character player;
+        private Character npc;
 
         #endregion
         #endregion
@@ -104,6 +107,14 @@ namespace MonoGameJRPG_Ver._2
 
             mainMenu = new Menu(MenuFactory.MainMenu(Vector2.Zero, this));
 
+            // Kollision der beiden Charaktere funktioniert nicht, weil System denkt, dass beide gleich sind.
+            player = new Character(isPlayerControlled: true, animatedSprite: SpriteFactory.Swordsman(Vector2.Zero), keyboardInput: KeyboardInput.Default());
+            AnimatedSprite animSprite = new AnimatedSprite("d", Contents.swordsman, new Vector2(100, 100), isInteractable: true);
+            animSprite.AddAnimation(EAnimation.Idle, 1, 50, 50, 0, 0, Vector2.Zero, 1);
+            npc = new Character(animatedSprite: animSprite);
+            characters.Add(player);
+            characters.Add(npc);
+
             #endregion
 
             #endregion
@@ -150,6 +161,8 @@ namespace MonoGameJRPG_Ver._2
                 Exit();
 
             mainMenu.Update(gameTime);
+            foreach(Character c in characters)
+                c.Update(gameTime, characters);
 
             #endregion
 
@@ -174,6 +187,8 @@ namespace MonoGameJRPG_Ver._2
             #region Test
 
             mainMenu.Draw(spriteBatch);
+            foreach(Character c in characters)
+                c.Draw(spriteBatch);
 
             #endregion
 
