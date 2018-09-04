@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine;
 using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
-    public class Sprite : GameObject, ICollidable
+    public class Sprite : GameObject, ICollidable, IEntity, IInputable
     {
         public static bool drawBoundingBox = true;
 
@@ -66,6 +69,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// GamePadInput for controlling this Sprite with a GamePad.
         /// </summary>
         protected GamePadInput _gamePadInput;
+
+        /// <summary>
+        /// Describes collision behaviour. Should be called in "HandleCollision()" Method.
+        /// </summary>
+        protected Action<ICollidable> _collisionHandler;
 
         #region BoundingBox
 
@@ -148,6 +156,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             set => _gamePadInput = value;
         }
 
+        public Action<ICollidable> CollisionHandler
+        {
+            get => _collisionHandler;
+            set => _collisionHandler = value;
+        }
+
         #endregion
 
         /// <summary>
@@ -172,7 +186,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="playerIndex"></param>
         /// <param name="isInteractable"></param>
         public Sprite(string name, Texture2D texture, Vector2 position, KeyboardInput keyboardInput = null,
-            GamePadInput gamePadInput = null, PlayerIndex playerIndex = PlayerIndex.One, bool isInteractable = false)
+            GamePadInput gamePadInput = null, PlayerIndex playerIndex = PlayerIndex.One, bool isInteractable = false,
+            Action<ICollidable> collisionHandler = null)
         {
             _isPlayerControlled = true;
 
@@ -183,10 +198,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _gamePadInput = gamePadInput;
             _playerIndex = playerIndex;
             _isInteractable = isInteractable;
+            _collisionHandler = collisionHandler;
 
             _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
-            // HandleConstructorDefaults();
+            if (_collisionHandler == null)
+            {
+                _collisionHandler = partner =>
+                {
+                    Game1.gameConsole.Log("Collision[" + Name + "|" + partner.Name + "]: No behaviour specified!");
+                };
+            }
         }
 
         /// <summary>
@@ -196,7 +218,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="texture"></param>
         /// <param name="position"></param>
         /// <param name="isInteractable"></param>
-        public Sprite(string name, Texture2D texture, Vector2 position, bool isInteractable = false)
+        public Sprite(string name, Texture2D texture, Vector2 position, bool isInteractable = false,
+            Action<ICollidable> collisionHandler = null)
         {
             _isPlayerControlled = false;
 
@@ -204,45 +227,46 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _texture = texture;
             _position = position;
             _isInteractable = isInteractable;
+            _collisionHandler = collisionHandler;
 
             _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
-            // HandleConstructorDefaults();
         }
 
-        ///// <summary>
-        ///// Performs various assignments for default values passed in the constructors.
-        ///// </summary>
-        //private void HandleConstructorDefaults()
-        //{
-        //    // No Input specification passed => Default KeyboardInput
-        //    if (_keyboardInput == null && _gamePadInput == null)
-        //    {
-        //        _keyboardInput = new KeyboardInput()
-        //        {
-        //            Left = Keys.A,
-        //            Up = Keys.W,
-        //            Right = Keys.D,
-        //            Down = Keys.S
-        //        };
-        //    }
-        //}
+        public virtual void Update(GameTime gameTime)
+        {
+            // Only handle input if Sprite is playerControlled.
+            if (_isPlayerControlled)
+            {
+                // If GamePad is connected, handle it's input. Else, handle Keyboard's input.
+                if (InputManager.GamePadConnected())
+                    HandleGamePadInput();
+                else
+                    HandleKeyboardInput();
+            }
+
+            // Apply Velocity to Position.
+            _position.X += (float)((double)_velocity.X * gameTime.ElapsedGameTime.TotalSeconds);
+            _position.Y += (float)((double)_velocity.Y * gameTime.ElapsedGameTime.TotalSeconds);
+
+            // Update BoundingBox.
+            _boundingBox.X = (int)_position.X;
+            _boundingBox.Y = (int)_position.Y;
+
+            // Reset Velocity. Prevents Sprite from moving without there being actual input.
+            _velocity = Vector2.Zero;
+        }
 
         /// <summary>
         /// Draw this Sprite with passed SpriteBatch.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch, List<Sprite> sprites = null)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, Color.White);
 
             if (_drawInteractionPrompt)
                 DrawInteractionPrompt(spriteBatch, Side.Top);
-
-            if (sprites != null)
-                foreach (Sprite a in sprites)
-                    if (this.CollidesWith(a))
-                        _collisionDetected = true;
 
             if (drawBoundingBox)
             {
@@ -273,6 +297,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 case Side.Top:
                 {
                     position.Y -= Contents.xboxButtons_A.Height;
+                    position.X += Contents.xboxButtons_A.Width - 2;
                     spriteBatch.Draw(Contents.xboxButtons_A, position, Color.White);
                     break;
                 }
@@ -287,30 +312,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                     break;
                 }
             }
-        }
-
-        public virtual void Update(GameTime gameTime)
-        {
-            // Only handle input if Sprite is playerControlled.
-            if (_isPlayerControlled)
-            {
-                // If GamePad is connected, handle it's input. Else, handle Keyboard's input.
-                if (GamePad.GetState(_playerIndex).IsConnected)
-                    HandleGamePadInput();
-                else
-                    HandleKeyboardInput();
-            }
-
-            // Apply Velocity to Position.
-            _position.X += (float)((double)_velocity.X * gameTime.ElapsedGameTime.TotalSeconds);
-            _position.Y += (float)((double)_velocity.Y * gameTime.ElapsedGameTime.TotalSeconds);
-
-            // Update BoundingBox.
-            _boundingBox.X = (int)_position.X;
-            _boundingBox.Y = (int)_position.Y;
-
-            // Reset Velocity. Prevents Sprite from moving without there being actual input.
-            _velocity = Vector2.Zero;
         }
 
         #region Movement
@@ -383,6 +384,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         #endregion
         #region Collision
+
         /// <summary>
         /// Checks whether or not this Sprite collides with partner.
         /// For this check each Sprite's BoundingBoxes are used.
@@ -392,16 +394,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <returns></returns>
         public virtual bool CollidesWith(ICollidable partner)
         {
-            // This can't collide with itself => Return false.
-            if (this.Equals(partner))
-            {
-                Game1.gameConsole.Log(this.Name + " is equal to " + partner.Name);
-                return false;
-            }
-
-            // Return whether or not this collides with partner.
-            return this._boundingBox.Intersects(partner.BoundingBox);
+            // true: Es wird nicht mit sich selbst verglichen und die BoundingBoxen überschneiden sich. false: sonst.
+            return !this.Equals(partner) && this._boundingBox.Intersects(partner.BoundingBox);
         }
+
+        /// <summary>
+        /// Called in case of collision. Handles collision.
+        /// </summary>
+        /// <param name="partner"></param>
+        public void HandleCollision(ICollidable partner)
+        {
+            _collisionDetected = true;
+            _collisionHandler(partner);
+        }
+
         #endregion
 
         /// <summary>

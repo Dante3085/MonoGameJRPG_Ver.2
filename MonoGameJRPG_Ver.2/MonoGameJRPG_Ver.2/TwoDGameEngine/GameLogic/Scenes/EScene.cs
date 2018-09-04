@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.States
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
 {
-    public enum EState
+    public enum EScene
     {
-        MainMenuState,
-        FirstMapState,
-        InventoryState,
+        MainMenuScene,
+        FirstLevelScene,
+        InventoryScene,
 
         #region Combat
         BattleTick,

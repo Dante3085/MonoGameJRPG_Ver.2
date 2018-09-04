@@ -20,7 +20,6 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         public Buttons Run { get; set; }
         public Buttons Interact { get; set; }
         #endregion
-
         #region Combat
         public Buttons CursorLeft { get; set; }
         public Buttons CursorUp { get; set; }
@@ -30,6 +29,26 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         public Buttons Back { get; set; }
 
         public Buttons Attack { get; set; } // DELETE ME LATER
+        #endregion
+        #region Methods
+
+        /// <summary>
+        /// Returns GamePadInput with default Layout.
+        /// </summary>
+        /// <returns></returns>
+        public static GamePadInput Default()
+        {
+            return new GamePadInput()
+            {
+                Left = Buttons.LeftThumbstickLeft,
+                Up = Buttons.LeftThumbstickUp,
+                Right = Buttons.LeftThumbstickRight,
+                Down = Buttons.LeftThumbstickDown,
+                Run = Buttons.RightShoulder,
+                Interact = Buttons.A
+            };
+        }
+
         #endregion
     }
 }

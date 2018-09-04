@@ -48,7 +48,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         {
             Texture2D swordsmanTex = Contents.swordsman;
 
-            AnimatedSprite swordsman = new AnimatedSprite("Swordsman", swordsmanTex, position, PlayerIndex.One, 5, isInteractable: true);
+            AnimatedSprite swordsman = new AnimatedSprite
+                ("Swordsman", swordsmanTex, position, PlayerIndex.One, 5, isInteractable: true, keyboardInput: KeyboardInput.None());
 
             // Idle Animation that is played on startup
             swordsman.AddAnimation(EAnimation.Idle, 4, 48, 43, 433, 0, new Vector2(0, 0), 5);

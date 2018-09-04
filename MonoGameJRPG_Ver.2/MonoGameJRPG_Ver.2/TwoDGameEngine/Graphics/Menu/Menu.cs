@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine;
 using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 {
-    public class Menu
+    public class Menu : GameObject, IEntity, IInputable
     {
         private Layout _layout;
         private int _cursoredElement;
@@ -36,7 +38,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
             _layout.Draw(spriteBatch);
         }
 
-        private void HandleKeyboardInput()
+        public void HandleKeyboardInput()
         {
             List<MenuElement> elements = _layout.Elements;
 
@@ -69,7 +71,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                 elements[_cursoredElement].ExecuteFunctionality();
         }
 
-        private void HandleGamePadInput()
+        public void HandleGamePadInput()
         {
             List<MenuElement> elements = _layout.Elements;
 

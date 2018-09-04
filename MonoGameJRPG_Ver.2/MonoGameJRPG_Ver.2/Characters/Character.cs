@@ -10,6 +10,7 @@ using MonoGameJRPG.TwoDGameEngine;
 using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 
 namespace MonoGameJRPG_Ver._2.Characters
@@ -19,7 +20,7 @@ namespace MonoGameJRPG_Ver._2.Characters
     /// RevengeSystem: If a Character gets continuously bashed by enemy attacks without having the chance to act against that or
     ///                just being completely overwhelmed, he can force himself out of the situation by executing a RevengeSkill.
     /// </summary>
-    public class Character : GameObject, IInputable/*, IInteractable*/
+    public class Character : GameObject, IInputable, IEntity
     {
         #region MemberVariables
 
@@ -228,7 +229,7 @@ namespace MonoGameJRPG_Ver._2.Characters
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="characters"></param>
-        public void Update(GameTime gameTime, List<Character> characters)
+        public void Update(GameTime gameTime)
         {
             _animatedSprite.Update(gameTime);
 
@@ -237,9 +238,6 @@ namespace MonoGameJRPG_Ver._2.Characters
                 HandleGamePadInput();
             else
                 HandleKeyboardInput();
-
-            if (characters != null)
-                CheckCollisions(characters);
 
             // TODO: Verkapseln. Sorgt dafür, dass _isAttacking auf false gesetzt wird, wenn die Angriffsanimation vorbei ist.
             if (!_animatedSprite.PlayingAnimation)

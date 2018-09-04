@@ -59,7 +59,7 @@ namespace VosSoft.Xna.GameConsole
 
         /// <summary>
         /// <para>Gets or sets if the command will be added to the input history.</para>
-        /// <para>If you change this in your method, the original state will be restored
+        /// <para>If you change this in your method, the original scene will be restored
         /// after the command is executed.</para>
         /// </summary>
         public bool AddToHistory { get; set; }

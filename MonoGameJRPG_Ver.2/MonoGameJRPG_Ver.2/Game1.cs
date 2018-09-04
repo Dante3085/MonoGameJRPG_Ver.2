@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,7 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
 
@@ -39,12 +41,10 @@ namespace MonoGameJRPG_Ver._2
         private Time time;
         private VBox timeFpsBox;
 
-        #region Test
+        public SceneStack _sceneStack;
+        private CollisionManager collisionManager;
 
-        private Menu mainMenu;
-        private List<Character> characters = new List<Character>();
-        private Character player;
-        private Character npc;
+        #region Test
 
         #endregion
         #endregion
@@ -61,7 +61,7 @@ namespace MonoGameJRPG_Ver._2
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
         }
 
         public void ExitGame()
@@ -105,15 +105,17 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            mainMenu = new Menu(MenuFactory.MainMenu(Vector2.Zero, this));
+            Character player = new Character("Player", isPlayerControlled: true, keyboardInput: KeyboardInput.Default(), animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
+            Character npc = new Character("Npc", isPlayerControlled: true, gamePadInput: GamePadInput.Default(), animatedSprite: SpriteFactory.Swordsman(new Vector2(100, 100)));
 
-            // Kollision der beiden Charaktere funktioniert nicht, weil System denkt, dass beide gleich sind.
-            player = new Character(isPlayerControlled: true, animatedSprite: SpriteFactory.Swordsman(Vector2.Zero), keyboardInput: KeyboardInput.Default());
-            AnimatedSprite animSprite = new AnimatedSprite("d", Contents.swordsman, new Vector2(100, 100), isInteractable: true);
-            animSprite.AddAnimation(EAnimation.Idle, 1, 50, 50, 0, 0, Vector2.Zero, 1);
-            npc = new Character(animatedSprite: animSprite);
-            characters.Add(player);
-            characters.Add(npc);
+            collisionManager = new CollisionManager(player.AnimatedSprite, npc.AnimatedSprite);
+
+            _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
+            {
+                { EScene.MainMenuScene, SceneFactory.MainMenuScene(this) },
+                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc) }
+            });
+            _sceneStack.Push(EScene.MainMenuScene);
 
             #endregion
 
@@ -160,9 +162,8 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            mainMenu.Update(gameTime);
-            foreach(Character c in characters)
-                c.Update(gameTime, characters);
+            collisionManager.CheckCollisions();
+            _sceneStack.Update(gameTime);
 
             #endregion
 
@@ -186,9 +187,7 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            mainMenu.Draw(spriteBatch);
-            foreach(Character c in characters)
-                c.Draw(spriteBatch);
+            _sceneStack.Draw(spriteBatch);
 
             #endregion
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG_Ver._2.Characters;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
@@ -23,13 +24,15 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         public static AnimatedMenuButton GlowingButton(Vector2 position)
         {
             AnimatedSprite glowingButton = SpriteFactory.GlowingButton(position);
-            return new AnimatedMenuButton("glowingbutton", glowingButton, functionality: () => Game1.gameConsole.Log("Hallo, von Button"));
+            return new AnimatedMenuButton("glowingbutton", glowingButton,
+                functionality: () => Game1.gameConsole.Log("Hallo, von Button"));
         }
 
         public static AnimatedMenuButton DiscoButton(Vector2 position)
         {
             AnimatedSprite discoButton = SpriteFactory.DiscoButton(position);
-            return new AnimatedMenuButton("discobutton", discoButton, functionality: () => Game1.gameConsole.Log("Disco Button!"));
+            return new AnimatedMenuButton("discobutton", discoButton,
+                functionality: () => Game1.gameConsole.Log("Disco Button!"));
         }
 
         public static MenuButton RedButton(Vector2 position)
@@ -39,14 +42,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         }
 
         #endregion
-
         #region Menus
 
-        public static Layout MainMenu(Vector2 position, Game1 gameInstance)
+        public static Menu MainMenu(Vector2 position, Game1 gameInstance)
         {
-            VBox mainMenu = new VBox("mainoptions", 10, elements: new MenuElement[]
+            return new Menu(new VBox("mainoptions", (int)position.X, (int)position.Y, 5, elements: new MenuElement[]
             {
-                new Text("newgame", text: "New Game", functionality: null),
+                new Text("newgame", text: "New Game", functionality: () => gameInstance._sceneStack.Push(EScene.FirstLevelScene)),
                 new Text("loadgame", text: "Load Game", functionality: null),
                 new Text("console", text: "Console", functionality: () =>
                 {
@@ -56,10 +58,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                         Game1.gameConsole.Open(Keys.Tab);
                 }),
                 new Text("exitgame", text: "Exit Game", functionality: () => gameInstance.ExitGame()),
-                RedButton(position),
-                GlowingButton(position)
-            });
-            return mainMenu;
+            }));
         }
 
         public static HBox TestMenu(Vector2 position, Game1 gameInstance)
@@ -68,7 +67,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
             {
                 new VBox("mainoptions", 10, elements: new MenuElement[]
                 {
-                    new Text("vboxmainoptions", text: "vboxmainoptions"), 
+                    new Text("vboxmainoptions", text: "vboxmainoptions"),
                     new Text("newgame", text: "New Game", functionality: null),
                     new Text("loadgame", text: "Load Game", functionality: null),
                     new Text("console", text: "Console", functionality: () =>
@@ -121,10 +120,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                                     new Text("vbox4", text: "vbox4"),
                                     new Text("vbox4", text: "vbox4"),
                                     new Text("vbox4", text: "vbox4"),
-                                }), 
-                            }), 
-                        }), 
-                    }), 
+                                }),
+                            }),
+                        }),
+                    }),
                 }),
 
                 new VBox("vbox3", elements: new MenuElement[]
@@ -134,7 +133,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                     RedButton(position),
                     RedButton(position),
                     RedButton(position),
-                }), 
+                }),
             });
             return testMenu;
         }

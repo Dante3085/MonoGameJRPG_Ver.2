@@ -9,7 +9,7 @@ using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
-namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 {
     /// <summary>
     /// Interactive and locatable Text, primarily used in Menus.
@@ -86,8 +86,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics
             }
             else
             {
-                _spriteFontNoHover = Contents.arial18;
-                _spriteFontHover = Contents.arial20;
+                _spriteFontNoHover = Contents.manaSpace22;
+                _spriteFontHover = Contents.manaSpace25;
                 _activeSpriteFont = _spriteFontNoHover;
             }
 

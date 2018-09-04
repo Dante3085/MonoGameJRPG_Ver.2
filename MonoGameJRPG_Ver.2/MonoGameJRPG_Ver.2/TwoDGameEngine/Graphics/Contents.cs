@@ -16,6 +16,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D space;
         public static Texture2D samurai;
         public static Texture2D blueBackground;
+        public static Texture2D ff15Background;
 
         #endregion
         #region MenuComponents
@@ -52,6 +53,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static SpriteFont arial30;
         public static SpriteFont arial35;
 
+        public static SpriteFont vecna22;
+        public static SpriteFont vecnaBold22;
+
+        public static SpriteFont manaSpace22;
+        public static SpriteFont manaSpace25;
+
         #endregion
         #region Methods
         /// <summary>
@@ -62,7 +69,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         {
             // space = c.Load<Texture2D>("");
             // samurai = c.Load<Texture2D>("");
-            // blueBackground = c.Load<Texture2D>("");
+            blueBackground = c.Load<Texture2D>("Backgrounds/blueBackground");
+            ff15Background = c.Load<Texture2D>("Backgrounds/ff15Background");
 
             redButtonNoHover = c.Load<Texture2D>("MenuComponents/RedButtonNoHover");
             redButtonHover = c.Load<Texture2D>("MenuComponents/RedButtonHover");
@@ -85,6 +93,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             arial20 = c.Load<SpriteFont>("SpriteFonts/Arial20");
             arial30 = c.Load<SpriteFont>("SpriteFonts/Arial30");
             arial35 = c.Load<SpriteFont>("SpriteFonts/Arial35");
+
+            vecna22 = c.Load<SpriteFont>("SpriteFonts/Vecna22");
+            vecnaBold22 = c.Load<SpriteFont>("SpriteFonts/VecnaBold22");
+
+            manaSpace22 = c.Load<SpriteFont>("SpriteFonts/ManaSpace22");
+            manaSpace25 = c.Load<SpriteFont>("SpriteFonts/ManaSpace25");
         }
 
         /// <summary>
