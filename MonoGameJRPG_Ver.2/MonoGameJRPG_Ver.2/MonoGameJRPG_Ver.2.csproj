@@ -68,6 +68,7 @@
     <Compile Include="TwoDGameEngine\Graphics\Menu\Menu.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuButton.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\AnimatedMenuElement.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\CharacterInfo.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\ElementNotFoundException.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\HeartHealthbar.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\MenuButton.cs" />

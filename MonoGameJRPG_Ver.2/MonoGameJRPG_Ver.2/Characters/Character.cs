@@ -169,6 +169,7 @@ namespace MonoGameJRPG_Ver._2.Characters
 
             _animatedSprite.KeyboardInput = this._keyboardInput;
             _animatedSprite.GamePadInput = this._gamePadInput;
+            _animatedSprite.IsPlayerControlled = this.IsPlayerControlled;
 
             SetUp_Items();
             SetUp_PhysicalSkills();
@@ -200,18 +201,8 @@ namespace MonoGameJRPG_Ver._2.Characters
                 _keyboardInput = KeyboardInput.None();
             }
 
-            // NO GAMEPADINPUT PASSED
             if (_gamePadInput == null)
-            {
-                _gamePadInput = new GamePadInput()
-                {
-                    Left = Buttons.LeftThumbstickLeft,
-                    Up = Buttons.LeftThumbstickUp,
-                    Right = Buttons.LeftThumbstickRight,
-                    Down = Buttons.LeftThumbstickDown,
-                    Interact = Buttons.A
-                };
-            }
+                _gamePadInput = GamePadInput.Default();
 
             if (_animatedSprite == null)
             {

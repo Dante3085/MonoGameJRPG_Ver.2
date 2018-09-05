@@ -28,6 +28,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
             _stack.Peek().Draw(spriteBatch);
         }
 
+        public Scene Peek()
+        {
+            return _stack.Peek();
+        }
+
         public void Push(EScene scene)
         {
             if (_stack.Count != 0)
@@ -44,7 +49,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
         {
             Scene temp = _stack.Pop();
 
-            // Stack can't be empty. Closing the 
+            // Stack can't be empty. 
             if (_stack.Count == 0)
                 _stack.Push(temp);
 

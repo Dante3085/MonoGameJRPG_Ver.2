@@ -76,6 +76,38 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             return swordsman;
         }
+        public static AnimatedSprite NPC(Vector2 position)
+        {
+            Texture2D swordsmanTex = Contents.swordsman;
+
+            AnimatedSprite swordsman = new AnimatedSprite
+                ("NPC", swordsmanTex, position, PlayerIndex.One, 5, isInteractable: true, keyboardInput: KeyboardInput.None());
+
+            // Idle Animation that is played on startup
+            swordsman.AddAnimation(EAnimation.Idle, 4, 48, 43, 433, 0, new Vector2(0, 0), 5);
+
+            // Idle Animations for each direction.
+            swordsman.AddAnimation(EAnimation.IdleLeft, 4, 48, 43, 528, 4, new Vector2(0, 0), 5);
+            swordsman.AddAnimation(EAnimation.IdleUp, 4, 48, 43, 528, 0, new Vector2(0, 0), 5);
+            swordsman.AddAnimation(EAnimation.IdleRight, 4, 48, 43, 480, 0, new Vector2(0, 0), 5);
+            swordsman.AddAnimation(EAnimation.IdleDown, 4, 48, 43, 433, 0, new Vector2(0, 0), 5);
+
+            // Movement Animations for each direction.
+            swordsman.AddAnimation(EAnimation.Left, 8, 50, 50, 100, 0, new Vector2(0, 0), 12);
+            swordsman.AddAnimation(EAnimation.Up, 12, 50, 50, 50, 0, new Vector2(0, 0), 15);
+            swordsman.AddAnimation(EAnimation.Right, 8, 50, 50, 100, 8, new Vector2(0, 0), 12);
+            swordsman.AddAnimation(EAnimation.Down, 12, 50, 50, 0, 0, new Vector2(0, 0), 15);
+
+            swordsman.PlayAnimation(EAnimation.Idle);
+
+            // Attack Animations for each direction.
+            //swordsman.AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
+            //swordsman.AddAnimation(9, 230, 0, "AttackUp", 70, 80, new Vector2(-13, -27));
+            //swordsman.AddAnimation(9, 310, 0, "AttackLeft", 70, 70, new Vector2(-30, -5));
+            //swordsman.AddAnimation(9, 380, 0, "AttackRight", 70, 70, new Vector2(+15, -5));
+
+            return swordsman;
+        }
 
         #endregion
         #region MenuElements

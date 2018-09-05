@@ -42,7 +42,6 @@ namespace MonoGameJRPG_Ver._2
         private VBox timeFpsBox;
 
         public SceneStack _sceneStack;
-        private CollisionManager collisionManager;
 
         #region Test
 
@@ -105,15 +104,15 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            Character player = new Character("Player", isPlayerControlled: true, keyboardInput: KeyboardInput.Default(), animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
-            Character npc = new Character("Npc", isPlayerControlled: true, gamePadInput: GamePadInput.Default(), animatedSprite: SpriteFactory.Swordsman(new Vector2(100, 100)));
-
-            collisionManager = new CollisionManager(player.AnimatedSprite, npc.AnimatedSprite);
+            Character player = new Character("Player", maxHp: 1000, isPlayerControlled: true, keyboardInput: KeyboardInput.Default(), animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
+            Character npc = new Character("Npc", isPlayerControlled: false, gamePadInput: GamePadInput.Default(),
+                animatedSprite: SpriteFactory.NPC(new Vector2(100, 100)));
 
             _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
             {
                 { EScene.MainMenuScene, SceneFactory.MainMenuScene(this) },
-                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc) }
+                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc) },
+                { EScene.InventoryScene, SceneFactory.InventoryScene(this, player, npc) }
             });
             _sceneStack.Push(EScene.MainMenuScene);
 
@@ -162,7 +161,6 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            collisionManager.CheckCollisions();
             _sceneStack.Update(gameTime);
 
             #endregion

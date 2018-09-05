@@ -13,10 +13,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
     
         #region BackgroundImages
 
-        public static Texture2D space;
-        public static Texture2D samurai;
         public static Texture2D blueBackground;
         public static Texture2D ff15Background;
+        public static Texture2D blackBackground;
 
         #endregion
         #region MenuComponents
@@ -67,10 +66,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         /// <param name="c"></param>
         public static void LoadAll(ContentManager c, GraphicsDevice g)
         {
-            // space = c.Load<Texture2D>("");
-            // samurai = c.Load<Texture2D>("");
             blueBackground = c.Load<Texture2D>("Backgrounds/blueBackground");
             ff15Background = c.Load<Texture2D>("Backgrounds/ff15Background");
+            blackBackground = c.Load<Texture2D>("Backgrounds/blackBackground");
 
             redButtonNoHover = c.Load<Texture2D>("MenuComponents/RedButtonNoHover");
             redButtonHover = c.Load<Texture2D>("MenuComponents/RedButtonHover");

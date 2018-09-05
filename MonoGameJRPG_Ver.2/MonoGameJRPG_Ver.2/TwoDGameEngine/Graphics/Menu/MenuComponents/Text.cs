@@ -25,6 +25,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         private SpriteFont _spriteFontNoHover;
         private SpriteFont _spriteFontHover;
         private Vector2 _textSize;
+        private Vector2 _position = new Vector2();
 
         #region TextRectangle
 
@@ -111,6 +112,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _textRec.X = _x;
             _textRec.Y = _y;
 
+            _position.X = _x;
+            _position.Y = _y;
+
             // Update _textRec size.
             _textRec.Width = (int)_textSize.X;
             _textRec.Height = (int) _textSize.Y;
@@ -141,7 +145,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(_activeSpriteFont, _text, new Vector2(_x, _y), Color.Black);
+            spriteBatch.DrawString(_activeSpriteFont, _text, _position, CursorOnIt == true ? Color.DeepSkyBlue : Color.DarkSlateGray);
 
             if (drawTexRec)
                 Util.DrawRectangle(spriteBatch, _textRec, _textRecLines, Contents.rectangleTex, Color.Red);

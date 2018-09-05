@@ -64,7 +64,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// </summary>
         private Direction _currentDirection = Direction.none;
 
-        private bool _isAttacking = false;
         private bool _playingAnimation = false;
 
         #endregion
@@ -189,7 +188,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         protected void Attack()
         {
-            _isAttacking = true;
             // LEFT ATTACK
             if (_currentAnimation == EAnimation.Left)
             {
@@ -234,66 +232,64 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         public override void HandleKeyboardInput()
         {
-            // Directional Movement or Idle
-            if (!_isAttacking)
-            {
-                // LEFT
-                if (InputManager.IsKeyDown(_keyboardInput.Left))
-                    GoLeft();
+            // LEFT
+            if (InputManager.IsKeyDown(_keyboardInput.Left))
+                GoLeft();
 
-                // UP
-                if (InputManager.IsKeyDown(_keyboardInput.Up))
-                    GoUp();
+            // UP
+            if (InputManager.IsKeyDown(_keyboardInput.Up))
+                GoUp();
 
-                // RIGHT
-                if (InputManager.IsKeyDown(_keyboardInput.Right))
-                    GoRight();
+            // RIGHT
+            if (InputManager.IsKeyDown(_keyboardInput.Right))
+                GoRight();
 
-                // DOWN
-                if (InputManager.IsKeyDown(_keyboardInput.Down))
-                    GoDown();
+            // DOWN
+            if (InputManager.IsKeyDown(_keyboardInput.Down))
+                GoDown();
 
-                // No Movement => Idle Frame for respective Direction.
-                else
-                    Idle();
-            }
+            // SPRINT
+            if (InputManager.OnKeyDown(_keyboardInput.Run))
+                _speed += 100;
+            else if (InputManager.OnKeyUp(_keyboardInput.Run))
+                _speed -= 100;
 
-            // ATTACKING
-            if (InputManager.IsKeyDown(_keyboardInput.Attack))
-                Attack();
+            // No Movement => Idle Frame for respective Direction.
+            else
+                Idle();
 
             _currentDirection = Direction.none;
         }
 
         public override void HandleGamePadInput()
         {
-            // Directional Movement or Idle
-            if (!_isAttacking)
-            {
-                // LEFT
-                if (InputManager.IsButtonDown(_gamePadInput.Left))
-                    GoLeft();
+            Game1.gameConsole.Log("dasdasdda");
 
-                // UP
-                if (InputManager.IsButtonDown(_gamePadInput.Up))
-                    GoUp();
+            // LEFT
+            if (InputManager.IsButtonDown(_gamePadInput.Left))
+                GoLeft();
 
-                // RIGHT
-                if (InputManager.IsButtonDown(_gamePadInput.Right))
-                    GoRight();
+            // UP
+            if (InputManager.IsButtonDown(_gamePadInput.Up))
+                GoUp();
 
-                // DOWN
-                if (InputManager.IsButtonDown(_gamePadInput.Down))
-                    GoDown();
+            // RIGHT
+            if (InputManager.IsButtonDown(_gamePadInput.Right))
+                GoRight();
 
-                // No Movement => Idle Frame for respective Direction.
-                else
-                    Idle();
-            }
+            // DOWN
+            if (InputManager.IsButtonDown(_gamePadInput.Down))
+                GoDown();
 
-            // ATTACKING
-            if (InputManager.IsButtonDown(_gamePadInput.Attack))
-                Attack();
+            // SPRINT
+            if (InputManager.OnButtonDown(_gamePadInput.Run))
+                _speed += 100;
+            else if (InputManager.OnButtonUp(_gamePadInput.Run))
+                _speed -= 100;
+
+            // No Movement => Idle Frame for respective Direction.
+            else
+                Idle();
 
             _currentDirection = Direction.none;
         }
@@ -349,19 +345,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// </summary>
         /// <param animation="spriteBatch">SpriteBatch</param>
         // TODO: Collide-Logic shouldn't be in here!
-        public void Draw(SpriteBatch spriteBatch, List<AnimatedSprite> animSprites = null)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
 
             if (_drawInteractionPrompt)
                 DrawInteractionPrompt(spriteBatch, Side.Top);
-
-            // Set _collisionDetected to true if collision happened.
-            // This construct just detects if any collision happened. Not how many etc.
-            if (animSprites != null)
-                foreach (AnimatedSprite a in animSprites)
-                    if (this.CollidesWith(a))
-                        _collisionDetected = true;
 
             if (drawBoundingBox)
             {
@@ -399,10 +388,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param animation="animation"></param>
         private void AnimationDone(EAnimation animation)
         {
-            if (animation == EAnimation.MeleeLeft || animation == EAnimation.MeleeUp ||
-                animation == EAnimation.MeleeRight || animation == EAnimation.MeleeDown)
-                _isAttacking = false;
-
             _playingAnimation = false;
         }
     }

@@ -44,9 +44,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         #endregion
         #region Menus
 
-        public static Menu MainMenu(Vector2 position, Game1 gameInstance)
+        public static Menu MainMenu(Point position, Game1 gameInstance)
         {
-            return new Menu(new VBox("mainoptions", (int)position.X, (int)position.Y, 5, elements: new MenuElement[]
+            return new Menu(new VBox("mainoptions", position.X, position.Y, 5, elements: new MenuElement[]
             {
                 new Text("newgame", text: "New Game", functionality: () => gameInstance._sceneStack.Push(EScene.FirstLevelScene)),
                 new Text("loadgame", text: "Load Game", functionality: null),
@@ -61,6 +61,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
             }));
         }
 
+        public static Menu InventoryMenu(Point position, Game1 gameInstance, params Character[] characters)
+        {
+            VBox vbox = new VBox("vbox", position.X, position.Y, verticalOffset: 5);
+            foreach (Character c in characters)
+                vbox.Elements.Add(new CharacterInfo("characterInfo_" + c.Name, c));
+            vbox.Elements.Add(new Text("mainMenuText", text: "MainMenu", functionality: () =>
+            {
+                while (!gameInstance._sceneStack.Peek().Name.Equals("MainMenuScene"))
+                    gameInstance._sceneStack.Pop();
+            }));
+
+            Menu inventoryMenu = new Menu(vbox);
+            return inventoryMenu;
+        }
         public static HBox TestMenu(Vector2 position, Game1 gameInstance)
         {
             HBox testMenu = new HBox("testMenu", elements: new MenuElement[]

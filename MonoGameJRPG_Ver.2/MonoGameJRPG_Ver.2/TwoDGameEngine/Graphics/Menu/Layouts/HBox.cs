@@ -91,14 +91,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             if (_elements.Count == 0)
                 return;
 
-            // Position first element at upper left corner of VBox.
+            // Position first element at upper left corner of HBox.
             _elements[0].X = this._x;
             _elements[0].Y = this._y;
 
             if (_elements.Count == 1)
                 return;
 
-            // Position every element (except first) at VBox.Y and VBox.X + previousElement.X + horizontalOffset.
+            // Position every element (except first) at HBox.Y and HBox.X + previousElement.X + horizontalOffset.
             // Makes it so that elements aren't stacked on top of each other and variable spacing is possible.
             for (int i = 1; i < _elements.Count; i++)
             {

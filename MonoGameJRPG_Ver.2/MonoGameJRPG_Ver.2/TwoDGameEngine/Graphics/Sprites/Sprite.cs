@@ -115,7 +115,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Remembers if this Sprite is player controlled.
         /// </summary>
-        public bool IsPlayerControlled => _isPlayerControlled;
+        public bool IsPlayerControlled
+        {
+            get => _isPlayerControlled;
+            set => _isPlayerControlled = value;
+        }
 
         protected bool _collisionDetected = false;
 
@@ -207,6 +211,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 _collisionHandler = partner =>
                 {
                     Game1.gameConsole.Log("Collision[" + Name + "|" + partner.Name + "]: No behaviour specified!");
+                    _drawInteractionPrompt = true;
                 };
             }
         }
@@ -231,6 +236,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
+            if (_collisionHandler == null)
+            {
+                _collisionHandler = partner =>
+                {
+                    Game1.gameConsole.Log("Collision[" + Name + "|" + partner.Name + "]: No behaviour specified!");
+                    _drawInteractionPrompt = true;
+                };
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -255,6 +268,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             // Reset Velocity. Prevents Sprite from moving without there being actual input.
             _velocity = Vector2.Zero;
+
+            _drawInteractionPrompt = false;
         }
 
         /// <summary>
@@ -357,6 +372,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             // DOWN
             if (InputManager.IsKeyDown(_keyboardInput.Down))
                 GoDown();
+
+            // SPRINT
+            if (InputManager.OnKeyDown(_keyboardInput.Run))
+                _speed += 100;
+            else if (InputManager.OnKeyUp(_keyboardInput.Run))
+                _speed -= 100;
         }
 
 
@@ -380,6 +401,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             // DOWN
             if (InputManager.IsButtonDown(_gamePadInput.Down))
                 GoDown();
+
+            // SPRINT
+            if (InputManager.OnButtonDown(_gamePadInput.Run))
+            {
+                _speed += 100;
+            }
+            else if (InputManager.OnButtonUp(_gamePadInput.Run))
+                _speed -= 100;
         }
 
         #endregion

@@ -49,6 +49,19 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
             };
         }
 
+        public static GamePadInput None()
+        {
+            return new GamePadInput()
+            {
+                Left = 0,
+                Up = 0,
+                Right = 0,
+                Down = 0,
+                Run = 0,
+                Interact = 0
+            };
+        }
+
         #endregion
     }
 }

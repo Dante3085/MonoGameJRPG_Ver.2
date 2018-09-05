@@ -10,6 +10,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
     {
         private List<ICollidable> _collidables = new List<ICollidable>();
 
+        public List<ICollidable> Collidables => _collidables;
+
         public CollisionManager(params ICollidable[] collidables)
         {
             _collidables.AddRange(collidables);
@@ -24,10 +26,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             foreach (ICollidable c1 in _collidables)
                 foreach (ICollidable c2 in _collidables)
                 if (c1.CollidesWith(c2))
-                {
-                    Game1.gameConsole.Log("Helau");
                     c1.HandleCollision(c2);
-                }
         }
     }
 }
