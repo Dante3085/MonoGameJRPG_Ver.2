@@ -47,7 +47,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
                 _animSprite.PlayAnimation(EAnimation.Idle);
         }
 
-        public override void CursorReaction()
+        public override void CursorReaction(GameTime gameTime)
         {
             if (_cursorOnIt)
                 _animSprite.PlayAnimation(EAnimation.MouseHover);

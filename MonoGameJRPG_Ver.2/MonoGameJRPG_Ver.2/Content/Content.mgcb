@@ -246,3 +246,66 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/blackBackground.png
 
+#begin SpriteFonts/ManaSpace18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace18.spritefont
+
+#begin SpriteFonts/ManaSpace19.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace19.spritefont
+
+#begin SpriteFonts/ManaSpace20.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace20.spritefont
+
+#begin SpriteFonts/ManaSpace21.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace21.spritefont
+
+#begin SpriteFonts/ManaSpace23.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace23.spritefont
+
+#begin SpriteFonts/ManaSpace24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace24.spritefont
+
+#begin SpriteFonts/ManaSpace26.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace26.spritefont
+
+#begin SpriteFonts/ManaSpace27.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace27.spritefont
+
+#begin SpriteFonts/ManaSpace28.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:SpriteFonts/ManaSpace28.spritefont
+

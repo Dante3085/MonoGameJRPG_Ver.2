@@ -37,6 +37,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
                 {
                     if (InputManager.OnKeyDown(Keys.I))
                         gameInstance._sceneStack.Push(EScene.InventoryScene);
+                }, gamePadHandler: () =>
+                {
+                    if (InputManager.OnButtonDown(Buttons.Start))
+                        gameInstance._sceneStack.Push(EScene.InventoryScene);
                 },collisionManager: c,
                 entities: entities);
         }
@@ -46,6 +50,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
             return new Scene("InventoryScene", Contents.blackBackground, keyboardHandler: () =>
             {
                 if (InputManager.OnKeyDown(Keys.I))
+                    gameInstance._sceneStack.Pop();
+            }, gamePadHandler: () =>
+            {
+                if (InputManager.OnButtonDown(Buttons.Start))
                     gameInstance._sceneStack.Pop();
             },entities: MenuFactory.InventoryMenu(new Point(10, 10), gameInstance, characters));
         }

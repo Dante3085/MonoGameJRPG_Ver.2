@@ -48,7 +48,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             spriteBatch.Draw(_activeButtonTexture, _buttonRec, Color.White);
 
             if (drawRec)
-                Util.DrawRectangle(spriteBatch, _buttonRec, _buttonRecLines, Contents.rectangleTex, Color.Blue);
+                Util.DrawRectangleOutline(_buttonRec, _buttonRecLines, Contents.rectangleTex, Color.Blue, spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
@@ -73,7 +73,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _activeButtonTexture = IsMouseHover() ? _buttonTextureHover : _buttonTextureNoHover;
         }
 
-        public override void CursorReaction()
+        public override void CursorReaction(GameTime gameTime)
         {
             if (_cursorOnIt)
                 _activeButtonTexture = _buttonTextureHover;

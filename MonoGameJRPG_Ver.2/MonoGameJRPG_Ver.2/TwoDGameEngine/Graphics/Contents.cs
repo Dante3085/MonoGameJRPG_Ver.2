@@ -55,8 +55,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static SpriteFont vecna22;
         public static SpriteFont vecnaBold22;
 
+        public static SpriteFont manaSpace18;
+        public static SpriteFont manaSpace19;
+        public static SpriteFont manaSpace20;
+        public static SpriteFont manaSpace21;
         public static SpriteFont manaSpace22;
+        public static SpriteFont manaSpace23;
+        public static SpriteFont manaSpace24;
         public static SpriteFont manaSpace25;
+        public static SpriteFont manaSpace26;
+        public static SpriteFont manaSpace27;
+        public static SpriteFont manaSpace28;
 
         #endregion
         #region Methods
@@ -95,8 +104,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             vecna22 = c.Load<SpriteFont>("SpriteFonts/Vecna22");
             vecnaBold22 = c.Load<SpriteFont>("SpriteFonts/VecnaBold22");
 
+            manaSpace18 = c.Load<SpriteFont>("SpriteFonts/ManaSpace18");
+            manaSpace19 = c.Load<SpriteFont>("SpriteFonts/ManaSpace19");
+            manaSpace20 = c.Load<SpriteFont>("SpriteFonts/ManaSpace20");
+            manaSpace21 = c.Load<SpriteFont>("SpriteFonts/ManaSpace21");
             manaSpace22 = c.Load<SpriteFont>("SpriteFonts/ManaSpace22");
+            manaSpace23 = c.Load<SpriteFont>("SpriteFonts/ManaSpace23");
+            manaSpace24 = c.Load<SpriteFont>("SpriteFonts/ManaSpace24");
             manaSpace25 = c.Load<SpriteFont>("SpriteFonts/ManaSpace25");
+            manaSpace26 = c.Load<SpriteFont>("SpriteFonts/ManaSpace26");
+            manaSpace27 = c.Load<SpriteFont>("SpriteFonts/ManaSpace27");
+            manaSpace28 = c.Load<SpriteFont>("SpriteFonts/ManaSpace28");
         }
 
         /// <summary>

@@ -26,6 +26,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         private SpriteFont _spriteFontHover;
         private Vector2 _textSize;
         private Vector2 _position = new Vector2();
+        private Color _color = Color.DarkSlateGray;
+        private Color _colorHover = Color.DeepSkyBlue;
 
         #region TextRectangle
 
@@ -35,6 +37,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
         #endregion
 
+        private SpriteFont[] fonts =
+        {
+            //Contents.manaSpace18, Contents.manaSpace19, Contents.manaSpace20, Contents.manaSpace21,
+            //Contents.manaSpace22, Contents.manaSpace23, Contents.manaSpace24, Contents.manaSpace25,
+            Contents.manaSpace26, Contents.manaSpace27, Contents.manaSpace28
+        };
+
+        private int currentAnim = 0;
+        private double elapsedTime = 0;
+        private bool forward = true;
 
         #endregion
         #region Properties
@@ -98,6 +110,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _textRec = new Rectangle(_x, _y, (int)_textSize.X, (int)_textSize.Y);
         }
 
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        public void SetColorHover(Color colorHover)
+        {
+            _colorHover = colorHover;
+        }
+
         public void SetText(string text)
         {
             _text = text;
@@ -123,6 +145,32 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
                 ExecuteFunctionality();
         }
 
+        public void Animate(GameTime gameTime, int speed)
+        {
+            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (elapsedTime >= speed)
+            {
+                elapsedTime = 0;
+                if (forward)
+                {
+                    currentAnim++;
+                    if (currentAnim == fonts.Length)
+                        forward = false;
+                }
+                if(!forward)
+                {
+                    currentAnim--;
+                    if (currentAnim == -1)
+                    {
+                        currentAnim++;
+                        forward = true;
+                    }
+                }
+            }
+
+            _activeSpriteFont = fonts[currentAnim];
+        }
+
         public override void ExecuteFunctionality()
         {
             if (_functionality != null)
@@ -137,18 +185,21 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _activeSpriteFont = IsMouseHover() ? _spriteFontHover : _spriteFontNoHover;
         }
 
-        public override void CursorReaction()
+        public override void CursorReaction(GameTime gameTime)
         {
             if (_cursorOnIt)
+            {
                 _activeSpriteFont = _spriteFontHover;
+                Animate(gameTime, 200);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(_activeSpriteFont, _text, _position, CursorOnIt == true ? Color.DeepSkyBlue : Color.DarkSlateGray);
+            spriteBatch.DrawString(_activeSpriteFont, _text, _position, CursorOnIt == true ? _colorHover : _color);
 
             if (drawTexRec)
-                Util.DrawRectangle(spriteBatch, _textRec, _textRecLines, Contents.rectangleTex, Color.Red);
+                Util.DrawRectangleOutline(_textRec, _textRecLines, Contents.rectangleTex, Color.Red, spriteBatch);
         }
 
         #endregion

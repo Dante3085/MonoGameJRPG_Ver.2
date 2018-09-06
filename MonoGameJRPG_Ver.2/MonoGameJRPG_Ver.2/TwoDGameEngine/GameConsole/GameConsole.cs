@@ -42,6 +42,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameJRPG.TwoDGameEngine.Input;
+
 #endregion
 
 namespace VosSoft.Xna.GameConsole
@@ -106,6 +108,7 @@ namespace VosSoft.Xna.GameConsole
 
         KeyMap keyMap;
         Keys? closeKey;
+        Buttons? closeButton;
         KeyboardState currentKeyboardState = new KeyboardState(), lastKeyboardState;
 
         GameConsoleAnimation openingAnimation = GameConsoleAnimation.FadeSlideTop;
@@ -1254,10 +1257,12 @@ namespace VosSoft.Xna.GameConsole
             }
             else
             {
-                if (closeKey != null && isNewKeyPress((Keys)closeKey))
-                {
+                if (closeButton != null && InputManager.OnButtonDown((Buttons)closeButton))
                     Close();
-                }
+
+                if (closeKey != null && isNewKeyPress((Keys)closeKey))
+                    Close();
+
                 else if (isNewKeyPress(Keys.PageUp) && currentLine > 0)
                 {
                     currentLine -= maxVisibleLines;
@@ -1568,6 +1573,30 @@ namespace VosSoft.Xna.GameConsole
                 }
 
                 this.closeKey = closeKey;
+
+                initializeAnimation(openingAnimation, openingAnimationTime);
+
+                Enabled = Visible = true;
+                isOpening = true;
+                isClosing = false;
+            }
+        }
+
+        public void Open(Buttons? closeButton)
+        {
+            if (!isOpen && !isOpening && !isClosing)
+            {
+                if (Opening != null)
+                {
+                    CancelEventArgs cancelArgs = new CancelEventArgs();
+                    Opening(this, cancelArgs);
+                    if (cancelArgs.Cancel)
+                    {
+                        return;
+                    }
+                }
+
+                this.closeButton = closeButton;
 
                 initializeAnimation(openingAnimation, openingAnimationTime);
 

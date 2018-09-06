@@ -72,7 +72,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         public virtual void Update(GameTime gameTime)
         {
             MouseHoverReaction();
-            CursorReaction();
+            CursorReaction(gameTime);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         /// <summary>
         /// Override this method to describe behaviour of this MenuElement when a Cursor is on it.
         /// </summary>
-        public abstract void CursorReaction();
+        public abstract void CursorReaction(GameTime gameTime);
 
         /// <summary>
         /// Executes MenuElement's functionality.

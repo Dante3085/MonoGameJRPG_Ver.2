@@ -52,6 +52,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             _hBox.Update(gameTime);
             _hBox.X = _x;
             _hBox.Y = _y;
+
+            //_name.CursorOnIt = false;
+            //_maxHp.CursorOnIt = false;
+            //_currentHp.CursorOnIt = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -64,9 +68,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
             throw new NotImplementedException();
         }
 
-        public override void CursorReaction()
+        public override void CursorReaction(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            if (_cursorOnIt)
+            {
+                _name.CursorOnIt = true;
+                _maxHp.CursorOnIt = true;
+                _currentHp.CursorOnIt = true;
+            }
         }
 
         #endregion

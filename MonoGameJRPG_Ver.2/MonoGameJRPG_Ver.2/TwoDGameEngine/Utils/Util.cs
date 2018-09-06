@@ -10,42 +10,46 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
 {
     public static class Util
     {
+        #region Methods
+
         /// <summary>
-        /// Draws outline of passed Rectangle object.
-        /// lines parameter has to be exactly 4 Rectangle objects.
+        /// Draws a Rectangle outline (unfilled Rectangle) using the given Rectangle object. <para></para>
+        /// "lines" parameter has to be exactly 4 Rectangle objects.
+        /// "lines" parameter exists to avoid 4 additional Rectangle objects from being created everytime this method is called.
+        /// This is important since this method is called a lot (May prevent GarbageCollection hickups).
         /// </summary>
         /// <param name="spriteBatch"></param>
-        /// <param name="rectangle"></param>
+        /// <param name="rec"></param>
         /// <param name="lines"></param>
         /// <param name="texture"></param>
         /// <param name="color"></param>
-        public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Rectangle[] lines, Texture2D texture, Color color)
+        public static void DrawRectangleOutline(Rectangle rec, Rectangle[] lines, Texture2D texture, Color color, SpriteBatch spriteBatch)
         {
             if (lines.Length != 4)
                 throw new ArgumentException("'lines' has to bee an array of exactly 4 Rectangle objects!");
 
             // left
-            lines[0].X = rectangle.X;
-            lines[0].Y = rectangle.Y;
+            lines[0].X = rec.X;
+            lines[0].Y = rec.Y;
             lines[0].Width = 2;
-            lines[0].Height = rectangle.Height;
+            lines[0].Height = rec.Height;
 
             // top
-            lines[1].X = rectangle.X;
-            lines[1].Y = rectangle.Y;
-            lines[1].Width = rectangle.Width;
+            lines[1].X = rec.X;
+            lines[1].Y = rec.Y;
+            lines[1].Width = rec.Width;
             lines[1].Height = 2;
 
             // right
-            lines[2].X = rectangle.X + rectangle.Width;
-            lines[2].Y = rectangle.Y;
+            lines[2].X = rec.X + rec.Width;
+            lines[2].Y = rec.Y;
             lines[2].Width = 2;
-            lines[2].Height = rectangle.Height;
+            lines[2].Height = rec.Height;
 
             // bottom
-            lines[3].X = rectangle.X;
-            lines[3].Y = rectangle.Y + rectangle.Height;
-            lines[3].Width = rectangle.Width;
+            lines[3].X = rec.X;
+            lines[3].Y = rec.Y + rec.Height;
+            lines[3].Width = rec.Width;
             lines[3].Height = 2;
 
             spriteBatch.Draw(texture, lines[0], color);
@@ -53,5 +57,58 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
             spriteBatch.Draw(texture, lines[2], color);
             spriteBatch.Draw(texture, lines[3], color);
         }
+
+        /// <summary>
+        /// Draws a filled Rectangle using the given Rectangle object.
+        /// </summary>
+        /// <param name="rec"></param>
+        /// <param name="color"></param>
+        /// <param name="spriteBatch"></param>
+        /// <param name="opacity"></param>
+        public static void DrawRectangle(Rectangle rec, Color color, SpriteBatch spriteBatch, double opacity = 1.0)
+        {
+            Texture2D recTex = new Texture2D(Game1.graphics.GraphicsDevice, rec.Width, rec.Height);
+            Color[] data = new Color[rec.Width * rec.Height];
+            Vector2 pos = new Vector2(rec.Location.X, rec.Location.Y);
+
+            for (int i = 0; i < data.Length; i++)
+                data[i] = color;
+            recTex.SetData(data);
+
+            spriteBatch.Draw(recTex, pos, Color.White * (float)opacity);
+        }
+
+        public static Texture2D DrawCircle(int radius, Color color, Vector2 pos, SpriteBatch spriteBatch, double sharpness = 1.0, double opacity = 1.0)
+        {
+            int diameter = radius * 2;
+            Texture2D circleTex = new Texture2D(Game1.graphics.GraphicsDevice, diameter, diameter, false, SurfaceFormat.Color);
+            Color[] colorData = new Color[circleTex.Width * circleTex.Height];
+            Vector2 center = new Vector2(radius);
+
+            for (int colIndex = 0; colIndex < circleTex.Width; colIndex++)
+            {
+                for (int rowIndex = 0; rowIndex < circleTex.Height; rowIndex++)
+                {
+                    Vector2 position = new Vector2(colIndex, rowIndex);
+                    float distance = Vector2.Distance(center, position);
+
+                    // hermite iterpolation
+                    float x = distance / diameter;
+                    float edge0 = (radius * (float)sharpness) / (float)diameter;
+                    float edge1 = radius / (float)diameter;
+                    float temp = MathHelper.Clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+                    float result = temp * temp * (3.0f - 2.0f * temp);
+
+                    colorData[rowIndex * circleTex.Width + colIndex] = color * (1f - result);
+                }
+            }
+            circleTex.SetData<Color>(colorData);
+
+            spriteBatch.Draw(circleTex, pos, color * (float)opacity);
+
+            return circleTex;
+        }
+
+        #endregion
     }
 }

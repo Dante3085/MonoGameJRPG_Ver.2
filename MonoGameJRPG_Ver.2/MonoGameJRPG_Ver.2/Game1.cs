@@ -33,7 +33,7 @@ namespace MonoGameJRPG_Ver._2
         public static int screenWidth;
         public static int screenHeight;
 
-        private GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private Text fpsText;
@@ -60,7 +60,7 @@ namespace MonoGameJRPG_Ver._2
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
         }
 
         public void ExitGame()
@@ -108,10 +108,14 @@ namespace MonoGameJRPG_Ver._2
             Character npc = new Character("Npc", isPlayerControlled: false, gamePadInput: GamePadInput.Default(),
                 animatedSprite: SpriteFactory.NPC(new Vector2(100, 100)));
 
+            Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
+            inventoryText.SetColor(Color.Aquamarine);
+            inventoryText.CursorOnIt = true;
+
             _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
             {
                 { EScene.MainMenuScene, SceneFactory.MainMenuScene(this) },
-                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc) },
+                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc, inventoryText) },
                 { EScene.InventoryScene, SceneFactory.InventoryScene(this, player, npc) }
             });
             _sceneStack.Push(EScene.MainMenuScene);

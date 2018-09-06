@@ -13,8 +13,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 {
     public class Menu : GameObject, IEntity, IInputable
     {
+        #region MemberVariables
+
         private Layout _layout;
         private int _cursoredElement;
+
+        #endregion
+
+        #region Methods
 
         public Menu(Layout layout)
         {
@@ -100,5 +106,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
             else if (InputManager.OnButtonDown(Buttons.A))
                 elements[_cursoredElement].ExecuteFunctionality();
         }
+
+        #endregion
     }
 }

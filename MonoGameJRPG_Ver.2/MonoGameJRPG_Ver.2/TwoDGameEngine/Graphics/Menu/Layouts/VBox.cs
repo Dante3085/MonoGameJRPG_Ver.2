@@ -131,7 +131,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts
             throw new NotImplementedException();
         }
 
-        public override void CursorReaction()
+        public override void CursorReaction(GameTime gameTime)
         {
             throw new NotImplementedException();
         }

@@ -263,8 +263,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
         public override void HandleGamePadInput()
         {
-            Game1.gameConsole.Log("dasdasdda");
-
             // LEFT
             if (InputManager.IsButtonDown(_gamePadInput.Left))
                 GoLeft();
@@ -355,9 +353,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             if (drawBoundingBox)
             {
                 if (_collisionDetected)
-                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Red);
+                    Util.DrawRectangleOutline(_boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Red, spriteBatch);
                 else
-                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue);
+                    Util.DrawRectangleOutline(_boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue, spriteBatch);
             }
 
             // Reset flag for collision detection.

@@ -78,12 +78,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #region BoundingBox
 
         /// <summary>
-        /// Rectangle specifying a Box that can be drawn around the Sprite using Util.DrawRectangle()
+        /// Rectangle specifying a Box that can be drawn around the Sprite using Util.DrawRectangleOutline()
         /// </summary>
         protected Rectangle _boundingBox;
 
         /// <summary>
-        /// Rectangle array with 4 Rectangle objects, to be used for drawing the BoundingBox with Util.DrawRectangle()
+        /// Rectangle array with 4 Rectangle objects, to be used for drawing the BoundingBox with Util.DrawRectangleOutline()
         /// </summary>
         protected Rectangle[] _boundingBoxLines = { new Rectangle(), new Rectangle(), new Rectangle(), new Rectangle() };
 
@@ -103,7 +103,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         public string Name => _name;
 
         /// <summary>
-        /// Rectangle specifying a Box that can be drawn around the Sprite using Util.DrawRectangle()
+        /// Rectangle specifying a Box that can be drawn around the Sprite using Util.DrawRectangleOutline()
         /// </summary>
         public Rectangle BoundingBox => _boundingBox;
 
@@ -286,9 +286,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             if (drawBoundingBox)
             {
                 if (_collisionDetected)
-                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Red);
+                    Util.DrawRectangleOutline(_boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Red, spriteBatch);
                 else
-                    Util.DrawRectangle(spriteBatch, _boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue);
+                    Util.DrawRectangleOutline(_boundingBox, _boundingBoxLines, Contents.rectangleTex, Color.Blue, spriteBatch);
             }
 
             // Reset flag for collision detection.
