@@ -34,6 +34,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D warrior;
         public static Texture2D bowlingBall;
         public static Texture2D swordsman;
+        public static Texture2D adventurer;
 
         #endregion
         #region Other
@@ -90,6 +91,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             warrior = c.Load<Texture2D>("Characters/warrior");
             bowlingBall = c.Load<Texture2D>("Characters/BowlingBall");
             swordsman = c.Load<Texture2D>("Characters/Swordsman");
+            adventurer = c.Load<Texture2D>("Characters/Adventurer-1.5/adventurer-v1.5-Sheet");
 
             rectangleTex = new Texture2D(g, 1, 1, false, SurfaceFormat.Color);
             rectangleTex.SetData(new[] { Color.White });

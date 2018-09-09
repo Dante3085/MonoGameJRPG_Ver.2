@@ -55,12 +55,15 @@ namespace MonoGameJRPG_Ver._2
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
+            //screenWidth = 300;
+            //screenHeight = 200;
+
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
         }
 
         public void ExitGame()
@@ -105,8 +108,10 @@ namespace MonoGameJRPG_Ver._2
             #region Test
 
             Character player = new Character("Player", maxHp: 1000, isPlayerControlled: true, keyboardInput: KeyboardInput.Default(), animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
-            Character npc = new Character("Npc", isPlayerControlled: false, gamePadInput: GamePadInput.Default(),
+            Character npc = new Character("Npc", maxHp: 456, isPlayerControlled: false, gamePadInput: GamePadInput.Default(),
                 animatedSprite: SpriteFactory.NPC(new Vector2(100, 100)));
+
+            Character adventurer = new Character("adventurer", isPlayerControlled: true, animatedSprite: SpriteFactory.Adventurer(new Vector2(200 ,200)), keyboardInput: KeyboardInput.Default(), gamePadInput: GamePadInput.Default());
 
             Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
             inventoryText.SetColor(Color.Aquamarine);
@@ -115,8 +120,8 @@ namespace MonoGameJRPG_Ver._2
             _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
             {
                 { EScene.MainMenuScene, SceneFactory.MainMenuScene(this) },
-                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc, inventoryText) },
-                { EScene.InventoryScene, SceneFactory.InventoryScene(this, player, npc) }
+                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc, adventurer, inventoryText) },
+                { EScene.InventoryScene, SceneFactory.InventoryScene(this, player, npc, adventurer) }
             });
             _sceneStack.Push(EScene.MainMenuScene);
 

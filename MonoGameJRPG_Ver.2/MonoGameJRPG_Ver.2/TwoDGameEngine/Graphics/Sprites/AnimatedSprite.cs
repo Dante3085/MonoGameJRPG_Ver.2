@@ -19,12 +19,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #region MemberVariables
 
         /// <summary>
-        /// Stores Rectangle Arrays that each represent an Animation (1 Rectangle = 1 frame in an Animation).
+        /// Stores Rectangle Arrays that each represent an Animation (1 Rectangle = 1 frame in an Animation, 1 Rectangle Array = 1 Animation).
         /// </summary>
         private Dictionary<EAnimation, Rectangle[]> _animations = new Dictionary<EAnimation, Rectangle[]>();
 
         /// <summary>
-        /// Stores Vector2s used for offsetting certain Animations may differ in size.
+        /// Stores Vector2s used for offsetting certain Animations that may differ in size.
         /// </summary>
         private Dictionary<EAnimation, Vector2> _offsets = new Dictionary<EAnimation, Vector2>();
 
@@ -32,7 +32,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Stores Fps values for each Animation. Due to varying number of frames between Animations, some may need
         /// to be played slower or faster.
         /// </summary>
-        private Dictionary<EAnimation, int> _fpsValues = new Dictionary<EAnimation, int>();
+        private Dictionary<EAnimation, int> _animationFpsValues = new Dictionary<EAnimation, int>();
+
+        private Dictionary<EAnimation, Action> _onAnimationStartActions = new Dictionary<EAnimation, Action>();
+
+        // private Dictionary<EAnimation, Action> _onAnimationFrameActions = new
+
+        private Dictionary<EAnimation, Action> _onAnimationEndActions = new Dictionary<EAnimation, Action>();
+
 
         /// <summary>
         /// Accumulates time with each Update() call until _timeToUpdate is reached.
@@ -106,43 +113,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             Fps = fps;
         }
 
-        /// <summary>
-        /// animation := Enum identifier for Animation. <para></para>
-        /// numFrames := number of frames in Animation. <para></para>
-        /// frameWidth := width of single frame in Animation. <para></para>
-        /// frameHeight := height of single frame in Animation. <para></para>
-        /// yRow := y-coordinate of row that contains frames for Animation. <para></para>
-        /// indexFirstFrame := index (0 ... n) of first frame for Animation in said row. <para></para>
-        /// offset := x-, y-coordinate offset for frames that have a different size.
-        /// </summary>
-        /// <param animation="numFrames"></param>
-        /// <param animation="yRow"></param>
-        /// <param animation="indexFirstFrame"></param>
-        /// <param animation="name"></param>
-        /// <param animation="frameWidth"></param>
-        /// <param animation="frameHeight"></param>
-        /// <param animation="offset"></param>
-        public void AddAnimation(EAnimation name, int numFrames, int frameWidth, int frameHeight, int yRow, int indexFirstFrame, Vector2 offset, int fps)
-        {
-            // Creates an array of rectangles (i.e. a new Animation).
-            Rectangle[] animation = new Rectangle[numFrames];
-
-            // Fills up the array of rectangles
-            for (int i = 0; i < numFrames; i++)
-                animation[i] = new Rectangle((i + indexFirstFrame) * frameWidth, yRow, frameWidth, frameHeight);
-
-            // Store frames and offset in two different dictionaries. But both with same key (animation.)
-            _animations.Add(name, animation);
-            _offsets.Add(name, offset);
-            _fpsValues.Add(name, fps);
-        }
-
-        /// <summary>
-        /// Central Methods for HandleKeyboardInput and HandleGamePadInput.
-        /// This way, both methods don't have to have their own treatment for the same input actions.
-        /// If something is changed here, both Keyboard and GamePad can immediately execute that change.
-        /// </summary>
         #region InputHelperMethods
+
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to move to the left.
+        /// Change velocity, play animation.
+        /// </summary>
         protected override void GoLeft()
         {
             base.GoLeft();
@@ -150,6 +126,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _currentDirection = Direction.left;
         }
 
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to move to up.
+        /// Change velocity, play animation.
+        /// </summary>
         protected override void GoUp()
         {
             base.GoUp();
@@ -157,6 +137,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _currentDirection = Direction.up;
         }
 
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to move to the right.
+        /// Change velocity, play animation.
+        /// </summary>
         protected override void GoRight()
         {
             base.GoRight();
@@ -164,6 +148,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _currentDirection = Direction.right;
         }
 
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to move to down.
+        /// Change velocity, play animation.
+        /// </summary>
         protected override void GoDown()
         {
             base.GoDown();
@@ -171,6 +159,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _currentDirection = Direction.down;
         }
 
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to be in idle Animation.
+        /// Depending on the direction the AnimatedSprite is facing, a certain Idle Animation will be played.
+        /// </summary>
         protected void Idle()
         {
             if (_currentAnimation == EAnimation.Left)
@@ -186,6 +178,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 PlayAnimation(EAnimation.IdleDown);
         }
 
+        /// <summary>
+        /// Does everything that needs to happen for the AnimatedSprite to execute an Attack.
+        /// Depending on the direction the AnimatedSprite is facing, a certain Attack Animation will be played.
+        /// the bounding box will also be expanded accordingly.
+        /// </summary>
         protected void Attack()
         {
             // LEFT ATTACK
@@ -228,7 +225,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             }
         }
 
-        #endregion 
+        #endregion
+        #region HandleInput
 
         public override void HandleKeyboardInput()
         {
@@ -260,7 +258,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             _currentDirection = Direction.none;
         }
-
         public override void HandleGamePadInput()
         {
             // LEFT
@@ -292,58 +289,34 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _currentDirection = Direction.none;
         }
 
+        #endregion
+
         /// <summary>
-        /// Handles frame Update.
+        /// Updates the AnimatedSprite.
+        /// Handle input, update animation, update bounding box size
         /// </summary>
-        /// <param animation="GameTime">GameTime</param>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            // HandleInput, Update Position, Update BoundingBox Position.
             base.Update(gameTime);
 
             if (IsPlayerControlled)
             {
-                // If GamePad is connected, handle it's input. Else, handle Keyboard's input.
-                // Da das Sprite eigentlich schon weiß, ob Input per Keyboard oder GamePad kommt,
-                // könnte dies irgendwie an das AnimatedSprite weitergeleitet werden.
-                if (GamePad.GetState(_playerIndex).IsConnected)
+                if (InputManager.GamePadConnected())
                     HandleGamePadInput();
                 else
                     HandleKeyboardInput();
             }
 
-            // Adds time that has elapsed since our last Update
-            _timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
-
-            // We need to change our image if the timeElapsed is greater than our timeToUpdate(calculated by our framerate)
-            if (_timeElapsed > _timeToUpdate)
-            {
-                // Resets the timer in a way, so that we keep our desired Fps
-                _timeElapsed -= _timeToUpdate;
-
-                // Increment frameIndex
-                if (_currentFrameIndex < _animations[_currentAnimation].Length - 1)
-                    _currentFrameIndex++;
-
-                // Restarts the animation
-                else
-                {
-                    AnimationDone(_currentAnimation);
-                    _currentFrameIndex = 0;
-                }
-            }
-
-            // Update BoundingBox size to fit current frame size.
-            _boundingBox.Width = _animations[_currentAnimation][_currentFrameIndex].Width;
-            _boundingBox.Height = _animations[_currentAnimation][_currentFrameIndex].Height;
+            UpdateAnimation(gameTime);
         }
 
         /// <summary>
-        /// Draws the sprite on the screen
+        /// Draws the sprite on the screen.
         /// </summary>
         /// <param animation="spriteBatch">SpriteBatch</param>
         // TODO: Collide-Logic shouldn't be in here!
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
 
@@ -363,7 +336,72 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         }
 
         /// <summary>
-        /// Plays the animation specified by it's animation.
+        /// Increments the frames of an Animation according to the Frames per second.
+        /// Also executes methods that handle occurences at certain points in the Animation (start, end, etc.)
+        /// Also updates BoundingBox size.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        private void UpdateAnimation(GameTime gameTime)
+        {
+            // Adds time that has elapsed since the last Update
+            _timeElapsed += gameTime.ElapsedGameTime.TotalSeconds;
+
+            // We need to change our image if the timeElapsed is greater than our timeToUpdate(calculated by our framerate)
+            if (_timeElapsed > _timeToUpdate)
+            {
+                // Resets the timer so that the desired Fps are achieved.
+                _timeElapsed -= _timeToUpdate;
+
+                // Increment frameIndex
+                if (_currentFrameIndex < _animations[_currentAnimation].Length - 1)
+                    _currentFrameIndex++;
+
+                // Restarts the animation
+                else
+                {
+                    OnAnimationEnd(_currentAnimation);
+                    _currentFrameIndex = 0;
+                }
+            }
+
+            // Update BoundingBox size to fit current frame size.
+            _boundingBox.Width = _animations[_currentAnimation][_currentFrameIndex].Width;
+            _boundingBox.Height = _animations[_currentAnimation][_currentFrameIndex].Height;
+        }
+
+        /// <summary>
+        /// animation := Enum identifier for Animation. <para></para>
+        /// numFrames := number of frames in Animation. <para></para>
+        /// frameWidth := width of single frame in Animation. <para></para>
+        /// frameHeight := height of single frame in Animation. <para></para>
+        /// yRow := y-coordinate of row that contains frames for Animation. <para></para>
+        /// indexFirstFrame := index (0 ... n) of first frame for Animation in said row. <para></para>
+        /// offset := x-, y-coordinate offset for frames that have a different size.
+        /// </summary>
+        /// <param animation="numFrames"></param>
+        /// <param animation="yRow"></param>
+        /// <param animation="indexFirstFrame"></param>
+        /// <param animation="name"></param>
+        /// <param animation="frameWidth"></param>
+        /// <param animation="frameHeight"></param>
+        /// <param animation="offset"></param>
+        public void AddAnimation(EAnimation name, int numFrames, int frameWidth, int frameHeight, int yRow, int indexFirstFrame, Vector2 offset, int fps)
+        {
+            // Creates an array of rectangles (i.e. a new Animation).
+            Rectangle[] animation = new Rectangle[numFrames];
+
+            // Fills up the array of rectangles
+            for (int i = 0; i < numFrames; i++)
+                animation[i] = new Rectangle((i + indexFirstFrame) * frameWidth, yRow, frameWidth, frameHeight);
+
+            // Store frames and offset in two different dictionaries. But both with same key (animation.)
+            _animations.Add(name, animation);
+            _offsets.Add(name, offset);
+            _animationFpsValues.Add(name, fps);
+        }
+
+        /// <summary>
+        /// Plays the given animation.
         /// </summary>
         /// <param animation="animation">Animation to play</param>
         public void PlayAnimation(EAnimation animation)
@@ -375,8 +413,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
                 _currentAnimation = animation;
                 _currentFrameIndex = 0;
-                Console.WriteLine("Animation: " + animation);
-                Fps = _fpsValues[animation];
+                Fps = _animationFpsValues[animation];
             }
         }
 
@@ -384,9 +421,19 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Called everytime a frame finishes.
         /// </summary>
         /// <param animation="animation"></param>
-        private void AnimationDone(EAnimation animation)
+        private void OnAnimationEnd(EAnimation animation)
         {
             _playingAnimation = false;
+        }
+
+        private void OnAnimationStart(EAnimation animation)
+        {
+
+        }
+
+        private void OnAnimationFrame(EAnimation animation, int frameIndex)
+        {
+
         }
     }
 }

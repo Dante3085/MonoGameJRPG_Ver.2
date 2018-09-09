@@ -246,6 +246,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             }
         }
 
+        /// <summary>
+        /// Updates Sprite.
+        /// Handle input, update position, update bounding box position
+        /// </summary>
+        /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
             // Only handle input if Sprite is playerControlled.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
@@ -107,6 +108,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             //swordsman.AddAnimation(9, 380, 0, "AttackRight", 70, 70, new Vector2(+15, -5));
 
             return swordsman;
+        }
+
+        public static AnimatedSprite Adventurer(Vector2 position)
+        {
+            AnimatedSprite adventurer = new AnimatedSprite("adventurer", Contents.adventurer, position, PlayerIndex.One, fps: 6, keyboardInput: KeyboardInput.Default(), 
+                gamePadInput: GamePadInput.Default(), isInteractable: true);
+
+            adventurer.AddAnimation(EAnimation.Idle, 4, 50, 45, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.Right, 5, 50, 45, 1, 1, Vector2.Zero, 5);
+
+            return adventurer;
         }
 
         #endregion

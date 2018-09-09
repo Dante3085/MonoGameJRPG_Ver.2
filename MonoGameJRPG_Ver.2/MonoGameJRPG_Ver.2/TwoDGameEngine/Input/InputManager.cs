@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace MonoGameJRPG.TwoDGameEngine.Input
 {
     /// <summary>
-    /// Provides utility Methods for Input.
+    /// Provides utility for checking Input.
+    /// Note: GamePad is currently restricted to PlayerIndex.One.
     /// </summary>
     public static class InputManager
     {
