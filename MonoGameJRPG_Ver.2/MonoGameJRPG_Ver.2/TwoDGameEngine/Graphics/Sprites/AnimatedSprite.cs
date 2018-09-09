@@ -89,12 +89,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="position"></param>
         /// <param name="playerIndex"></param>
         /// <param name="fps"></param>
-        /// <param name="texture"></param>
+        /// <param name="spritesheet"></param>
         /// <param name="keyboardInput"></param>
         /// <param name="gamePadInput"></param>
-        public AnimatedSprite(string name, Texture2D texture, Vector2 position, PlayerIndex playerIndex, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null, bool isInteractable = false) 
-            : base(name, texture, position, keyboardInput, gamePadInput, playerIndex, isInteractable)
+        public AnimatedSprite(string name, Texture2D spritesheet, Vector2 position = default(Vector2), 
+            PlayerIndex playerIndex = PlayerIndex.One, int fps = 20, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null, bool isInteractable = false) 
+            : base(name, spritesheet, position, keyboardInput, gamePadInput, playerIndex, isInteractable)
         {
+            if (position == null)
+                position = Vector2.Zero;
+
             _isPlayerControlled = true;
             Fps = fps;
         }
@@ -104,11 +108,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// </summary>
         /// <param name="name"></param>
         /// <param name="position"></param>
-        /// <param name="texture"></param>
+        /// <param name="spritesheet"></param>
         /// <param name="fps"></param>
-        public AnimatedSprite(string name, Texture2D texture, Vector2 position, int fps = 20, bool isInteractable = false) 
-            : base(name, texture, position, isInteractable)
+        public AnimatedSprite(string name, Texture2D spritesheet, int frameWidth, int frameHeight, Vector2 position = default(Vector2), int fps = 20, bool isInteractable = false) 
+            : base(name, spritesheet, position, isInteractable)
         {
+            if (position == null)
+                position = Vector2.Zero;
+
             _isPlayerControlled = false;
             Fps = fps;
         }
@@ -185,6 +192,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// </summary>
         protected void Attack()
         {
+            if (_currentAnimation == EAnimation.Idle)
+                PlayAnimation(EAnimation.MeleeRight);
+
             // LEFT ATTACK
             if (_currentAnimation == EAnimation.Left)
             {
@@ -208,6 +218,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             // RIGHT ATTACK
             if (_currentAnimation == EAnimation.Right)
             {
+                Game1.gameConsole.Log("asds");
                 PlayAnimation(EAnimation.MeleeRight);
                 _currentDirection = Direction.right;
 
@@ -251,6 +262,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 _speed += 100;
             else if (InputManager.OnKeyUp(_keyboardInput.Run))
                 _speed -= 100;
+
+            // ATTACK
+            if (InputManager.OnKeyDown(_keyboardInput.Attack))
+                Attack();
 
             // No Movement => Idle Frame for respective Direction.
             else
@@ -318,7 +333,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         // TODO: Collide-Logic shouldn't be in here!
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
+            spriteBatch.Draw(Spritesheet, _position + _offsets[_currentAnimation], _animations[_currentAnimation][_currentFrameIndex], Color.White);
 
             if (_drawInteractionPrompt)
                 DrawInteractionPrompt(spriteBatch, Side.Top);

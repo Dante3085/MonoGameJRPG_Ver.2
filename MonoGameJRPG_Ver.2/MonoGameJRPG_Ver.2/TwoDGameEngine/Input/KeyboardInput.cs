@@ -46,7 +46,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Right = Keys.D,
                 Down = Keys.S,
                 Run = Keys.LeftShift,
-                Interact = Keys.Space
+                Interact = Keys.Space,
+                Attack = Keys.F,
             };
         }
 
@@ -63,7 +64,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Right = Keys.None,
                 Down = Keys.None,
                 Run = Keys.None,
-                Interact = Keys.None
+                Interact = Keys.None,
+                Attack = Keys.None,
             };
         }
 

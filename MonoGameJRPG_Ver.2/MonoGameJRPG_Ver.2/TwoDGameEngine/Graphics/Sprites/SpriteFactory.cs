@@ -115,8 +115,15 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             AnimatedSprite adventurer = new AnimatedSprite("adventurer", Contents.adventurer, position, PlayerIndex.One, fps: 6, keyboardInput: KeyboardInput.Default(), 
                 gamePadInput: GamePadInput.Default(), isInteractable: true);
 
-            adventurer.AddAnimation(EAnimation.Idle, 4, 50, 45, 0, 0, offset: Vector2.Zero, fps: 4);
-            adventurer.AddAnimation(EAnimation.Right, 5, 50, 45, 1, 1, Vector2.Zero, 5);
+            adventurer.AddAnimation(EAnimation.Idle, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.IdleLeft, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.IdleUp, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.IdleRight, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.IdleDown, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+
+            adventurer.AddAnimation(EAnimation.Right, 5, 50, 37, 37, 1, Vector2.Zero, 5);
+
+            adventurer.AddAnimation(EAnimation.MeleeRight, 7, 50, 37, 222, 0, Vector2.Zero, 7);
 
             return adventurer;
         }
@@ -130,7 +137,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             if (btnTexture == null)
                 throw new Exception("Contents.btnNewGame Texture not loaded!");
 
-            AnimatedSprite newGameBtn = new AnimatedSprite("NewGameBtn", Contents.btnNewGame, position, 5);
+            AnimatedSprite newGameBtn = new AnimatedSprite("NewGameBtn", Contents.btnNewGame, position, fps: 5);
             newGameBtn.AddAnimation(EAnimation.Idle, 12, 48, 13, 0, 0, Vector2.Zero, 10);
             return newGameBtn;
         }
@@ -140,7 +147,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             if (glowingButtonTex == null)
                 throw new Exception("Contents.glowingButton Texture not loaded!");
 
-            AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, position, 12);
+            AnimatedSprite glowingButton = new AnimatedSprite("GlowingButton", glowingButtonTex, position, fps: 12);
             glowingButton.AddAnimation(EAnimation.Idle, 1, 120, 50, 0, 0, Vector2.Zero, 1);
             glowingButton.AddAnimation(EAnimation.MouseHover, 14, 120, 50, 0, 0, Vector2.Zero, 10);
 
@@ -152,7 +159,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             if (discoButtonTex == null)
                 throw new Exception("Contents.DiscoButton Texture not loaded!");
 
-            AnimatedSprite discoButton = new AnimatedSprite("DiscoButton", discoButtonTex, position, 60);
+            AnimatedSprite discoButton = new AnimatedSprite("DiscoButton", discoButtonTex, position, fps: 60);
             discoButton.AddAnimation(EAnimation.Idle, 1, 18, 18, 0, 0, Vector2.Zero, 1);
             discoButton.AddAnimation(EAnimation.MouseHover, 36, 18, 18, 0, 0, Vector2.Zero, 10);
 
@@ -160,7 +167,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         }
         public static AnimatedSprite Heart(Vector2 position)
         {
-            AnimatedSprite heart = new AnimatedSprite("Heart", Contents.heart, position, 1);
+            AnimatedSprite heart = new AnimatedSprite("Heart", Contents.heart, position, fps: 1);
             heart.AddAnimation(EAnimation.Idle, 1, 16, 16, 0, 0, Vector2.Zero, 1);
             heart.AddAnimation(EAnimation.Hurt, 1, 16, 16, 0, 1, Vector2.Zero, 1);
             heart.AddAnimation(EAnimation.MouseHover, 1, 16, 16, 0, 0, Vector2.Zero, 1);

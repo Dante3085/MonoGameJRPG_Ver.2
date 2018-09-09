@@ -41,9 +41,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         protected bool _drawInteractionPrompt;
 
         /// <summary>
-        /// Stores this Sprite's texture.
+        /// Stores this Sprite's spritesheet.
         /// </summary>
-        protected Texture2D _texture;
+        protected Texture2D Spritesheet;
 
         /// <summary>
         /// Stores this Sprite's Position in the 2D-World.
@@ -183,20 +183,20 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Constructs a Sprite meant for a player to controll it => It can respond to input and has a PlayerIndex.
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="texture"></param>
+        /// <param name="spritesheet"></param>
         /// <param name="position"></param>
         /// <param name="keyboardInput"></param>
         /// <param name="gamePadInput"></param>
         /// <param name="playerIndex"></param>
         /// <param name="isInteractable"></param>
-        public Sprite(string name, Texture2D texture, Vector2 position, KeyboardInput keyboardInput = null,
+        public Sprite(string name, Texture2D spritesheet, Vector2 position, KeyboardInput keyboardInput = null,
             GamePadInput gamePadInput = null, PlayerIndex playerIndex = PlayerIndex.One, bool isInteractable = false,
             Action<ICollidable> collisionHandler = null)
         {
             _isPlayerControlled = true;
 
             _name = name;
-            _texture = texture;
+            Spritesheet = spritesheet;
             _position = position;
             _keyboardInput = keyboardInput;
             _gamePadInput = gamePadInput;
@@ -204,7 +204,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _isInteractable = isInteractable;
             _collisionHandler = collisionHandler;
 
-            _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            _boundingBox = new Rectangle((int)position.X, (int)position.Y, spritesheet.Width, spritesheet.Height);
 
             if (_collisionHandler == null)
             {
@@ -220,21 +220,21 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// Constructs a Sprite not meant for a player to controll it => Controlled by AI or not movable at all.
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="texture"></param>
+        /// <param name="spritesheet"></param>
         /// <param name="position"></param>
         /// <param name="isInteractable"></param>
-        public Sprite(string name, Texture2D texture, Vector2 position, bool isInteractable = false,
+        public Sprite(string name, Texture2D spritesheet, Vector2 position, bool isInteractable = false,
             Action<ICollidable> collisionHandler = null)
         {
             _isPlayerControlled = false;
 
             _name = name;
-            _texture = texture;
+            Spritesheet = spritesheet;
             _position = position;
             _isInteractable = isInteractable;
             _collisionHandler = collisionHandler;
 
-            _boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            _boundingBox = new Rectangle((int)position.X, (int)position.Y, spritesheet.Width, spritesheet.Height);
 
             if (_collisionHandler == null)
             {
@@ -283,7 +283,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position, Color.White);
+            spriteBatch.Draw(Spritesheet, _position, Color.White);
 
             if (_drawInteractionPrompt)
                 DrawInteractionPrompt(spriteBatch, Side.Top);

@@ -115,7 +115,6 @@ namespace MonoGameJRPG_Ver._2
 
             Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
             inventoryText.SetColor(Color.Aquamarine);
-            inventoryText.CursorOnIt = true;
 
             _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
             {

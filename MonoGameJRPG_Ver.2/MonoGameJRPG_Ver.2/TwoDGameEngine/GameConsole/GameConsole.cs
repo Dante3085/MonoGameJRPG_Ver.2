@@ -145,8 +145,8 @@ namespace VosSoft.Xna.GameConsole
         }
 
         /// <summary>
-        /// <para>Gets or sets the background texture of the game console.</para>
-        /// <para>The texture will always be sized to the bounds of the game console.</para>
+        /// <para>Gets or sets the background spritesheet of the game console.</para>
+        /// <para>The spritesheet will always be sized to the bounds of the game console.</para>
         /// <para>If this is set to null, only the background color will be used (default).</para>
         /// </summary>
         public Texture2D BackgroundTexture
@@ -160,8 +160,8 @@ namespace VosSoft.Xna.GameConsole
 
         /// <summary>
         /// <para>Gets or sets the background color of the game console.</para>
-        /// <para>If the background texture is set, this will be used as an color overlay
-        /// for the texture. If the texture is set to null, only this color will be used.</para>
+        /// <para>If the background spritesheet is set, this will be used as an color overlay
+        /// for the spritesheet. If the spritesheet is set to null, only this color will be used.</para>
         /// <para>The default background color is black.</para>
         /// </summary>
         public Color BackgroundColor
@@ -664,7 +664,7 @@ namespace VosSoft.Xna.GameConsole
         /// <param name="game">Reference to the game.</param>
         /// <param name="bounds"><para>The bounds of the game console, including the position and size (in pixels).</para>
         /// <para>Can be null, then the default bounds will be used (100 % width and 8 lines height).</para></param>
-        /// <param name="backgroundTexture"><para>The background texture.</para>
+        /// <param name="backgroundTexture"><para>The background spritesheet.</para>
         /// <para>Can be null, then the default background color (black) will be used for the background.</para></param>
         /// <param name="backgroundAlpha"><para>The alpha channel value for the background.</para>
         /// <value>The value can be set from 0.0 to 1.0 for 0 to 100 % opacity.</value></param>
@@ -991,8 +991,8 @@ namespace VosSoft.Xna.GameConsole
         }
 
         /// <summary>
-        /// Loads the default font and blank texture for the game console
-        /// and sets the default bounds and background texture if necessary.
+        /// Loads the default font and blank spritesheet for the game console
+        /// and sets the default bounds and background spritesheet if necessary.
         /// </summary>
         protected override void LoadContent()
         {
