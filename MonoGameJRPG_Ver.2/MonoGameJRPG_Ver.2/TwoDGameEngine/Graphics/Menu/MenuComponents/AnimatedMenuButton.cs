@@ -40,17 +40,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
 
         public override void MouseHoverReaction()
         {
-            _animSprite.PlayAnimation(IsMouseHover() ? EAnimation.MouseHover : EAnimation.Idle);
+            _animSprite.SetAnimation(IsMouseHover() ? EAnimation.MouseHover : EAnimation.Idle);
             if (IsMouseHover())
-                _animSprite.PlayAnimation(EAnimation.MouseHover);
+                _animSprite.SetAnimation(EAnimation.MouseHover);
             else if ((!IsMouseHover()) && (!_cursorOnIt))
-                _animSprite.PlayAnimation(EAnimation.Idle);
+                _animSprite.SetAnimation(EAnimation.Idle);
         }
 
         public override void CursorReaction(GameTime gameTime)
         {
             if (_cursorOnIt)
-                _animSprite.PlayAnimation(EAnimation.MouseHover);
+                _animSprite.SetAnimation(EAnimation.MouseHover);
         }
     }
 }

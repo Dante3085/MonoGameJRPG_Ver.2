@@ -55,6 +55,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         public override int Height => _textRec.Height;
         public override Rectangle Rectangle => _textRec;
 
+        public Vector2 Position
+        {
+            get => _position;
+            set => _position = value;
+        }
+
         #endregion
         #region Methods
 
@@ -93,8 +99,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
         {
             if (Game1.screenWidth > 1920)
             {
-                _spriteFontNoHover = Contents.arial30;
-                _spriteFontHover = Contents.arial35;
+                _spriteFontNoHover = Contents.manaSpace25;
+                _spriteFontHover = Contents.manaSpace28;
                 _activeSpriteFont = _spriteFontNoHover;
             }
             else

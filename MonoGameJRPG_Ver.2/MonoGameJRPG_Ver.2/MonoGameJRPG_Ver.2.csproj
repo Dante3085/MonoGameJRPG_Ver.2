@@ -78,6 +78,8 @@
     <Compile Include="TwoDGameEngine\Graphics\Menu\MenuComponents\Text.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\AnimatedSprite.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\CollisionManager.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Sprites\Combos\Combo.cs" />
+    <Compile Include="TwoDGameEngine\Graphics\Sprites\Combos\ComboNode.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\EAnimation.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\ICollidable.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\Sprite.cs" />

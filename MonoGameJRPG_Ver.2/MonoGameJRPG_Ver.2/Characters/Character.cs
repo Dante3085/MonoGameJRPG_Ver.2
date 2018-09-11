@@ -104,20 +104,45 @@ namespace MonoGameJRPG_Ver._2.Characters
 
         #endregion
 
+        /// <summary>
+        /// Stores if the Character is currently attacking.
+        /// // TODO: It is not clear if this is necessary for the JRPG !
+        /// </summary>
         private bool _isAttacking = false;
 
+        /// <summary>
+        /// Stores what Action the Character will execute when asked to execute it's current Action.
+        /// // TODO: It is not clear if this is necessary for the JRPG !
+        /// </summary>
         private EAction _currentAction = EAction.Cleave;
 
         #region Input
+
+        /// <summary>
+        /// Stores the Character's KeyboardInput.
+        /// </summary>
         private KeyboardInput _keyboardInput;
+
+        /// <summary>
+        /// Stores the Character's GamePadInput.
+        /// </summary>
         private GamePadInput _gamePadInput;
 
+        /// <summary>
+        /// Stores if the Character is/can controlled by player.
+        /// </summary>
         private bool _isPlayerControlled;
+
         #endregion
 
+        /// <summary>
+        /// Stores all the Actions that are registered on this Character.
+        /// </summary>
         private Dictionary<EAction, AAction> _actions = new Dictionary<EAction, AAction>();
+
         #endregion
         #region Properties
+
         public AnimatedSprite AnimatedSprite
         {
             get { return _animatedSprite; }
@@ -139,10 +164,14 @@ namespace MonoGameJRPG_Ver._2.Characters
         public int MaxMp { get => _maxMp; set => _maxMp = value; }
         public bool IsAttacking { get => _isAttacking; set => _isAttacking = value; }
         public bool IsPlayerControlled { get => _isPlayerControlled; }
+
         #endregion
         #region Methods
+
+
         public Character(String name = "NoName", int maxHp = 0, int maxMp = 0, int strength = 0, int defence = 0, int wit = 0,
-            int agility = 0, int speed = 0, bool isPlayerControlled = false, KeyboardInput keyboardInput = null, GamePadInput gamePadInput = null, AnimatedSprite animatedSprite = null)
+            int agility = 0, int speed = 0, bool isPlayerControlled = false, KeyboardInput keyboardInput = null, 
+            GamePadInput gamePadInput = null, AnimatedSprite animatedSprite = null)
         {
             _name = name;
 

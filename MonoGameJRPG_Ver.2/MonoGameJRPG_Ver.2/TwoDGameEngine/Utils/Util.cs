@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
 {
@@ -57,7 +58,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
             spriteBatch.Draw(texture, lines[2], color);
             spriteBatch.Draw(texture, lines[3], color);
         }
-
         /// <summary>
         /// Draws a filled Rectangle using the given Rectangle object.
         /// </summary>
@@ -78,6 +78,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
             spriteBatch.Draw(recTex, pos, Color.White * (float)opacity);
         }
 
+        /// <summary>
+        /// Draws a circle with the given radius, color, sharpness and opacity at the given position.
+        /// </summary>
+        /// <param name="radius"></param>
+        /// <param name="color"></param>
+        /// <param name="pos"></param>
+        /// <param name="spriteBatch"></param>
+        /// <param name="sharpness"></param>
+        /// <param name="opacity"></param>
+        /// <returns></returns>
         public static Texture2D DrawCircle(int radius, Color color, Vector2 pos, SpriteBatch spriteBatch, double sharpness = 1.0, double opacity = 1.0)
         {
             int diameter = radius * 2;
@@ -107,6 +117,19 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
             spriteBatch.Draw(circleTex, pos, color * (float)opacity);
 
             return circleTex;
+        }
+
+        /// <summary>
+        /// Appends the given string to a pre-defined Logfile (Textfile).
+        /// If no logfile exists, it is automatically created.
+        /// </summary>
+        public static void Log(string text)
+        {
+            if (!File.Exists("log.txt"))
+                File.WriteAllText("log.txt", text);
+            else
+                using (StreamWriter file = new StreamWriter("log.txt"))
+                    file.WriteLine(text);
         }
 
         #endregion

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
@@ -67,7 +68,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             swordsman.AddAnimation(EAnimation.Right, 8, 50, 50, 100, 8, new Vector2(0, 0), 12);
             swordsman.AddAnimation(EAnimation.Down, 12, 50, 50, 0, 0, new Vector2(0, 0), 15);
 
-            swordsman.PlayAnimation(EAnimation.Idle);
+            swordsman.SetAnimation(EAnimation.Idle);
 
             // Attack Animations for each direction.
             //swordsman.AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
@@ -99,7 +100,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             swordsman.AddAnimation(EAnimation.Right, 8, 50, 50, 100, 8, new Vector2(0, 0), 12);
             swordsman.AddAnimation(EAnimation.Down, 12, 50, 50, 0, 0, new Vector2(0, 0), 15);
 
-            swordsman.PlayAnimation(EAnimation.Idle);
+            swordsman.SetAnimation(EAnimation.Idle);
 
             // Attack Animations for each direction.
             //swordsman.AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
@@ -115,15 +116,37 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             AnimatedSprite adventurer = new AnimatedSprite("adventurer", Contents.adventurer, position, PlayerIndex.One, fps: 6, keyboardInput: KeyboardInput.Default(), 
                 gamePadInput: GamePadInput.Default(), isInteractable: true);
 
-            adventurer.AddAnimation(EAnimation.Idle, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
-            adventurer.AddAnimation(EAnimation.IdleLeft, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
-            adventurer.AddAnimation(EAnimation.IdleUp, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
-            adventurer.AddAnimation(EAnimation.IdleRight, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
-            adventurer.AddAnimation(EAnimation.IdleDown, 4, 50, 37, 0, 0, offset: Vector2.Zero, fps: 4);
+            adventurer.AddAnimation(EAnimation.Idle, 4, 50, 37, 0, 0, Vector2.Zero, 4, 
+                () => Console.WriteLine("Idle start"), () => Console.WriteLine("Idle end"));
+            adventurer.AddAnimation(EAnimation.IdleLeft, 4, 50, 37, 0, 0, Vector2.Zero, 4,
+                () => Console.WriteLine("IdleLeft start"), () => Console.WriteLine("IdleLeft end"));
+            adventurer.AddAnimation(EAnimation.IdleUp, 4, 50, 37, 0, 0, Vector2.Zero, 4,
+                () => Console.WriteLine("IdleUp start"), () => Console.WriteLine("IdleUp end"));
+            adventurer.AddAnimation(EAnimation.IdleRight, 4, 50, 37, 0, 0, Vector2.Zero, 4,
+                () => Console.WriteLine("IdleRight start"), () => Console.WriteLine("IdleRight end"));
+            adventurer.AddAnimation(EAnimation.IdleDown, 4, 50, 37, 0, 0, Vector2.Zero, 4,
+                () => Console.WriteLine("IdleDown start"), () => Console.WriteLine("IdleDown end"));
 
+            adventurer.AddAnimation(EAnimation.Left, 5, 50, 37, 37, 1, Vector2.Zero, 5);
+            adventurer.AddAnimation(EAnimation.Up, 5, 50, 37, 37, 1, Vector2.Zero, 5);
             adventurer.AddAnimation(EAnimation.Right, 5, 50, 37, 37, 1, Vector2.Zero, 5);
+            adventurer.AddAnimation(EAnimation.Down, 5, 50, 37, 37, 1, Vector2.Zero, 5);
 
-            adventurer.AddAnimation(EAnimation.MeleeRight, 7, 50, 37, 222, 0, Vector2.Zero, 7);
+            adventurer.AddAnimation(EAnimation.MeleeLeft, 7, 50, 37, 222, 0, Vector2.Zero, 7,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.IdleLeft));
+            adventurer.AddAnimation(EAnimation.MeleeUp, 7, 50, 37, 222, 0, Vector2.Zero, 7,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.IdleUp));
+            adventurer.AddAnimation(EAnimation.MeleeRight, 7, 50, 37, 222, 0, Vector2.Zero, 7,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.IdleRight));
+            adventurer.AddAnimation(EAnimation.MeleeDown, 7, 50, 37, 222, 0, Vector2.Zero, 7,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.IdleDown));
+
+            adventurer.AddAnimation(EAnimation.Melee1, 7, 50, 37, 222, 0, Vector2.Zero, 8, 
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.Idle));
+            adventurer.AddAnimation(EAnimation.Melee2, 4, 50, 37, 259, 0, Vector2.Zero, 8,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.Idle));
+            adventurer.AddAnimation(EAnimation.Melee3, 3, 50, 37, 259, 4, Vector2.Zero, 4,
+                onAnimationEnd: () => adventurer.SetAnimation(EAnimation.Idle));
 
             return adventurer;
         }

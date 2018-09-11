@@ -69,6 +69,13 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
             };
         }
 
+        public override string ToString()
+        {
+            return "Lef\nt: " + Left + ", Up: " + Up + ", Right: " + Right +
+                   ", Down: " + Down + ", Interact: " + Interact + ", Attack: "
+                   + Attack;
+        }
+
         #endregion
     }
 }

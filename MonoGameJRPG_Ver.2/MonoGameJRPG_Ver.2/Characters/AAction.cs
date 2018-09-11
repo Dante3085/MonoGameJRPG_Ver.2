@@ -56,9 +56,9 @@ namespace MonoGameJRPG_Ver._2.Characters
         private string _description;
 
         #endregion
-
         #region Methods
-        private AAction(int hpModifier = 0, int mpModifier = 0, int revengeModifier = 0, int time = 1, string description = "DefaultDescription", EActionMethod[] registeredActionMethods = null)
+        private AAction(int hpModifier = 0, int mpModifier = 0, int revengeModifier = 0, int time = 1, 
+            string description = "DefaultDescription", EActionMethod[] registeredActionMethods = null)
         {
             _hpModifier = hpModifier;
             _mpModifier = mpModifier;
@@ -80,6 +80,7 @@ namespace MonoGameJRPG_Ver._2.Characters
         public void ExecuteAction(Character target)
         {
             _actionMethods[_registeredActionMethods[0]](target);
+            _timeRemaining = _time;
         }
 
         /// <summary>

@@ -28,6 +28,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         #endregion
         #region MeleeAttacks
 
+        Melee1,
+        Melee2,
+        Melee3,
+
         MeleeLeft,
         MeleeUp,
         MeleeRight,

@@ -16,6 +16,7 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites.Combos;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
 
@@ -55,15 +56,15 @@ namespace MonoGameJRPG_Ver._2
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            //screenWidth = 300;
-            //screenHeight = 200;
+            screenWidth = 600;
+            screenHeight = 300;
 
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
         }
 
         public void ExitGame()
@@ -107,20 +108,17 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            Character player = new Character("Player", maxHp: 1000, isPlayerControlled: true, keyboardInput: KeyboardInput.Default(), animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
-            Character npc = new Character("Npc", maxHp: 456, isPlayerControlled: false, gamePadInput: GamePadInput.Default(),
-                animatedSprite: SpriteFactory.NPC(new Vector2(100, 100)));
-
-            Character adventurer = new Character("adventurer", isPlayerControlled: true, animatedSprite: SpriteFactory.Adventurer(new Vector2(200 ,200)), keyboardInput: KeyboardInput.Default(), gamePadInput: GamePadInput.Default());
+            Character adventurer = new Character("adventurer", isPlayerControlled: true, keyboardInput: KeyboardInput.Default(),
+                animatedSprite: SpriteFactory.Adventurer(new Vector2(200, 200)));
 
             Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
             inventoryText.SetColor(Color.Aquamarine);
 
             _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
             {
-                { EScene.MainMenuScene, SceneFactory.MainMenuScene(this) },
-                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, player, npc, adventurer, inventoryText) },
-                { EScene.InventoryScene, SceneFactory.InventoryScene(this, player, npc, adventurer) }
+                { EScene.MainMenuScene, SceneFactory.MainMenuScene(this)},
+                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, inventoryText, adventurer) },
+                { EScene.InventoryScene, SceneFactory.InventoryScene(this, adventurer) }
             });
             _sceneStack.Push(EScene.MainMenuScene);
 
