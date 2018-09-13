@@ -255,9 +255,9 @@ namespace MonoGameJRPG_Ver._2.Characters
 
             // TODO: PlayerIndex muss an AnimSprite gegeben werden.
             if (InputManager.GamePadConnected())
-                HandleGamePadInput();
+                HandleGamePadInput(gameTime);
             else
-                HandleKeyboardInput();
+                HandleKeyboardInput(gameTime);
 
             // TODO: Verkapseln. Sorgt dafür, dass _isAttacking auf false gesetzt wird, wenn die Angriffsanimation vorbei ist.
             if (!_animatedSprite.PlayingAnimation)
@@ -339,19 +339,17 @@ namespace MonoGameJRPG_Ver._2.Characters
         /// <summary>
         /// Handles Input given to the Character by Keyboard.
         /// </summary>
-        public void HandleKeyboardInput()
+        public void HandleKeyboardInput(GameTime gameTime)
         {
-            if (InputManager.OnKeyDown(_keyboardInput.Attack))
-                _isAttacking = true;
+            
         }
 
         /// <summary>
         /// Handles Input given to the Character given by GamePad.
         /// </summary>
-        public void HandleGamePadInput()
+        public void HandleGamePadInput(GameTime gameTime)
         {
-            if (InputManager.OnButtonDown(_gamePadInput.Attack))
-                _isAttacking = true;
+            
         }
 
         #endregion

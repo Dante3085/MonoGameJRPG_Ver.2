@@ -258,9 +258,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             {
                 // If GamePad is connected, handle it's input. Else, handle Keyboard's input.
                 if (InputManager.GamePadConnected())
-                    HandleGamePadInput();
+                    HandleGamePadInput(gameTime);
                 else
-                    HandleKeyboardInput();
+                    HandleKeyboardInput(gameTime);
             }
 
             // Apply Velocity to Position.
@@ -360,7 +360,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Handles basic KeyboardInput for this Sprite.
         /// </summary>
-        public virtual void HandleKeyboardInput()
+        public virtual void HandleKeyboardInput(GameTime gameTime)
         {
             // LEFT
             if (InputManager.IsKeyDown(_keyboardInput.Left))
@@ -389,7 +389,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         /// <summary>
         /// Handles basic GamePadInput for this Sprite.
         /// </summary>
-        public virtual void HandleGamePadInput()
+        public virtual void HandleGamePadInput(GameTime gameTime)
         {
             // LEFT
             if (InputManager.IsButtonDown(_gamePadInput.Left))

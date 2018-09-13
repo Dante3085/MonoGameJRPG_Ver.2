@@ -19,7 +19,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         private int _cursoredElement;
 
         #endregion
-
         #region Methods
 
         public Menu(Layout layout)
@@ -34,9 +33,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 
             _layout.Elements[_cursoredElement].CursorOnIt = true;
             if (InputManager.GamePadConnected())
-                HandleGamePadInput();
+                HandleGamePadInput(gameTime);
             else
-                HandleKeyboardInput();
+                HandleKeyboardInput(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -44,7 +43,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
             _layout.Draw(spriteBatch);
         }
 
-        public void HandleKeyboardInput()
+        public void HandleKeyboardInput(GameTime gameTime)
         {
             List<MenuElement> elements = _layout.Elements;
 
@@ -77,7 +76,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                 elements[_cursoredElement].ExecuteFunctionality();
         }
 
-        public void HandleGamePadInput()
+        public void HandleGamePadInput(GameTime gameTime)
         {
             List<MenuElement> elements = _layout.Elements;
 

@@ -16,6 +16,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         public static Texture2D blueBackground;
         public static Texture2D ff15Background;
         public static Texture2D blackBackground;
+        public static Texture2D whiteBackground;
 
         #endregion
         #region MenuComponents
@@ -79,6 +80,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
             blueBackground = c.Load<Texture2D>("Backgrounds/blueBackground");
             ff15Background = c.Load<Texture2D>("Backgrounds/ff15Background");
             blackBackground = c.Load<Texture2D>("Backgrounds/blackBackground");
+            whiteBackground = c.Load<Texture2D>("Backgrounds/whiteBackground");
 
             redButtonNoHover = c.Load<Texture2D>("MenuComponents/RedButtonNoHover");
             redButtonHover = c.Load<Texture2D>("MenuComponents/RedButtonHover");

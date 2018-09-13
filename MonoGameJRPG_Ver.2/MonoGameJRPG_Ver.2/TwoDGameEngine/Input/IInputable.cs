@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace MonoGameJRPG.TwoDGameEngine
 {
@@ -12,7 +13,7 @@ namespace MonoGameJRPG.TwoDGameEngine
     /// </summary>
     public interface IInputable
     {
-        void HandleKeyboardInput();
-        void HandleGamePadInput();
+        void HandleKeyboardInput(GameTime gameTime);
+        void HandleGamePadInput(GameTime gameTime);
     }
 }

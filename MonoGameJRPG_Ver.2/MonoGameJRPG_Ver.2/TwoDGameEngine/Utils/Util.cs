@@ -125,6 +125,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Utils
         /// </summary>
         public static void Log(string text)
         {
+            // Insert DateTime for every log entry.
+            text = text.Insert(0, DateTime.Now + ": ");
+
             if (!File.Exists("log.txt"))
                 File.WriteAllText("log.txt", text);
             else

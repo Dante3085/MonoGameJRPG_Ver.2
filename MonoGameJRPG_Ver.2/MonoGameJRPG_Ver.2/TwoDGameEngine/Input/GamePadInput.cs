@@ -28,7 +28,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         public Buttons Confirm { get; set; }
         public Buttons Back { get; set; }
 
-        public Buttons Attack { get; set; } // DELETE ME LATER
+        public Buttons Combo { get; set; } 
         #endregion
         #region Methods
 
@@ -45,7 +45,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Right = Buttons.LeftThumbstickRight,
                 Down = Buttons.LeftThumbstickDown,
                 Run = Buttons.RightShoulder,
-                Interact = Buttons.A
+                Interact = Buttons.A,
+                Combo = Buttons.X,
             };
         }
 
@@ -58,7 +59,8 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Right = 0,
                 Down = 0,
                 Run = 0,
-                Interact = 0
+                Interact = 0,
+                Combo = 0,
             };
         }
 

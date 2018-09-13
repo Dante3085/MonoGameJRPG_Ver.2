@@ -28,7 +28,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
         public Keys Confirm { get; set; }
         public Keys Back { get; set; }
 
-        public Keys Attack { get; set; } // DELTE ME LATER
+        public Keys Combo { get; set; }
 
         #endregion
         #region Methods
@@ -47,7 +47,7 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Down = Keys.S,
                 Run = Keys.LeftShift,
                 Interact = Keys.Space,
-                Attack = Keys.F,
+                Combo = Keys.F,
             };
         }
 
@@ -65,15 +65,15 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
                 Down = Keys.None,
                 Run = Keys.None,
                 Interact = Keys.None,
-                Attack = Keys.None,
+                Combo = Keys.None,
             };
         }
 
         public override string ToString()
         {
             return "Lef\nt: " + Left + ", Up: " + Up + ", Right: " + Right +
-                   ", Down: " + Down + ", Interact: " + Interact + ", Attack: "
-                   + Attack;
+                   ", Down: " + Down + ", Interact: " + Interact + ", Combo: "
+                   + Combo;
         }
 
         #endregion

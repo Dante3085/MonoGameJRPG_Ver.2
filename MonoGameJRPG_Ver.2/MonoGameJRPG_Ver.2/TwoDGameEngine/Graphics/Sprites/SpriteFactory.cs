@@ -70,7 +70,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             swordsman.SetAnimation(EAnimation.Idle);
 
-            // Attack Animations for each direction.
+            // Combo Animations for each direction.
             //swordsman.AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
             //swordsman.AddAnimation(9, 230, 0, "AttackUp", 70, 80, new Vector2(-13, -27));
             //swordsman.AddAnimation(9, 310, 0, "AttackLeft", 70, 70, new Vector2(-30, -5));
@@ -102,7 +102,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 
             swordsman.SetAnimation(EAnimation.Idle);
 
-            // Attack Animations for each direction.
+            // Combo Animations for each direction.
             //swordsman.AddAnimation(9, 150, 0, "AttackDown", 70, 80, new Vector2(0, 0));
             //swordsman.AddAnimation(9, 230, 0, "AttackUp", 70, 80, new Vector2(-13, -27));
             //swordsman.AddAnimation(9, 310, 0, "AttackLeft", 70, 70, new Vector2(-30, -5));

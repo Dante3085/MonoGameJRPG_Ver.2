@@ -33,7 +33,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
                 if (e is Character)
                     c.Collidables.Add(((Character)e).AnimatedSprite);
 
-            return new Scene("FirstLevelScene", Contents.blueBackground, keyboardHandler: () =>
+            return new Scene("FirstLevelScene", Contents.whiteBackground, keyboardHandler: () =>
                 {
                     if (InputManager.OnKeyDown(Keys.I))
                         gameInstance._sceneStack.Push(EScene.InventoryScene);

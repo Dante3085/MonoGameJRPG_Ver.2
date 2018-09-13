@@ -110,13 +110,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _isPlayerControlled = true;
             Fps = fps;
 
-            _combo = new Combo(new ComboNode(_combo, EAnimation.Melee1, new Dictionary<Keys, ComboNode>()
+            _combo = new Combo(new ComboNode(EAnimation.Melee1, new Dictionary<Keys, ComboNode>()
             {
-                { Keys.F, new ComboNode(_combo, EAnimation.Melee2, new Dictionary<Keys, ComboNode>()
+                { Keys.F, new ComboNode(EAnimation.Melee2, new Dictionary<Keys, ComboNode>()
                 {
-                    { Keys.F, new ComboNode(_combo, EAnimation.Melee3, null, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X) }
-                }, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X) }
-            }, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X), this);
+                    { Keys.F, new ComboNode(EAnimation.Melee3, new Dictionary<Keys, ComboNode>(), new ComboNode.Intervall(0, 500), Keys.F, Buttons.X) }
+                }, new ComboNode.Intervall(0, 500), Keys.F, Buttons.X) }
+            }, new ComboNode.Intervall(0, 500), Keys.F, Buttons.X), this);
         }
 
         /// <summary>
@@ -133,13 +133,34 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _isPlayerControlled = false;
             Fps = fps;
 
-            _combo = new Combo(new ComboNode(_combo, EAnimation.Melee1, new Dictionary<Keys, ComboNode>()
+            _combo = new Combo(new ComboNode(EAnimation.Melee1, new Dictionary<Keys, ComboNode>()
             {
-                { Keys.F, new ComboNode(_combo, EAnimation.Melee2, new Dictionary<Keys, ComboNode>()
+                { Keys.F, new ComboNode(EAnimation.Melee2, new Dictionary<Keys, ComboNode>()
                 {
-                    { Keys.F, new ComboNode(_combo, EAnimation.Melee3, null, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X) }
-                }, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X) }
-            }, new ComboNode.Intervall(500, 1000), Keys.F, Buttons.X), this);
+                    { Keys.F, new ComboNode(EAnimation.Melee3, new Dictionary<Keys, ComboNode>(), new ComboNode.Intervall(0, 2000), Keys.F, Buttons.X) }
+                }, new ComboNode.Intervall(0, 2000), Keys.F, Buttons.X) }
+            }, new ComboNode.Intervall(0, 2000), Keys.F, Buttons.X), this);
+        }
+
+        /// <summary>
+        /// Updates the AnimatedSprite.
+        /// Handle input, update animation, update bounding box size
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (IsPlayerControlled)
+            {
+                if (InputManager.GamePadConnected())
+                    HandleGamePadInput(gameTime);
+                else
+                    HandleKeyboardInput(gameTime);
+            }
+
+            _combo.Update(gameTime);
+            PlayAnimation(gameTime);
         }
 
         #region InputHelperMethods
@@ -207,65 +228,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
                 SetAnimation(EAnimation.IdleDown);
         }
 
-        /// <summary>
-        /// Does everything that needs to happen for the AnimatedSprite to execute an Attack.
-        /// Depending on the direction the AnimatedSprite is facing, a certain Attack Animation will be played.
-        /// the bounding box will also be expanded accordingly.
-        /// </summary>
-        protected void Attack()
-        {
-            // SetAnimation(EAnimation.MeleeRight);
-
-            
-
-            //// ATTACK FROM IDLE
-            //if (_currentAnimation == EAnimation.Idle)
-            //    SetAnimation(EAnimation.MeleeRight);
-
-            //// LEFT ATTACK
-            //if (_currentAnimation == EAnimation.Left)
-            //{
-            //    SetAnimation(EAnimation.MeleeLeft);
-            //    _currentDirection = Direction.left;
-
-            //    _boundingBox.Y -= 5;
-            //    _boundingBox.X -= 20;
-            //}
-
-            //// UP ATTACK
-            //if (_currentAnimation == EAnimation.Up)
-            //{
-            //    SetAnimation(EAnimation.MeleeUp);
-            //    _currentDirection = Direction.up;
-
-            //    _boundingBox.Y -= 20;
-            //    _boundingBox.X -= 5;
-            //}
-
-            //// RIGHT ATTACK
-            //if (_currentAnimation == EAnimation.Right)
-            //{
-            //    SetAnimation(EAnimation.MeleeRight);
-            //    _currentDirection = Direction.right;
-
-            //    _boundingBox.Y -= 5;
-            //    _boundingBox.X += 5;
-            //}
-
-            //// DOWN ATTACK
-            //if (_currentAnimation == EAnimation.Down)
-            //{
-            //    SetAnimation(EAnimation.MeleeDown);
-            //    _currentDirection = Direction.down;
-
-            //    _boundingBox.X -= 5;
-            //}
-        }
-
         #endregion
         #region HandleInput
 
-        public override void HandleKeyboardInput()
+        public override void HandleKeyboardInput(GameTime gameTime)
         {
             // LEFT
             if (InputManager.IsKeyDown(_keyboardInput.Left))
@@ -289,30 +255,18 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             else if (InputManager.OnKeyUp(_keyboardInput.Run))
                 _speed -= 100;
 
-            //// ATTACK
-            //if (InputManager.OnKeyDown(_keyboardInput.Attack))
-            //    Attack();
+            //// Combo
+            //if (InputManager.IsKeyDown(_keyboardInput.Combo))
+            //    _combo.Update(gameTime);
 
-            #region Test
-
-            if (InputManager.OnKeyDown(Keys.F))
-                SetAnimation(EAnimation.Melee1);
-
-            if (InputManager.OnKeyDown(Keys.G))
-                SetAnimation(EAnimation.Melee2);
-
-            if (InputManager.OnKeyDown(Keys.H))
-                SetAnimation(EAnimation.Melee3);
-
-            #endregion
-
-            // No Movement => Idle Frame for respective Direction.
+            // No Movement => Idle Animation for respective Direction.
             else
                 Idle();
 
             _currentDirection = Direction.none;
         }
-        public override void HandleGamePadInput()
+
+        public override void HandleGamePadInput(GameTime gameTime)
         {
             // LEFT
             if (InputManager.IsButtonDown(_gamePadInput.Left))
@@ -336,6 +290,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             else if (InputManager.OnButtonUp(_gamePadInput.Run))
                 _speed -= 100;
 
+            // Combo
+            if (InputManager.IsButtonDown(_gamePadInput.Combo))
+                _combo.Update(gameTime);
+
             // No Movement => Idle Frame for respective Direction.
             else
                 Idle();
@@ -344,28 +302,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
         }
 
         #endregion
-
-        /// <summary>
-        /// Updates the AnimatedSprite.
-        /// Handle input, update animation, update bounding box size
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-            if (IsPlayerControlled)
-            {
-                if (InputManager.GamePadConnected())
-                    HandleGamePadInput();
-                else
-                    HandleKeyboardInput();
-            }
-
-            _combo.Update(gameTime);
-
-            PlayAnimation(gameTime);
-        }
 
         /// <summary>
         /// Draws the sprite on the screen.
@@ -467,9 +403,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             Vector2 offset, int fps, Action onAnimationStart = null, Action onAnimationEnd = null)
         {
             if (onAnimationStart == null)
-                onAnimationStart = () => Console.WriteLine(name + " start");
+                onAnimationStart = () => Console.WriteLine();
             if (onAnimationEnd == null)
-                onAnimationEnd = () => Console.WriteLine(name + " end");
+                onAnimationEnd = () => Console.WriteLine();
 
             // Creates an array of rectangles (i.e. a new Animation).
             Rectangle[] animation = new Rectangle[numFrames];
@@ -484,6 +420,16 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
             _animationFpsValues.Add(name, fps);
             _onAnimationStartActions.Add(name, onAnimationStart);
             _onAnimationEndActions.Add(name, onAnimationEnd);
+        }
+
+        public void SetOnAnimationEnd(EAnimation name, Action action)
+        {
+            _onAnimationEndActions[name] = action;
+        }
+
+        public void SetOnAnimtionStart(EAnimation name, Action action)
+        {
+            _onAnimationStartActions[name] = action;
         }
 
         /// <summary>
