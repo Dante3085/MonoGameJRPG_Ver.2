@@ -14,7 +14,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
     /// <summary>
     /// MenuElements can be added to a Menu.
     /// </summary>
-    public abstract class MenuElement : GameObject, IEntity
+    public abstract class MenuElement : GameObject, IEntity, GameLogic.States.IEntity
     {
         #region MemberVariables
 

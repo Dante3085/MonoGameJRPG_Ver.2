@@ -16,9 +16,11 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites.Combos;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
+using IEntity = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States.IEntity;
 
 namespace MonoGameJRPG_Ver._2
 {
@@ -45,6 +47,8 @@ namespace MonoGameJRPG_Ver._2
         public SceneStack _sceneStack;
 
         #region Test
+
+        private FiniteStateMachine finiteStateMachine;
 
         #endregion
         #endregion
@@ -114,13 +118,20 @@ namespace MonoGameJRPG_Ver._2
             Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
             inventoryText.SetColor(Color.Aquamarine);
 
-            _sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
+            //_sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
+            //{
+            //    { EScene.MainMenuScene, SceneFactory.MainMenuScene(this)},
+            //    { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, inventoryText, adventurer) },
+            //    { EScene.InventoryScene, SceneFactory.InventoryScene(this, adventurer) }
+            //});
+            //_sceneStack.Push(EScene.MainMenuScene);
+
+            finiteStateMachine = new FiniteStateMachine(new Dictionary<EState, State>()
             {
-                { EScene.MainMenuScene, SceneFactory.MainMenuScene(this)},
-                { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, inventoryText, adventurer) },
-                { EScene.InventoryScene, SceneFactory.InventoryScene(this, adventurer) }
+                { EState.EmptyState, new EmptyState(new List<EState>(){EState.MainMenuState})},
+                { EState.MainMenuState, StateFactory.DefaultMainMenuState() }
             });
-            _sceneStack.Push(EScene.MainMenuScene);
+            finiteStateMachine.Change(EState.MainMenuState);
 
             #endregion
 
@@ -167,7 +178,8 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            _sceneStack.Update(gameTime);
+            // _sceneStack.Update(gameTime);
+            finiteStateMachine.Update(gameTime);
 
             #endregion
 
@@ -191,7 +203,8 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            _sceneStack.Draw(spriteBatch);
+            // _sceneStack.Draw(spriteBatch);
+            finiteStateMachine.Draw(spriteBatch);
 
             #endregion
 

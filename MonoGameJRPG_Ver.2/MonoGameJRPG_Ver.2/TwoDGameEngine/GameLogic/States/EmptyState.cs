@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 {
-    public enum EState
+    public class EmptyState : State
     {
-        EmptyState,
-        MainMenuState,
+
+        public EmptyState(List<EState> next) :base(new List<IEntity>(), next, "EmptyState")
+        {
+
+        }
     }
 }

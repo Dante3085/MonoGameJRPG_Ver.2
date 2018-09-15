@@ -27,5 +27,10 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         {
             base.OnEnter();
         }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
     }
 }

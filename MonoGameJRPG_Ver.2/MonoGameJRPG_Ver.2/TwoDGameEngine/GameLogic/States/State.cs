@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
@@ -56,6 +57,17 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         {
             foreach (IEntity e in _entities)
                 e.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Draws drawable entities.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (IEntity e in _entities)
+                if (e is IDrawable)
+                    ((IDrawable)e).Draw(spriteBatch);
         }
 
         /// <summary>

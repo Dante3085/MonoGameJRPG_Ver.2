@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 {
@@ -35,6 +36,11 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         public void Update(GameTime gameTime)
         {
             _states[_currentState].Update(gameTime);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _states[_currentState].Draw(spriteBatch);
         }
 
         /// <summary>
