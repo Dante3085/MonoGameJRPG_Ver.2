@@ -47,6 +47,22 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites.Combos
             Console.WriteLine("@Combo: " + msg);
         }
 
+        private void test(ComboNode node)
+        {
+            if (node == null)
+                return;
+
+            foreach (Keys k in node.Next.Keys)
+            {
+                if (InputManager.OnKeyDown(k))
+                {
+                    _sprite.SetAnimation(node.Animation);
+
+                }
+            }
+
+        }
+
         public void Update(GameTime gameTime)
         {
             // Check CurrentComboNode Input
@@ -98,6 +114,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites.Combos
                         {
                             Log("Pressed " + k + " for next ComboNode");
                             _current = _current.Next[k];
+                            _sprite.SetAnimation(_current.Animation);
                             _checkCurrentInput = true;
                         }
                     }
