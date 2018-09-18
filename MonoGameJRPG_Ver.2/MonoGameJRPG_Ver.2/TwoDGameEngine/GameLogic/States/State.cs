@@ -23,6 +23,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         /// </summary>
         private List<EState> _next;
 
+
+        private Action _keyboardInput;
+
+        private Action _gamePadInput;
+
+        private Action _inputHandler;
+
         /// <summary>
         /// Stores the name(purpose) of the State.
         /// </summary>
@@ -33,6 +40,19 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         #region Properties
 
         public List<EState> Next => _next;
+
+        public Action KeyboardInput
+        {
+            get => _keyboardInput;
+            set => _keyboardInput = value;
+        }
+
+        public Action GamePadInput
+        {
+            get => _gamePadInput;
+            set => _gamePadInput = value;
+        }
+
         public string Name => _name;
 
         #endregion
@@ -42,11 +62,25 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="name"></param>
-        public State(List<IEntity> entities, List<EState> next, string name = "NO_NAME_STATE")
+        /// <param name="keyboardInput"></param>
+        /// <param name="gamePadInput"></param>
+        /// 
+        public State(List<IEntity> entities, List<EState> next, Action keyboardInput = null, 
+            Action gamePadInput = null, string name = "NO_NAME_STATE")
         {
             _entities = entities;
             _next = next;
+            _keyboardInput = keyboardInput;
+            _gamePadInput = gamePadInput;
             _name = name;
+
+            if (_keyboardInput == null)
+                _keyboardInput = () => { };
+
+            if (_gamePadInput == null)
+                _gamePadInput = () => { };
+
+            _inputHandler = FiniteStateMachine.InputByKeyboard ? _keyboardInput : _gamePadInput;
         }
 
         /// <summary>
@@ -57,6 +91,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         {
             foreach (IEntity e in _entities)
                 e.Update(gameTime);
+            _inputHandler();
         }
 
         /// <summary>

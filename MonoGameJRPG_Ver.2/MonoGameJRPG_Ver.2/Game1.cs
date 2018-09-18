@@ -29,6 +29,11 @@ namespace MonoGameJRPG_Ver._2
     /// </summary>
     public class Game1 : Game
     {
+        /// <summary>
+        /// Singleton Instance of Game1 class.
+        /// </summary>
+        private static Game1 _gameInstance;
+
         #region MemberVariables
 
         public static GameConsole gameConsole;
@@ -44,36 +49,51 @@ namespace MonoGameJRPG_Ver._2
         private Time time;
         private VBox timeFpsBox;
 
-        public SceneStack _sceneStack;
+        private FiniteStateMachine finiteStateMachine;
 
         #region Test
 
-        private FiniteStateMachine finiteStateMachine;
-
         #endregion
         #endregion
 
-        public Game1()
+        #region Properties
+
+        /// <summary>
+        /// Returns Singleton Instance of Game1 class.
+        /// Instantiates that instance if it hasn't been called yet.
+        /// </summary>
+        // public static Game1 Game => _gameInstance ?? (_gameInstance = new Game1());
+
+        public static Game1 Game
+        {
+            get
+            {
+                if (_gameInstance == null)
+                    _gameInstance = new Game1();
+                return _gameInstance;
+            }
+        }
+
+        public FiniteStateMachine FiniteStateMachine => finiteStateMachine;
+
+        #endregion
+
+        private Game1()
         {
             graphics = new GraphicsDeviceManager(this);
 
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            screenWidth = 600;
-            screenHeight = 300;
+            //screenWidth = 600;
+            //screenHeight = 300;
 
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.IsFullScreen = true;
-        }
-
-        public void ExitGame()
-        {
-            Exit();
+            graphics.IsFullScreen = false;
         }
 
         /// <summary>
@@ -112,24 +132,24 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            Character adventurer = new Character("adventurer", isPlayerControlled: true, keyboardInput: KeyboardInput.Default(),
-                animatedSprite: SpriteFactory.Adventurer(new Vector2(200, 200)));
+            Character adventurer = new Character("adventurer", isPlayerControlled: true,
+                keyboardInput: KeyboardInput.Default(), 
+                animatedSprite: SpriteFactory.Adventurer(Vector2.Zero));
 
-            Text inventoryText = new Text("", x: 10, y: 10, text: "Open/Close Inventory: 'START' (GamePad), 'I' (Keyboard)");
-            inventoryText.SetColor(Color.Aquamarine);
+            Character swordsman = new Character("swordsman", isPlayerControlled: true,
+                keyboardInput: KeyboardInput.Alternative(),
+                animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
 
-            //_sceneStack = new SceneStack(new Dictionary<EScene, Scene>()
-            //{
-            //    { EScene.MainMenuScene, SceneFactory.MainMenuScene(this)},
-            //    { EScene.FirstLevelScene, SceneFactory.FirstLevelScene(this, inventoryText, adventurer) },
-            //    { EScene.InventoryScene, SceneFactory.InventoryScene(this, adventurer) }
-            //});
-            //_sceneStack.Push(EScene.MainMenuScene);
+            CollisionManager c = new CollisionManager(adventurer.AnimatedSprite,
+                swordsman.AnimatedSprite);
 
             finiteStateMachine = new FiniteStateMachine(new Dictionary<EState, State>()
             {
                 { EState.EmptyState, new EmptyState(new List<EState>(){EState.MainMenuState})},
-                { EState.MainMenuState, StateFactory.DefaultMainMenuState() }
+                { EState.MainMenuState, StateFactory.DefaultMainMenuState() },
+                { EState.TestLevelState, StateFactory.TestLevelState(adventurer.AnimatedSprite, 
+                    swordsman.AnimatedSprite, c) },
+                { EState.InventoryState, StateFactory.InventoryState(adventurer, swordsman) }
             });
             finiteStateMachine.Change(EState.MainMenuState);
 
@@ -178,7 +198,6 @@ namespace MonoGameJRPG_Ver._2
             if (InputManager.IsKeyDown(Keys.Escape) || InputManager.IsButtonDown(Buttons.Back))
                 Exit();
 
-            // _sceneStack.Update(gameTime);
             finiteStateMachine.Update(gameTime);
 
             #endregion
@@ -203,7 +222,6 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            // _sceneStack.Draw(spriteBatch);
             finiteStateMachine.Draw(spriteBatch);
 
             #endregion

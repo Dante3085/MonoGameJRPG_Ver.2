@@ -10,5 +10,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
     {
         EmptyState,
         MainMenuState,
+        TestLevelState,
+        InventoryState,
     }
 }

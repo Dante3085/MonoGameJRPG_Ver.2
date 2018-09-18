@@ -22,7 +22,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
     {
         public static Scene MainMenuScene(Game1 gameInstance)
         {
-            return new Scene("MainMenuScene", Contents.ff15Background, entities: MenuFactory.MainMenu(new Point(10, 10), gameInstance));
+            return new Scene("MainMenuScene", Contents.ff15Background, entities: MenuFactory.MainMenu(new Point(10, 10)));
         }
 
         public static Scene FirstLevelScene(Game1 gameInstance, params IEntity[] entities)
@@ -35,12 +35,12 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
 
             return new Scene("FirstLevelScene", Contents.whiteBackground, keyboardHandler: () =>
                 {
-                    if (InputManager.OnKeyDown(Keys.I))
-                        gameInstance._sceneStack.Push(EScene.InventoryScene);
+                    //if (InputManager.OnKeyDown(Keys.I))
+                    //    gameInstance._sceneStack.Push(EScene.InventoryScene);
                 }, gamePadHandler: () =>
                 {
-                    if (InputManager.OnButtonDown(Buttons.Start))
-                        gameInstance._sceneStack.Push(EScene.InventoryScene);
+                    //if (InputManager.OnButtonDown(Buttons.Start))
+                    //    gameInstance._sceneStack.Push(EScene.InventoryScene);
                 },collisionManager: c,
                 entities: entities);
         }
@@ -49,13 +49,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
         {
             return new Scene("InventoryScene", Contents.blackBackground, keyboardHandler: () =>
             {
-                if (InputManager.OnKeyDown(Keys.I))
-                    gameInstance._sceneStack.Pop();
+                //if (InputManager.OnKeyDown(Keys.I))
+                //    gameInstance._sceneStack.Pop();
             }, gamePadHandler: () =>
             {
-                if (InputManager.OnButtonDown(Buttons.Start))
-                    gameInstance._sceneStack.Pop();
-            },entities: MenuFactory.InventoryMenu(new Point(10, 10), gameInstance, characters));
+                //if (InputManager.OnButtonDown(Buttons.Start))
+                //    gameInstance._sceneStack.Pop();
+            },entities: MenuFactory.InventoryMenu(new Point(10, 10), characters));
         }
 
         public static Scene EmptyScene()

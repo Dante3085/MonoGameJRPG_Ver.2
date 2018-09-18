@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG_Ver._2.Characters;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
@@ -44,11 +45,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
         #endregion
         #region Menus
 
-        public static Menu MainMenu(Point position, Game1 gameInstance)
+        public static Menu MainMenu(Point position)
         {
             return new Menu(new VBox("mainoptions", position.X, position.Y, 5, elements: new MenuElement[]
             {
-                new Text("newgame", text: "New Game", functionality: () => gameInstance._sceneStack.Push(EScene.FirstLevelScene)),
+                new Text("newgame", text: "New Game", functionality: () =>
+                {
+                    Game1.Game.FiniteStateMachine.Change(EState.TestLevelState);
+                }),
                 new Text("loadgame", text: "Load Game", functionality: null),
                 new Text("console", text: "Console", functionality: () =>
                 {
@@ -57,25 +61,24 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                     else
                         Game1.gameConsole.Open(Keys.Tab);
                 }),
-                new Text("exitgame", text: "Exit Game", functionality: () => gameInstance.ExitGame()),
+                new Text("exitgame", text: "Exit Game", functionality: () => Game1.Game.Exit()),
             }));
         }
 
-        public static Menu InventoryMenu(Point position, Game1 gameInstance, params Character[] characters)
+        public static Menu InventoryMenu(Point position, params Character[] characters)
         {
             VBox vbox = new VBox("vbox", position.X, position.Y, verticalOffset: 5);
             foreach (Character c in characters)
                 vbox.Elements.Add(new CharacterInfo("characterInfo_" + c.Name, c));
             vbox.Elements.Add(new Text("mainMenuText", text: "MainMenu", functionality: () =>
             {
-                while (!gameInstance._sceneStack.Peek().Name.Equals("MainMenuScene"))
-                    gameInstance._sceneStack.Pop();
+                Game1.Game.FiniteStateMachine.Change(EState.MainMenuState);
             }));
 
             Menu inventoryMenu = new Menu(vbox);
             return inventoryMenu;
         }
-        public static HBox TestMenu(Vector2 position, Game1 gameInstance)
+        public static HBox TestMenu(Vector2 position)
         {
             HBox testMenu = new HBox("testMenu", elements: new MenuElement[]
             {
@@ -91,7 +94,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
                         else
                             Game1.gameConsole.Open(Keys.Tab);
                     }),
-                    new Text("exitgame", text: "Exit Game", functionality: () => gameInstance.ExitGame()),
+                    new Text("exitgame", text: "Exit Game", functionality: () => Game1.Game.Exit()),
 
                     new HBox("hbox2", horizontalOffset: 5, elements: new MenuElement[]
                     {

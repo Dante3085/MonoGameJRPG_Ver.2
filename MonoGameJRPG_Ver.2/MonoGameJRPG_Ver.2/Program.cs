@@ -14,7 +14,7 @@ namespace MonoGameJRPG_Ver._2
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (Game1 game = Game1.Game)
                 game.Run();
         }
     }

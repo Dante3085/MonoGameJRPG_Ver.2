@@ -58,7 +58,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes
                 e.Update(gameTime);
 
             if (_collisionManager != null)
-                _collisionManager.CheckCollisions();
+                _collisionManager.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

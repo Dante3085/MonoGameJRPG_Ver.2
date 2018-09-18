@@ -8,10 +8,11 @@ using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
+using IDrawable = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.IDrawable;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 {
-    public class Menu : GameObject, IEntity, IInputable
+    public class Menu : GameObject, IEntity, IInputable, GameLogic.States.IEntity, IDrawable
     {
         #region MemberVariables
 

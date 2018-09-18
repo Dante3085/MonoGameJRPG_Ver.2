@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameJRPG.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 {
     public class FiniteStateMachine
     {
+        #region MemberVariables
+
         /// <summary>
         /// Stores all States known to the FiniteStateMachine.
         /// </summary>
@@ -21,6 +24,24 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         private EState _currentState = EState.EmptyState;
 
         /// <summary>
+        /// Stores how the FiniteStateMachine's States receive Input.
+        /// Keyboard if true, else GamePad.
+        /// </summary>
+        private static bool _inputByKeyboard = true;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Stores how the FiniteStateMachine's States receive Input.
+        /// Keyboard if true, else GamePad.
+        /// </summary>
+        public static bool InputByKeyboard => _inputByKeyboard;
+
+        #endregion
+
+        /// <summary>
         /// Constructs a FiniteStateMachine with the given States.
         /// </summary>
         /// <param name="states"></param>
@@ -30,11 +51,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         }
 
         /// <summary>
+        /// Checks for InputType (Keyboard or GamePad).
         /// Updates the currentState of the FiniteStateMachine.
         /// </summary>
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
+            _inputByKeyboard = !InputManager.GamePadConnected();
             _states[_currentState].Update(gameTime);
         }
 

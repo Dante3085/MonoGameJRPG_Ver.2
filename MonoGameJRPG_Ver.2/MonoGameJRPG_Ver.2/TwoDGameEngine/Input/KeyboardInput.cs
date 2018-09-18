@@ -51,6 +51,20 @@ namespace MonoGameJRPG.TwoDGameEngine.Input
             };
         }
 
+        public static KeyboardInput Alternative()
+        {
+            return new KeyboardInput()
+            {
+                Left = Keys.J,
+                Up = Keys.I,
+                Right = Keys.L,
+                Down = Keys.K,
+                Run = Keys.LeftShift,
+                Interact = Keys.Space,
+                Combo = Keys.F,
+            };
+        }
+
         /// <summary>
         /// Returns KeyboardInput with each key being set to Keys.None.
         /// </summary>

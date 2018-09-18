@@ -55,7 +55,7 @@
     <Compile Include="TwoDGameEngine\GameLogic\States\FiniteStateMachineException.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\IEntity.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\IInteractable.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\States\MainMenuState.cs" />
+    <Compile Include="TwoDGameEngine\GameLogic\States\SceneState.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\Scenes\IEntity.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\Scenes\SceneFactory.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\State.cs" />
@@ -110,6 +110,7 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

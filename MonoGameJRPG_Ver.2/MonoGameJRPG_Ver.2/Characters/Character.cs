@@ -20,7 +20,7 @@ namespace MonoGameJRPG_Ver._2.Characters
     /// RevengeSystem: If a Character gets continuously bashed by enemy attacks without having the chance to act against that or
     ///                just being completely overwhelmed, he can force himself out of the situation by executing a RevengeSkill.
     /// </summary>
-    public class Character : GameObject, IInputable, IEntity
+    public class Character : GameObject, IInputable, IEntity, TwoDGameEngine.GameLogic.States.IEntity
     {
         #region MemberVariables
 
