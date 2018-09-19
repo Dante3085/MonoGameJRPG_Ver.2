@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine;
-using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.Characters
 {
@@ -20,7 +19,7 @@ namespace MonoGameJRPG_Ver._2.Characters
     /// RevengeSystem: If a Character gets continuously bashed by enemy attacks without having the chance to act against that or
     ///                just being completely overwhelmed, he can force himself out of the situation by executing a RevengeSkill.
     /// </summary>
-    public class Character : GameObject, IInputable, IEntity, TwoDGameEngine.GameLogic.States.IEntity
+    public class Character : GameObject, IEntity
     {
         #region MemberVariables
 

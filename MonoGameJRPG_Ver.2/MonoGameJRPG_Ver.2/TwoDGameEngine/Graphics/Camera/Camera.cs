@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Camera
 {

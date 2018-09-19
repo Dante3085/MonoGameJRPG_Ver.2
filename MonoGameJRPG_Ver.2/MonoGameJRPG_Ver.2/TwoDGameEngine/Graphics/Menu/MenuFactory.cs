@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameJRPG_Ver._2.Characters;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;

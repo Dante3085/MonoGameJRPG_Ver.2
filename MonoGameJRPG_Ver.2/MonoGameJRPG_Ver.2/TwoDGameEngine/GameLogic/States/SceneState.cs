@@ -25,8 +25,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         private Rectangle _backgroundRec;
 
         public SceneState(Texture2D background, List<IEntity> entities, List<EState> next, 
-           Action keyboardInput = null, Action gamePadInput = null, string name = "NO_NAME_SCENE_STATE") 
-            : base(entities, next, keyboardInput, gamePadInput, name)
+           Action keyboardHandler = null, Action gamePadHandler = null, string name = "NO_NAME_SCENE_STATE") 
+            : base(entities, next, keyboardHandler, gamePadHandler, name)
         {
             _background = background;
             _backgroundRec = new Rectangle(0, 0, Game1.screenWidth, Game1.screenHeight);

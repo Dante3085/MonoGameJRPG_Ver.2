@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine
 {
@@ -13,10 +15,13 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
     {
         #region MemberVariables
 
-        // Tracks number of existing GameObject instances.
+        /// <summary>
+        /// Stores number of existing GameObjects.
+        /// </summary>
         private static int _numGameObjects;
 
         #endregion
+
         #region Properties
 
         public static int NumGameObjects
@@ -31,7 +36,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine
         /// </summary>
         public GameObject()
         {
-            _numGameObjects++;
+            _numGameObjects++;            
         }
 
         /// <summary>

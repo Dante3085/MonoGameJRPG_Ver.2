@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameJRPG.TwoDGameEngine.Input;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using IDrawable = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.IDrawable;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
@@ -15,7 +16,7 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents
     /// <summary>
     /// MenuElements can be added to a Menu.
     /// </summary>
-    public abstract class MenuElement : GameObject, IEntity, GameLogic.States.IEntity, IDrawable
+    public abstract class MenuElement : GameObject, IEntity, IDrawable
     {
         #region MemberVariables
 

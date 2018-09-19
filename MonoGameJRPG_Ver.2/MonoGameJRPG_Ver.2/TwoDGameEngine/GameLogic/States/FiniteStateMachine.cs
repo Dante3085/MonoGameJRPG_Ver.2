@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 {
@@ -23,21 +24,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         /// </summary>
         private EState _currentState = EState.EmptyState;
 
-        /// <summary>
-        /// Stores how the FiniteStateMachine's States receive Input.
-        /// Keyboard if true, else GamePad.
-        /// </summary>
-        private static bool _inputByKeyboard = true;
-
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Stores how the FiniteStateMachine's States receive Input.
-        /// Keyboard if true, else GamePad.
-        /// </summary>
-        public static bool InputByKeyboard => _inputByKeyboard;
 
         #endregion
 
@@ -57,7 +46,6 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            _inputByKeyboard = !InputManager.GamePadConnected();
             _states[_currentState].Update(gameTime);
         }
 

@@ -56,8 +56,6 @@
     <Compile Include="TwoDGameEngine\GameLogic\States\IEntity.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\IInteractable.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\SceneState.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\IEntity.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\SceneFactory.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\State.cs" />
     <Compile Include="TwoDGameEngine\GameLogic\States\StateFactory.cs" />
     <Compile Include="TwoDGameEngine\GameObject.cs" />
@@ -93,10 +91,6 @@
     <Compile Include="TwoDGameEngine\Graphics\Sprites\ICollidable.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\Sprite.cs" />
     <Compile Include="TwoDGameEngine\Graphics\Sprites\SpriteFactory.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\EScene.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\Scene.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\SceneMachine.cs" />
-    <Compile Include="TwoDGameEngine\GameLogic\Scenes\SceneStack.cs" />
     <Compile Include="TwoDGameEngine\Utils\Time.cs" />
     <Compile Include="TwoDGameEngine\Utils\Util.cs" />
     <Compile Include="TwoDGameEngine\Input\GamePadInput.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
@@ -24,9 +25,9 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         private List<EState> _next;
 
 
-        private Action _keyboardInput;
+        private Action _keyboardHandler;
 
-        private Action _gamePadInput;
+        private Action _gamePadHandler;
 
         private Action _inputHandler;
 
@@ -43,14 +44,14 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 
         public Action KeyboardInput
         {
-            get => _keyboardInput;
-            set => _keyboardInput = value;
+            get => _keyboardHandler;
+            set => _keyboardHandler = value;
         }
 
         public Action GamePadInput
         {
-            get => _gamePadInput;
-            set => _gamePadInput = value;
+            get => _gamePadHandler;
+            set => _gamePadHandler = value;
         }
 
         public string Name => _name;
@@ -62,25 +63,25 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="name"></param>
-        /// <param name="keyboardInput"></param>
-        /// <param name="gamePadInput"></param>
+        /// <param name="keyboardHandler"></param>
+        /// <param name="gamePadHandler"></param>
         /// 
-        public State(List<IEntity> entities, List<EState> next, Action keyboardInput = null, 
-            Action gamePadInput = null, string name = "NO_NAME_STATE")
+        public State(List<IEntity> entities, List<EState> next, Action keyboardHandler = null, 
+            Action gamePadHandler = null, string name = "NO_NAME_STATE")
         {
             _entities = entities;
             _next = next;
-            _keyboardInput = keyboardInput;
-            _gamePadInput = gamePadInput;
+            _keyboardHandler = keyboardHandler;
+            _gamePadHandler = gamePadHandler;
             _name = name;
 
-            if (_keyboardInput == null)
-                _keyboardInput = () => { };
+            if (_keyboardHandler == null)
+                _keyboardHandler = () => { };
+            
+            if (_gamePadHandler == null)
+                _gamePadHandler = () => { };
 
-            if (_gamePadInput == null)
-                _gamePadInput = () => { };
-
-            _inputHandler = FiniteStateMachine.InputByKeyboard ? _keyboardInput : _gamePadInput;
+            _inputHandler = InputManager.GamePadConnected() ? _gamePadHandler : _keyboardHandler;
         }
 
         /// <summary>
@@ -122,8 +123,8 @@ namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
         public virtual void OnExit()
         {
             Util.Log("Exited '" + _name + "' State.");
-            Console.WriteLine("Entered '" + _name + "' State.");
-            Game1.gameConsole.Log("Entered '" + _name + "' State.");
+            Console.WriteLine("Exited '" + _name + "' State.");
+            Game1.gameConsole.Log("Exited '" + _name + "' State.");
         }
     }
 }

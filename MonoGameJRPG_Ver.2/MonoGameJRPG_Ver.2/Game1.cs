@@ -1,13 +1,15 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.Characters;
 using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics;
@@ -15,12 +17,11 @@ using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites.Combos;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using VosSoft.Xna.GameConsole;
-using IEntity = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States.IEntity;
 
 namespace MonoGameJRPG_Ver._2
 {
@@ -132,24 +133,44 @@ namespace MonoGameJRPG_Ver._2
             // (Content of this region is only meant for debugging purposes.)
             #region Test
 
-            Character adventurer = new Character("adventurer", isPlayerControlled: true,
-                keyboardInput: KeyboardInput.Default(), 
-                animatedSprite: SpriteFactory.Adventurer(Vector2.Zero));
+            //Character adventurer = new Character("adventurer", isPlayerControlled: true,
+            //    keyboardInput: KeyboardInput.Default(), 
+            //    animatedSprite: SpriteFactory.Adventurer(Vector2.Zero));
 
-            Character swordsman = new Character("swordsman", isPlayerControlled: true,
-                keyboardInput: KeyboardInput.Alternative(),
-                animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
+            //Character swordsman = new Character("swordsman", isPlayerControlled: true,
+            //    keyboardInput: KeyboardInput.Alternative(),
+            //    animatedSprite: SpriteFactory.Swordsman(Vector2.Zero));
 
-            CollisionManager c = new CollisionManager(adventurer.AnimatedSprite,
-                swordsman.AnimatedSprite);
+            Random rnd = new Random();
+
+            Character[] chars = new Character[30];
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (i % 2 == 0)
+                    chars[i] = new Character("Char" + i, isPlayerControlled: true, 
+                        keyboardInput: KeyboardInput.Default(), 
+                        animatedSprite: SpriteFactory.Swordsman(new Vector2(rnd.Next(0, 3240), rnd.Next(0, 2160))));
+                else
+                    chars[i] = new Character("Char" + i, isPlayerControlled: true,
+                        keyboardInput: KeyboardInput.Alternative(),
+                        animatedSprite: SpriteFactory.Swordsman(new Vector2(rnd.Next(0, 3240), rnd.Next(0, 2160))));
+            }
+
+            CollisionManager collisionManager = new CollisionManager();
+            foreach (Character c in chars)
+                collisionManager.Collidables.Add(c.AnimatedSprite);
+
+            List<IEntity> entities = new List<IEntity>();
+            entities.Add(collisionManager);
+            foreach (Character c in chars)
+                entities.Add(c.AnimatedSprite);
 
             finiteStateMachine = new FiniteStateMachine(new Dictionary<EState, State>()
             {
                 { EState.EmptyState, new EmptyState(new List<EState>(){EState.MainMenuState})},
                 { EState.MainMenuState, StateFactory.DefaultMainMenuState() },
-                { EState.TestLevelState, StateFactory.TestLevelState(adventurer.AnimatedSprite, 
-                    swordsman.AnimatedSprite, c) },
-                { EState.InventoryState, StateFactory.InventoryState(adventurer, swordsman) }
+                { EState.TestLevelState, StateFactory.TestLevelState(entities.ToArray()) },
+                { EState.InventoryState, StateFactory.InventoryState(chars) }
             });
             finiteStateMachine.Change(EState.MainMenuState);
 

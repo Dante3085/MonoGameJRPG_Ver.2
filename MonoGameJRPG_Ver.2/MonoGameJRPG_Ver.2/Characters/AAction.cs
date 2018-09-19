@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
 
 namespace MonoGameJRPG_Ver._2.Characters
 {
@@ -11,7 +12,7 @@ namespace MonoGameJRPG_Ver._2.Characters
     /// An AAction describes everything that can have an effect on a Character/Characters. <para></para>
     /// For example Items, Magics, PhysicalSkills, RevengeAttacks
     /// </summary>
-    public class AAction
+    public class AAction : GameObject
     {
         #region MemberVariables
 

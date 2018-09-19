@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine.Input;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites

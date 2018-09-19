@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine;
-using MonoGameJRPG.TwoDGameEngine.Input;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using IDrawable = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.IDrawable;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu
 {
-    public class Menu : GameObject, IEntity, IInputable, GameLogic.States.IEntity, IDrawable
+    public class Menu : GameObject, IEntity, IDrawable
     {
         #region MemberVariables
 

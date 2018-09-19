@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.Characters;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.Layouts;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Menu.MenuComponents;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States
 {

@@ -6,11 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace MonoGameJRPG.TwoDGameEngine
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Input
 {
-    /// <summary>
-    /// All types that can receive and handle input.
-    /// </summary>
     public interface IInputable
     {
         void HandleKeyboardInput(GameTime gameTime);

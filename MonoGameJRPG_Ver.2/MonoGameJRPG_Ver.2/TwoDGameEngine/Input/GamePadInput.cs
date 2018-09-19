@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoGameJRPG.TwoDGameEngine.Input
+namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Input
 {
     /// <summary>
     /// Masks GamePadInput for this game.

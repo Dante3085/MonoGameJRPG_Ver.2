@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameJRPG.TwoDGameEngine;
-using MonoGameJRPG.TwoDGameEngine.Input;
-using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.Scenes;
+using MonoGameJRPG_Ver._2.TwoDGameEngine;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.States;
+using MonoGameJRPG_Ver._2.TwoDGameEngine.Input;
 using MonoGameJRPG_Ver._2.TwoDGameEngine.Utils;
 using IDrawable = MonoGameJRPG_Ver._2.TwoDGameEngine.GameLogic.IDrawable;
 
 namespace MonoGameJRPG_Ver._2.TwoDGameEngine.Graphics.Sprites
 {
-    public class Sprite : GameObject, ICollidable, IEntity, IInputable, GameLogic.States.IEntity, IDrawable
+    public class Sprite : GameObject, ICollidable, IInputable, IDrawable
     {
         public static bool drawBoundingBox = true;
 
